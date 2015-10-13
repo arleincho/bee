@@ -37,7 +37,7 @@ article{
 	position:relative;
 	width: 40px;
 	height: 40px;
-	background: url("../../img/bee.png") no-repeat no-repeat center center #00c1b8;
+	background: url("../../img/bee/bee.png") no-repeat no-repeat center center #00c1b8;
 }
 #panels{
     display: inline-block;
