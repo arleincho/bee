@@ -14,7 +14,7 @@
  *
  * @category   extensions
  * @package    Auth 
- * @copyright  Copyright (c) 2005-2012 Kumbia Team (http://www.kumbiaphp.com)
+ * @copyright  Copyright (c) 2005-2014 Kumbia Team (http://www.kumbiaphp.com)
  * @license    http://wiki.kumbiaphp.com/Licencia     New BSD License
  */
 /**
@@ -82,7 +82,7 @@ class Auth
     /**
      * Constructor del Autenticador
      *
-     * @param string $adapter
+     * 
      */
     public function __construct()
     {
@@ -96,6 +96,9 @@ class Auth
         $this->set_adapter($adapter, $this, $extra_args);
     }
 
+    /**
+     * @param Auth $auth
+     */
     public function set_adapter($adapter, $auth = null, $extra_args = array())
     {
         if (!in_array($adapter, array('digest', 'http', 'model', 'kerberos5', 'radius'))) {
@@ -110,9 +113,9 @@ class Auth
 
     /**
      * Obtiene el nombre del adaptador actual
-     * @return boolean
+     * @return string
      */
-    public function get_adapter_name($adapter)
+    public function get_adapter_name()
     {
         return $this->adapter;
     }
@@ -164,9 +167,9 @@ class Auth
                 sleep($this->sleep_time);
             }
         }
-        $_SESSION['KUMBIA_AUTH_IDENTITY'] = $this->adapter_object->get_identity();
+        $_SESSION['KUMBIA_AUTH_IDENTITY'][Config::get('config.application.namespace_auth')] = $this->adapter_object->get_identity();
         self::$active_identity = $this->adapter_object->get_identity();
-        $_SESSION['KUMBIA_AUTH_VALID'] = $result;
+        $_SESSION['KUMBIA_AUTH_VALID'][Config::get('config.application.namespace_auth')] = $result;
         self::$is_valid = $result;
         return $result;
     }
@@ -267,7 +270,7 @@ class Auth
         if (!is_null(self::$is_valid)) {
             return self::$is_valid;
         } else {
-            self::$is_valid = isset($_SESSION['KUMBIA_AUTH_VALID']) ? $_SESSION['KUMBIA_AUTH_VALID'] : null;
+            self::$is_valid = isset($_SESSION['KUMBIA_AUTH_VALID'][Config::get('config.application.namespace_auth')]) ? $_SESSION['KUMBIA_AUTH_VALID'][Config::get('config.application.namespace_auth')] : null;
             return self::$is_valid;
         }
     }
@@ -282,7 +285,7 @@ class Auth
         if (count(self::$active_identity)) {
             return self::$active_identity;
         } else {
-            self::$active_identity = $_SESSION['KUMBIA_AUTH_IDENTITY'];
+            self::$active_identity = $_SESSION['KUMBIA_AUTH_IDENTITY'][Config::get('config.application.namespace_auth')];
             return self::$active_identity;
         }
     }
@@ -296,7 +299,7 @@ class Auth
     public static function get($var = null)
     {
         if ($var) {
-            return $_SESSION['KUMBIA_AUTH_IDENTITY'][$var];
+            return $_SESSION['KUMBIA_AUTH_IDENTITY'][Config::get('config.application.namespace_auth')][$var];
         }
     }
 
@@ -307,9 +310,9 @@ class Auth
     static public function destroy_identity()
     {
         self::$is_valid = null;
-        unset($_SESSION['KUMBIA_AUTH_VALID']);
+        unset($_SESSION['KUMBIA_AUTH_VALID'][Config::get('config.application.namespace_auth')]);
         self::$active_identity = null;
-        unset($_SESSION['KUMBIA_AUTH_IDENTITY']);
+        unset($_SESSION['KUMBIA_AUTH_IDENTITY'][Config::get('config.application.namespace_auth')]);
     }
 
 }

@@ -14,7 +14,7 @@
  *
  * @category   KumbiaPHP
  * @package    Helpers 
- * @copyright  Copyright (c) 2005-2012 KumbiaPHP Team (http://www.kumbiaphp.com)
+ * @copyright  Copyright (c) 2005-2014 KumbiaPHP Team (http://www.kumbiaphp.com)
  * @license    http://wiki.kumbiaphp.com/Licencia     New BSD License
  */
 
@@ -68,21 +68,6 @@ class Html
     }
 
     /**
-     * Devuelve una URL usando la constante PUBLIC_PATH, para que siempre funcione
-     * 
-     * @example Html::url
-     * echo Html::url('controller/action')
-     * Devuelve una URL a ese controller y acción
-     *
-     * @param string $action Ruta a la acción
-     * @return string
-     */
-    public static function url($action)
-    {
-        return PUBLIC_PATH . $action;
-    }
-
-    /**
      * Crea un enlace a una acción del mismo controller que estemos
      *
      * @example Html::linkAction
@@ -123,7 +108,6 @@ class Html
      *
      * @param string $class class css
      * @param string|array $attrs
-     * @param unknown_type $start
      * @return string
      * @deprecated Mejor usar CSS
      */
@@ -173,13 +157,13 @@ class Html
      */
     public static function includeMetatags()
     {
-        return implode(array_unique(self::$_metatags), PHP_EOL);
+        return implode(PHP_EOL, array_unique(self::$_metatags));
     }
 
     /**
      * Crea una lista a partir de un array
      *
-     * @param string $content contenido del metatag
+     * @param array $array Array con el contenido del metatag
      * @param string $type por defecto ul, y si no ol
      * @param string|array $attrs atributos 
      * @return string
@@ -187,7 +171,7 @@ class Html
     public static function lists($array, $type = 'ul', $attrs = NULL)
     {
         if (is_array($attrs)) {
-            $attrs = self::getAttrs($attrs);
+            $attrs = Tag::getAttrs($attrs);
         }
 
         $list = "<$type $attrs>" . PHP_EOL;
@@ -222,7 +206,7 @@ class Html
     public static function headLink($href, $attrs = NULL)
     {
         if (is_array($attrs)) {
-            $attrs = self::getAttrs($attrs);
+            $attrs = Tag::getAttrs($attrs);
         }
 
         self::$_headLinks[] = array('href' => $href, 'attrs' => $attrs);

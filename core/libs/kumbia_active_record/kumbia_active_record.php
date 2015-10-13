@@ -15,7 +15,7 @@
  * @category   Kumbia
  * @package    Db
  * @subpackage ActiveRecord
- * @copyright  Copyright (c) 2005-2012 Kumbia Team (http://www.kumbiaphp.com)
+ * @copyright  Copyright (c) 2005-2014 Kumbia Team (http://www.kumbiaphp.com)
  * @license    http://wiki.kumbiaphp.com/Licencia     New BSD License
  */
 /**
@@ -277,9 +277,12 @@ class KumbiaActiveRecord
         $this->_connect();
 
         if ($data) {
-            if (!is_array($data))
-                $data = Util::getParams(func_get_args());
-            $this->dump_result_self($data);
+            if (!is_array($data)) $data = Util::getParams(func_get_args());
+            foreach($this->fields as $field) {
+                if (isset($data[$field])) {
+                    $this->$field = $data[$field];
+                }
+            }
         }
     }
 
@@ -290,7 +293,7 @@ class KumbiaActiveRecord
     protected function _model_name()
     {
         if (!$this->source) {
-            $this->source = Util::uncamelize(get_class($this));
+            $this->source = Util::smallcase(get_class($this));
         }
     }
 
@@ -317,7 +320,7 @@ class KumbiaActiveRecord
     /**
      * Establece la base datos a utilizar
      *
-     * @param string $databse
+     * @param string $database
      */
     public function set_database($database)
     {
@@ -351,6 +354,65 @@ class KumbiaActiveRecord
     }
 
     /**
+     * Devuelve los registros del modelo al que se está asociado.
+     *
+     * @param string $mmodel nombre del modelo asociado
+     * @return array|NULL|FALSE si existen datos devolverá un array,
+     * NULL si no hay datos asociados aun, y false si no existe ninguna asociación.
+     */
+    protected function _get_relation_data($mmodel)
+    {
+        if (array_key_exists($mmodel, $this->_belongs_to)) {
+            $relation = $this->_belongs_to[$mmodel];
+            return self::get($relation->model)->find_first($this->{$relation->fk});
+        } elseif (array_key_exists($mmodel, $this->_has_one)) {
+            $relation = $this->_has_one[$mmodel];
+            if ($this->{$this->primary_key[0]}) {
+                return self::get($relation->model)->find_first("{$relation->fk}={$this->db->add_quotes($this->{$this->primary_key[0]}) }");
+            } else {
+                return NULL;
+            }
+        } elseif (array_key_exists($mmodel, $this->_has_many)) {
+            $relation = $this->_has_many[$mmodel];
+            if ($this->{$this->primary_key[0]}) {
+                return self::get($relation->model)->find("{$relation->fk}={$this->db->add_quotes($this->{$this->primary_key[0]}) }");
+            } else {
+                return array();
+            }
+        } elseif (array_key_exists($mmodel, $this->_has_and_belongs_to_many)) {
+            $relation = $this->_has_and_belongs_to_many[$mmodel];
+            $relation_model = self::get($relation->model);
+            $source = ($this->schema ? "{$this->schema}." : NULL ) . $this->source;
+            $relation_source = ($relation_model->schema ? "{$relation_model->schema}." : NULL ) . $relation_model->source;
+            /**
+             * Cargo atraves de que tabla se efectuara la relacion
+             *
+             */
+            if (!isset($relation->through)) {
+                if ($source > $relation_source) {
+                    $relation->through = "{$this->source}_{$relation_source}";
+                } else {
+                    $relation->through = "{$relation_source}_{$this->source}";
+                }
+            }else{
+                $through = explode('/', $relation->through);
+                $relation->through = end($through);
+            }
+            if ($this->{$this->primary_key[0]}) {
+                return $relation_model->find_all_by_sql("SELECT $relation_source.* FROM $relation_source, {$relation->through}, $source
+                    WHERE {$relation->through}.{$relation->key} = {$this->db->add_quotes($this->{$this->primary_key[0]}) }
+                    AND {$relation->through}.{$relation->fk} = $relation_source.{$relation_model->primary_key[0]}
+                    AND {$relation->through}.{$relation->key} = $source.{$this->primary_key[0]}
+                    ORDER BY $relation_source.{$relation_model->primary_key[0]}");
+            } else {
+                return array();
+            }
+        } else {
+            return FALSE; //si no existe ninguna asociación devuelve false.
+        }
+    }
+
+    /**
      * Valida que los valores que sean leidos del objeto ActiveRecord esten definidos
      * previamente o sean atributos de la entidad
      *
@@ -360,52 +422,7 @@ class KumbiaActiveRecord
     {
         if (!$this->_dump_lock) {
             if (!isset($this->$property)) {
-                if (array_key_exists($property, $this->_belongs_to)) {
-                    $relation = $this->_belongs_to[$property];
-                    return self::get($relation->model)->find_first($this->{$relation->fk});
-                } elseif (array_key_exists($property, $this->_has_one)) {
-                    $relation = $this->_has_one[$property];
-                    if ($this->{$this->primary_key[0]}) {
-                        return self::get($relation->model)->find_first("{$relation->fk}={$this->db->add_quotes($this->{$this->primary_key[0]}) }");
-                    } else {
-                        return null;
-                    }
-                } elseif (array_key_exists($property, $this->_has_many)) {
-                    $relation = $this->_has_many[$property];
-                    if ($this->{$this->primary_key[0]}) {
-                        return self::get($relation->model)->find("{$relation->fk}={$this->db->add_quotes($this->{$this->primary_key[0]}) }");
-                    } else {
-                        return array();
-                    }
-                } elseif (array_key_exists($property, $this->_has_and_belongs_to_many)) {
-                    $relation = $this->_has_and_belongs_to_many[$property];
-                    $relation_model = self::get($relation->model);
-                    $relation_model->dump_model();
-                    $source = $this->source;
-                    $relation_source = $relation_model->source;
-                    /**
-                     * Cargo atraves de que tabla se efectuara la relacion
-                     *
-                     */
-                    if (!isset($relation->through)) {
-                        if ($source > $relation_source) {
-                            $relation->through = "{$this->source}_{$relation_source}";
-                        } else {
-                            $relation->through = "{$relation_source}_{$this->source}";
-                        }
-                    }
-                    if ($this->{$this->primary_key[0]}) {
-                        return self::get($relation->model)->find_all_by_sql("SELECT $relation_source.* FROM $relation_source, {$relation->through}, $source
-							WHERE {$relation->through}.{$relation->key} = {$this->db->add_quotes($this->{$this->primary_key[0]}) }
-							AND {$relation->through}.{$relation->fk} = $relation_source.{$relation_model->primary_key[0]}
-							AND {$relation->through}.{$relation->key} = $source.{$this->primary_key[0]}
-							ORDER BY $relation_source.{$relation_model->primary_key[0]}");
-                    } else {
-                        return array();
-                    }
-                } else {
-                    return null;
-                }
+                return $this->_get_relation_data($property);
             }
         }
         return $this->$property;
@@ -433,24 +450,23 @@ class KumbiaActiveRecord
                     return;
                 }
             } elseif ($property == "source") {
-                $value = ActiveRecord::sql_item_sanizite($value);
+                $value = self::sql_item_sanitize($value);
             }
         }
         $this->$property = $value;
     }
 
     /**
-     * Devuelve un valor o un listado dependiendo del tipo de Relaci&oacute;n
+     * Devuelve un valor o un listado dependiendo del tipo de Relación
      *
      */
     public function __call($method, $args = array())
     {
-        $has_relation = false;
         if (substr($method, 0, 8) == "find_by_") {
             $field = substr($method, 8);
-            ActiveRecord::sql_item_sanizite($field);
+            self::sql_item_sanitize($field);
             if (isset($args[0])) {
-                $arg = array("conditions: $field = {$this->db->add_quotes($args[0]) }");
+                $arg = array("conditions: $field = {$this->db->add_quotes($args[0])}");
                 unset($args[0]);
             } else {
                 $arg = array();
@@ -459,9 +475,9 @@ class KumbiaActiveRecord
         }
         if (substr($method, 0, 9) == "count_by_") {
             $field = substr($method, 9);
-            ActiveRecord::sql_item_sanizite($field);
+            self::sql_item_sanitize($field);
             if (isset($args[0])) {
-                $arg = array("conditions: $field = {$this->db->add_quotes($args[0]) }");
+                $arg = array("conditions: $field = {$this->db->add_quotes($args[0])}");
                 unset($args[0]);
             } else {
                 $arg = array();
@@ -470,9 +486,9 @@ class KumbiaActiveRecord
         }
         if (substr($method, 0, 12) == "find_all_by_") {
             $field = substr($method, 12);
-            ActiveRecord::sql_item_sanizite($field);
+            self::sql_item_sanitize($field);
             if (isset($args[0])) {
-                $arg = array("conditions: $field = {$this->db->add_quotes($args[0]) }");
+                $arg = array("conditions: $field = {$this->db->add_quotes($args[0])}");
                 unset($args[0]);
             } else {
                 $arg = array();
@@ -480,83 +496,27 @@ class KumbiaActiveRecord
             return call_user_func_array(array($this, "find"), array_merge($arg, $args));
         }
         $model = preg_replace('/^get/', '', $method);
-        $mmodel = Util::uncamelize($model);
-        if (array_key_exists($mmodel, $this->_belongs_to)) {
-            $has_relation = true;
-            $relation = $this->_belongs_to[$mmodel];
-            return self::get($relation->model)->find_first($this->{$relation->fk});
+        $mmodel = Util::smallcase($model);
+        if (($data = $this->_get_relation_data($mmodel)) !== FALSE) {
+            return $data;
         }
-        if (array_key_exists($mmodel, $this->_has_many)) {
-            $has_relation = true;
-            $relation = $this->_has_many[$mmodel];
-            if ($this->{$this->primary_key[0]}) {
-                return self::get($relation->model)->find("{$relation->fk}={$this->db->add_quotes($this->{$this->primary_key[0]}) }");
-            } else {
-                return array();
-            }
+        
+        if (method_exists($this, $method)) {
+            call_user_func_array(array($this, $method), $args);
+        } else {
+            throw new KumbiaException("No existe el método '$method' en ActiveRecord::" . get_class($this));
         }
-        if (array_key_exists($mmodel, $this->_has_one)) {
-            $has_relation = true;
-            $relation = $this->_has_one[$mmodel];
-            if ($this->{$this->primary_key[0]}) {
-                return self::get($relation->model)->find_first("{$relation->fk}={$this->db->add_quotes($this->{$this->primary_key[0]}) }");
-            } else {
-                return null;
-            }
-        }
-        if (array_key_exists($mmodel, $this->_has_and_belongs_to_many)) {
-            $has_relation = true;
-            $relation = $this->_has_and_belongs_to_many[$mmodel];
-            if ($this->{$this->primary_key[0]}) {
-                $source = $this->source;
-                $relation_model = self::get($relation->model);
-                $relation_model->dump_model();
-                $relation_source = $relation_model->source;
-                /**
-                 * Cargo atraves de que tabla se efectuara la relacion
-                 *
-                 */
-                if (!isset($relation->through)) {
-                    if ($source > $relation_source) {
-                        $relation->through = "{$this->source}_{$relation_source}";
-                    } else {
-                        $relation->through = "{$relation_source}_{$this->source}";
-                    }
-                }
-                return self::get($relation->model)->find_all_by_sql("SELECT $relation_source.* FROM $relation_source, {$relation->through}, $source
-					WHERE {$relation->through}.{$relation->key} = {$this->db->add_quotes($this->{$this->primary_key[0]}) }
-					AND {$relation->through}.{$relation->fk} = $relation_source.{$relation_model->primary_key[0]}
-					AND {$relation->through}.{$relation->key} = $source.{$this->primary_key[0]}
-					ORDER BY $relation_source.{$relation_model->primary_key[0]}");
-            } else {
-                return array();
-            }
-        }
-        try {
-            if (method_exists($this, $method)) {
-                call_user_func_array(array($this, $method), $args);
-            } else {
-                if ($has_relation) {
-                    throw new KumbiaException("No existe el modelo '$model' para relacionar con ActiveRecord::{$this->source}");
-                } else {
-                    throw new KumbiaException("No existe el método '$method' en ActiveRecord::" . get_class($this));
-                }
-            }
-        } catch (Exception $e) {
-            $this->exceptions($e);
-        }
+        
         return $this->$method($args);
     }
 
     /**
      * Se conecta a la base de datos y descarga los meta-datos si es necesario
-     *
-     * @param boolean $new_connection
      */
-    protected function _connect($new_connection = false)
+    protected function _connect()
     {
-        if (!is_object($this->db) || $new_connection) {
-            $this->db = Db::factory($this->database, $new_connection);
+        if (!is_object($this->db)) {
+            $this->db = Db::factory($this->database);
         }
         $this->db->debug = $this->debug;
         $this->db->logger = $this->logger;
@@ -583,7 +543,7 @@ class KumbiaActiveRecord
         if ($this->_dumped) {
             return false;
         }
-        $a = array();
+        //$a = array();
         if ($this->source) {
             $this->source = str_replace(";", '', strtolower($this->source));
         } else {
@@ -600,7 +560,6 @@ class KumbiaActiveRecord
             if (!count($this->primary_key)) {
                 if (!$this->is_view) {
                     throw new KumbiaException("No se ha definido una llave primaria para la tabla '$table' esto imposibilita crear el ActiveRecord para esta entidad");
-                    return false;
                 }
             }
         } else {
@@ -682,7 +641,6 @@ class KumbiaActiveRecord
         } else {
             throw new KumbiaException("No se pudo obtener el Alias, porque el key: \"$key\" no existe.");
         }
-        return $this->alias;
     }
 
     /**
@@ -727,7 +685,7 @@ class KumbiaActiveRecord
      */
     public function begin()
     {
-        $this->_connect(true);
+        $this->_connect();//(true);
         return $this->db->begin();
     }
 
@@ -777,11 +735,9 @@ class KumbiaActiveRecord
     /**
      * Return Fist Record
      *
-     * @param mixed $what
-     * @param boolean $debug
-     *
      * Recibe los mismos parametros que find
-     *
+     * 
+     * @param mixed $what
      * @return ActiveRecord Cursor
      */
     public function find_first($what = '')
@@ -789,10 +745,10 @@ class KumbiaActiveRecord
         $what = Util::getParams(func_get_args());
         $select = "SELECT ";
         if (isset($what['columns'])) {
-            $select.= ActiveRecord::sql_sanizite($what['columns']);
+            $select.= self::sql_sanitize($what['columns']);
         } elseif (isset($what['distinct'])) {
             $select.= 'DISTINCT ';
-            $select.= $what['distinct'] ? ActiveRecord::sql_sanizite($what['distinct']) : join(",", $this->fields);
+            $select.= $what['distinct'] ? self::sql_sanitize($what['distinct']) : join(",", $this->fields);
         } else {
             $select.= join(",", $this->fields);
         }
@@ -804,15 +760,13 @@ class KumbiaActiveRecord
         $what['limit'] = 1;
         $select.= $this->convert_params_to_sql($what);
         $resp = false;
-        try {
-            $result = $this->db->fetch_one($select);
-            if ($result) {
-                $this->dump_result_self($result);
-                $resp = $this->dump_result($result);
-            }
-        } catch (Exception $e) {
-            $this->exceptions($e);
+        
+        $result = $this->db->fetch_one($select);
+        if ($result) {
+            $this->dump_result_self($result);
+            $resp = $this->dump_result($result);
         }
+        
         return $resp;
     }
 
@@ -835,10 +789,10 @@ class KumbiaActiveRecord
         $what = Util::getParams(func_get_args());
         $select = "SELECT ";
         if (isset($what['columns'])) {
-            $select.= $what['columns'] ? ActiveRecord::sql_sanizite($what['columns']) : join(",", $this->fields);
+            $select.= $what['columns'] ? self::sql_sanitize($what['columns']) : join(",", $this->fields);
         } elseif (isset($what['distinct'])) {
             $select.= 'DISTINCT ';
-            $select.= $what['distinct'] ? ActiveRecord::sql_sanizite($what['distinct']) : join(",", $this->fields);
+            $select.= $what['distinct'] ? self::sql_sanitize($what['distinct']) : join(",", $this->fields);
         } else {
             $select.= join(",", $this->fields);
         }
@@ -876,7 +830,7 @@ class KumbiaActiveRecord
      * 	$select = "SELECT * FROM Clientes";
      * 	$select.= $this->convert_params_to_sql($what);
      *
-     * @param string $what
+     * @param string|array $what
      * @return string
      */
 
@@ -888,10 +842,10 @@ class KumbiaActiveRecord
                 if (!isset($this->primary_key[0]) && (isset($this->id) || $this->is_view)) {
                     $this->primary_key[0] = "id";
                 }
-                ActiveRecord::sql_item_sanizite($this->primary_key[0]);
+                self::sql_item_sanitize($this->primary_key[0]);
                 if (isset($what[0])) {
                     if (is_numeric($what[0])) {
-                        $what['conditions'] = "{$this->primary_key[0]} = {$this->db->add_quotes($what[0]) }";
+                        $what['conditions'] = "{$this->primary_key[0]} = ".(int)$what[0] ;
                     } else {
                         if ($what[0] == '') {
                             $what['conditions'] = "{$this->primary_key[0]} = ''";
@@ -914,15 +868,15 @@ class KumbiaActiveRecord
                 $select.= " HAVING {$what['having']}";
             }
             if (isset($what['order'])) {
-                ActiveRecord::sql_sanizite($what['order']);
+                self::sql_sanitize($what['order']);
                 $select.= " ORDER BY {$what['order']}";
             }
             $limit_args = array($select);
             if (isset($what['limit'])) {
-                array_push($limit_args, "limit: $what[limit]");
+                array_push($limit_args, "limit: ".(int)$what['limit']);
             }
             if (isset($what['offset'])) {
-                array_push($limit_args, "offset: $what[offset]");
+                array_push($limit_args, "offset: ".(int)$what['offset']);
             }
             if (count($limit_args) > 1) {
                 $select = call_user_func_array(array($this, 'limit'), $limit_args);
@@ -930,7 +884,7 @@ class KumbiaActiveRecord
         } else {
             if (strlen($what)) {
                 if (is_numeric($what)) {
-                    $select.= "WHERE {$this->primary_key[0]} = '$what'";
+                    $select.= "WHERE {$this->primary_key[0]} = ".(int)$what[0] ;
                 } else {
                     $select.= "WHERE $what";
                 }
@@ -978,7 +932,7 @@ class KumbiaActiveRecord
                 $what['columns'] = $what['0'];
             }
         }
-        $what['columns'] = ActiveRecord::sql_sanizite($what['columns']);
+        $what['columns'] = self::sql_sanitize($what['columns']);
         $select = "SELECT DISTINCT {$what['columns']} FROM $table ";
         /**
          * Se elimina el de indice cero ya que por defecto convert_params_to_sql lo considera como una condicion en WHERE
@@ -1057,7 +1011,7 @@ class KumbiaActiveRecord
             $what['column'] = $what[0];
         }
         unset($what[0]);
-        ActiveRecord::sql_item_sanizite($what['column']);
+        self::sql_item_sanitize($what['column']);
         if ($this->schema) {
             $table = "{$this->schema}.{$this->source}";
         } else {
@@ -1080,7 +1034,7 @@ class KumbiaActiveRecord
             $what['column'] = $what[0];
         }
         unset($what[0]);
-        ActiveRecord::sql_item_sanizite($what['column']);
+        self::sql_item_sanitize($what['column']);
         if ($this->schema) {
             $table = "{$this->schema}.{$this->source}";
         } else {
@@ -1109,7 +1063,7 @@ class KumbiaActiveRecord
             $what['column'] = $what[0];
         }
         unset($what[0]);
-        ActiveRecord::sql_item_sanizite($what['column']);
+        self::sql_item_sanitize($what['column']);
         if ($this->schema) {
             $table = "{$this->schema}.{$this->source}";
         } else {
@@ -1138,7 +1092,7 @@ class KumbiaActiveRecord
             $what['column'] = $what[0];
         }
         unset($what[0]);
-        ActiveRecord::sql_item_sanizite($what['column']);
+        self::sql_item_sanitize($what['column']);
         if ($this->schema) {
             $table = "{$this->schema}.{$this->source}";
         } else {
@@ -1221,6 +1175,7 @@ class KumbiaActiveRecord
      *
      * @param string $form, equivalente a $_REQUEST[$form]
      * @return boolean success
+     * @deprecated No es seguro
      */
     public function create_from_request($form = null)
     {
@@ -1235,6 +1190,7 @@ class KumbiaActiveRecord
      *
      * @param string $form form name for request, equivalent to $_REQUEST[$form]
      * @return boolean success
+     * @deprecated No es seguro
      */
     public function save_from_request($form = null)
     {
@@ -1248,7 +1204,7 @@ class KumbiaActiveRecord
      * Updates a Row using values from $_REQUEST
      *
      * @param string $form form name for request, equivalent to $_REQUEST[$form]
-     * @return boolean success
+     * @return boolean|null success
      */
     public function update_from_request($form = null)
     {
@@ -1262,7 +1218,7 @@ class KumbiaActiveRecord
      * Creates a new Row in map table
      *
      * @param mixed $values
-     * @return success boolean
+     * @return boolean success
      */
     public function create()
     {
@@ -1678,7 +1634,7 @@ class KumbiaActiveRecord
             $fields = array();
             $values = array();
             foreach ($this->non_primary as $np) {
-                $np = ActiveRecord::sql_item_sanizite($np);
+                $np = self::sql_item_sanitize($np);
                 if (in_array($np, $this->_in)) {
                     if ($config['type'] == 'oracle') {
                         $this->$np = date("Y-m-d");
@@ -1719,10 +1675,10 @@ class KumbiaActiveRecord
                         unset($this->$field);
                     }
 
-                    if (isset($this->$field) && $this->$field != '') {
-                        $fields[] = ActiveRecord::sql_sanizite($field);
+                    if (isset($this->$field) && $this->$field !== '' && $this->$field !== NULL) {
+                        $fields[] = self::sql_sanitize($field);
 
-                        if (($this->_data_type[$field] == 'datetime' || $this->_data_type[$field] == 'date') && $config['type'] == 'mysql') {
+                        if (($this->_data_type[$field] == 'datetime' OR $this->_data_type[$field] == 'date') && ($config['type'] == 'mysql' OR $config['type'] == 'mysqli')) {
                             $values[] = $this->db->add_quotes(date("Y-m-d G:i:s", strtotime($this->$field)));
                         } elseif ($this->_data_type[$field] == 'date' && $config['type'] == 'oracle') {
                             //Se debe especificar el formato de fecha en Oracle
@@ -1730,8 +1686,11 @@ class KumbiaActiveRecord
                         } else {
                             $values[] = $this->db->add_quotes($this->$field);
                         }
-                    } elseif (!in_array($field, $this->_with_default)) {
-                        $fields[] = ActiveRecord::sql_sanizite($field);
+                    } elseif (in_array($field, $this->_with_default)) {
+                        $fields[] = self::sql_sanitize($field);
+                        $values[] = 'DEFAULT';
+                    } else {
+                        $fields[] = self::sql_sanitize($field);
                         $values[] = 'NULL';
                     }
                 } else {
@@ -1815,11 +1774,11 @@ class KumbiaActiveRecord
      *
      * @param string $field
      * @param string $value
-     * @return ActiveRecod Cursor
+     * @return ActiveRecord Cursor
      */
     function find_all_by($field, $value)
     {
-        ActiveRecord::sql_item_sanizite($field);
+        self::sql_item_sanitize($field);
         return $this->find("conditions: $field = {$this->db->add_quotes($value) }");
     }
 
@@ -1827,7 +1786,7 @@ class KumbiaActiveRecord
      * Updates Data in the Relational Table
      *
      * @param mixed $values
-     * @return boolean sucess
+     * @return boolean|null sucess
      */
     function update()
     {
@@ -1884,13 +1843,13 @@ class KumbiaActiveRecord
             }
         } else {
             if (is_numeric($what)) {
-                ActiveRecord::sql_sanizite($this->primary_key[0]);
+                self::sql_sanitize($this->primary_key[0]);
                 $conditions = "{$this->primary_key[0]} = '$what'";
             } else {
                 if ($what) {
                     $conditions = $what;
                 } else {
-                    ActiveRecord::sql_sanizite($this->primary_key[0]);
+                    self::sql_sanitize($this->primary_key[0]);
                     $conditions = "{$this->primary_key[0]} = '{$this->{$this->primary_key[0]}}'";
                 }
             }
@@ -1988,7 +1947,7 @@ class KumbiaActiveRecord
      */
     public function delete_all($conditions = '')
     {
-        $limit = '';
+        //$limit = '';
         if ($this->schema) {
             $table = $this->schema . "." . $this->source;
         } else {
@@ -2269,11 +2228,13 @@ class KumbiaActiveRecord
     {
         $params = Util::getParams(func_get_args());
         for ($i = 0; isset($params[$i]); $i++) {
-            $relation = Util::uncamelize($params[$i]);
-            if (!array_key_exists($relation, $this->_has_one)) {
-                $this->_has_one[$relation] = new stdClass();
-                $this->_has_one[$relation]->model = isset($params['model']) ? $params['model'] : $relation;
-                $this->_has_one[$relation]->fk = isset($params['fk']) ? $params['fk'] : Util::uncamelize(get_class($this)) . '_id';
+            $relation = Util::smallcase($params[$i]);
+            $index = explode('/', $relation); 
+            $index = end($index);
+            if (!array_key_exists($index, $this->_has_one)) {
+                $this->_has_one[$index] = new stdClass();
+                $this->_has_one[$index]->model = isset($params['model']) ? $params['model'] : $relation;
+                $this->_has_one[$index]->fk = isset($params['fk']) ? $params['fk'] : Util::smallcase(get_class($this)) . '_id';
             }
         }
     }
@@ -2290,11 +2251,13 @@ class KumbiaActiveRecord
     {
         $params = Util::getParams(func_get_args());
         for ($i = 0; isset($params[$i]); $i++) {
-            $relation = Util::uncamelize($params[$i]);
-            if (!array_key_exists($relation, $this->_belongs_to)) {
-                $this->_belongs_to[$relation] = new stdClass();
-                $this->_belongs_to[$relation]->model = isset($params['model']) ? $params['model'] : $relation;
-                $this->_belongs_to[$relation]->fk = isset($params['fk']) ? $params['fk'] : "{$relation}_id";
+            $relation = Util::smallcase($params[$i]);
+            $index = explode('/', $relation); 
+            $index = end($index);
+            if (!array_key_exists($index, $this->_belongs_to)) {
+                $this->_belongs_to[$index] = new stdClass();
+                $this->_belongs_to[$index]->model = isset($params['model']) ? $params['model'] : $relation;
+                $this->_belongs_to[$index]->fk = isset($params['fk']) ? $params['fk'] : "{$relation}_id";
             }
         }
     }
@@ -2311,11 +2274,13 @@ class KumbiaActiveRecord
     {
         $params = Util::getParams(func_get_args());
         for ($i = 0; isset($params[$i]); $i++) {
-            $relation = Util::uncamelize($params[$i]);
-            if (!array_key_exists($relation, $this->_has_many)) {
-                $this->_has_many[$relation] = new stdClass();
-                $this->_has_many[$relation]->model = isset($params['model']) ? $params['model'] : $relation;
-                $this->_has_many[$relation]->fk = isset($params['fk']) ? $params['fk'] : Util::uncamelize(get_class($this)) . '_id';
+            $relation = Util::smallcase($params[$i]);
+            $index = explode('/', $relation); 
+            $index = end($index);
+            if (!array_key_exists($index, $this->_has_many)) {
+                $this->_has_many[$index] = new stdClass();
+                $this->_has_many[$index]->model = isset($params['model']) ? $params['model'] : $relation;
+                $this->_has_many[$index]->fk = isset($params['fk']) ? $params['fk'] : Util::smallcase(get_class($this)) . '_id';
             }
         }
     }
@@ -2334,12 +2299,12 @@ class KumbiaActiveRecord
     {
         $params = Util::getParams(func_get_args());
         for ($i = 0; isset($params[$i]); $i++) {
-            $relation = Util::uncamelize($params[$i]);
+            $relation = Util::smallcase($params[$i]);
             if (!array_key_exists($relation, $this->_has_and_belongs_to_many)) {
                 $this->_has_and_belongs_to_many[$relation] = new stdClass();
                 $this->_has_and_belongs_to_many[$relation]->model = isset($params['model']) ? $params['model'] : $relation;
                 $this->_has_and_belongs_to_many[$relation]->fk = isset($params['fk']) ? $params['fk'] : "{$relation}_id";
-                $this->_has_and_belongs_to_many[$relation]->key = isset($params['key']) ? $params['key'] : Util::uncamelize(get_class($this)) . '_id';
+                $this->_has_and_belongs_to_many[$relation]->key = isset($params['key']) ? $params['key'] : Util::smallcase(get_class($this)) . '_id';
                 if (isset($params['through'])) {
                     $this->_has_and_belongs_to_many[$relation]->through = $params['through'];
                 }
@@ -2372,7 +2337,7 @@ class KumbiaActiveRecord
      *
      * @param string $sql_item
      */
-    public static function sql_item_sanizite($sql_item)
+    public static function sql_item_sanitize($sql_item)
     {
         $sql_item = trim($sql_item);
         if ($sql_item !== '' && $sql_item !== null) {
@@ -2390,7 +2355,7 @@ class KumbiaActiveRecord
      *
      * @param string $sql_item
      */
-    public static function sql_sanizite($sql_item)
+    public static function sql_sanitize($sql_item)
     {
         $sql_item = trim($sql_item);
         if ($sql_item !== '' && $sql_item !== null) {

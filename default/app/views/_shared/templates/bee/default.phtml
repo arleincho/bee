@@ -1,27 +1,344 @@
-<!DOCTYPE html>
-<html lang="es">
-    <head>
-        <meta charset='<?php echo APP_CHARSET ?>' />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title><?php echo Config::get('config.application.name') ?></title>
-        <?php
-        Tag::css('backend/bootstrap.min');
-        Tag::css('backend/bootstrap-responsive.min');
-        Tag::css('backend/estilos');
-        echo Html::includeCss();
-        echo Tag::js('jquery/jquery.min');
-        echo Tag::js('jquery/jquery.kumbiaphp');
-        echo Tag::js('bootstrap/bootstrap');
-        echo Tag::js('global');
-        ?>
-    </head>
-    <body>
-        <?php View::partial('backend/cabecera_app') ?>
-        <div class="container">
-            <div id="contenido" class="content">
-                <?php View::content() ?>
-            </div>
-            <?php View::partial('backend/pie') ?>
-        </div>
-    </body>
+<html>
+<head>
+	<title>Calendario</title>
+
+
+
+
+    <?php Tag::css('bee/style'); ?>
+    <?php Tag::css('bee/fullcalendar'); ?>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    
+    <?php Tag::css('bee/font-awesome.min'); ?>
+    <?php Tag::css('bee/DateTimePicker.min'); ?>
+
+</head>
+<body>
+	<header>
+		<div id="menu"></div>
+		<div id="logout">[ Log Out ]</div>
+	</header>
+	<article id="panels">
+		<div id="usuario">[ nombre de usuario ]</div>
+		<div id="logoCliente">
+			<img src="img/logocliente.png">
+		</div>
+		<div id="paneles">
+			<div class="tab" id="progress">
+				<input id="radio1" type="radio" name="acordeon" value="progress"/>
+				<label for="radio1">Progress Report<i class="fa fa-download"></i><i class="fa fa-filter"></i></label>
+				<div class="contenido">
+					<ul>
+						<li><span>July</span> <span>04/07/2015</span><span>Carolina Collazos</span></li>
+						<li><span>July</span> <span>04/07/2015</span><span>Carolina Collazos</span></li>
+						<li><span>July</span> <span>04/07/2015</span><span>Carolina Collazos</span></li>
+						<li><span>July</span> <span>04/07/2015</span><span>Carolina Collazos</span></li>
+					</ul>
+				</div>
+			</div>
+			<div class="tab" id="demographics">
+				<input id="radio2" type="radio" name="acordeon" value="demographics"/>
+				<label for="radio2">Demographics<i class="fa fa-download"></i><i class="fa fa-filter"></i></label>
+				<div class="contenido">
+					<ul>
+						<li><span>July</span> <span>04/07/2015</span><span>Carolina Collazos</span></li>
+						<li><span>July</span> <span>04/07/2015</span><span>Carolina Collazos</span></li>
+						<li><span>July</span> <span>04/07/2015</span><span>Carolina Collazos</span></li>
+						<li><span>July</span> <span>04/07/2015</span><span>Carolina Collazos</span></li>
+					</ul>
+				</div>
+			</div>
+			<div class="tab" id="ideas">
+				<input id="radio3" type="radio" name="acordeon" value="beehive"/>
+				<label for="radio3">Beehive of Ideas<i class="fa fa-download"></i><i class="fa fa-filter"></i></label>
+				<div class="contenido">
+					<ul>
+						<li><span>July</span> <span>04/07/2015</span><span>Carolina Collazos</span></li>
+						<li><span>July</span> <span>04/07/2015</span><span>Carolina Collazos</span></li>
+						<li><span>July</span> <span>04/07/2015</span><span>Carolina Collazos</span></li>
+						<li><span>July</span> <span>04/07/2015</span><span>Carolina Collazos</span></li>
+					</ul>
+				</div>
+			</div>
+			<div class="tab" id="account">
+				<input id="radio4" type="radio" name="acordeon" value="account"/>
+				<label for="radio4">Account Info</label>
+				<div class="contenido">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore e</div>
+			</div>
+			<div class="tab" id="winner">
+				<input id="radio5" type="radio" name="acordeon" value="contest"/>
+				<label  for="radio5">Contest Picker</label>
+				<div class="contenido winner" >
+					<textarea class="texto"></textarea>
+					<button id="WinnerButton">Pick Winner</button>
+				</div>
+			</div>
+		</div>
+	</article>
+	<article id="calendario">
+		<div id="contenedor">
+			<div id="iconos"><i class="fa fa-download"></i><i class="fa fa-filter"></i></div>
+			<div id="calendar"></div>
+			<div id="agregar">
+				<div id="capa"></div>
+				<div id="taskCont">
+					<h2>NEW TASK</h2>
+					<div id="redes">
+						<ul>
+							<li><i class="fa fa-facebook" id="facebook"></i></li>
+							<li><i class="fa fa-twitter" id="twitter"></i></li>
+							<li><i class="fa fa-instagram" id="instagram"></i></li>
+							<li><i class="fa fa-linkedin" id="linkedin"></i></li>
+							<li><i class="fa fa-pinterest" id="pinterest"></i></li>
+							<li><i class="fa fa-youtube" id="youtube"></i></li>
+							<li><i class="fa fa-google-plus" id="plus"></i></li>
+						</ul>
+					</div>
+					<div id="taskText"><textarea type="text" value="add task"></textarea></div>
+					<div id="taskDescription"><textarea type="text" value="add task"></textarea></div>
+					<div id="taskAuthor"><textarea type="text" value="add task"></textarea></div>
+					<!--date-->
+					<input type="datetime" data-field="datetime" readonly>
+					<div id="dtBox"></div>
+					<!--date-->
+					<div id="buttons">
+						<div class="taskButton" id="upload" style="float:left;"><i class="fa fa-upload"></i>   upload file</div>
+						<div class="taskButton" id="discard" style="float:right;">discard</div>
+						<div class="taskButton" id="save" style="float:right;">save</div>
+					</div>
+				</div>
+				
+				
+			</div>
+		</div>
+	</article>
+
+    <?php echo Tag::js('bee/jquery.min'); ?>
+    <?php echo Tag::js('bee/moment.min'); ?>
+    <?php echo Tag::js('bee/fullcalendar'); ?>
+    <?php echo Tag::js('bee/DateTimePicker.min'); ?>
+    
+</body>
+<script type="text/javascript">
+$(document).ready(function() {
+	$("#agregar").hide();
+	
+   crearCalendario();
+});
+
+var facebook = false;
+var twitter = false;
+var instagram = false;
+var linkedin = false;
+var pinterest = false;
+var youtube = false;
+var plus = false;
+
+function crearCalendario(){
+	 $('#calendar').fullCalendar({
+		editable: true,
+		eventStartEditable:true,
+		dragable:true,
+		fixedWeekCount :false,
+
+		
+	    eventClick: function(calEvent, jsEvent, view) {
+	        alert('Event: ' + calEvent.title+', author:'+calEvent.author);
+	    },
+	    dayMouseover: function( event, jsEvent, view ) {
+	    	console.log('roll over' +date);
+	    },
+	    dayMouseout: function( event, jsEvent, view ) {
+	    	console.log('roll out' +date);
+	    }
+    });
+	var Events=[];
+
+    var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    
+    var alto = $(window).width() / 2.4;
+
+    $('#calendar').fullCalendar('option', 'height', alto);
+
+    var date = new Date();
+    var month = date.getMonth();
+    var year = date.getFullYear();
+
+
+    $( ".fc-left" ).empty();
+   	$( ".fc-left" ).append('<h2 style="display: block; float: right">' + months[month] + '</h2><span style="display: block; float: right; clear: both; margin-top: -14px; position: relative;">'+year+'</span>');
+
+   	var fechaSelect;
+   	var newEvent;
+
+	$(".fc-day").click(function(){
+		fechaSelect = $(this).context.dataset.date;
+
+		$("#taskText textarea").val("add task");
+		$("#taskDescription textarea").val("add description");
+		$("#taskAuthor textarea").val("author name");
+		$("#agregar").show();
+
+		$("#taskText textarea").click(function(){$("#taskText textarea").val("");})
+		$("#taskDescription textarea").click(function(){$("#taskDescription textarea").val("");})
+		$("#taskAuthor textarea").click(function(){$("#taskAuthor textarea").val("");})
+
+		
+	});
+	$("#dtBox").DateTimePicker({// "date", "time", or "datetime"
+				mode: "time",
+				defaultDate: new Date(),
+
+				dateSeparator: "-",
+				timeSeparator: ":",
+				timeMeridiemSeparator: " ",
+				dateTimeSeparator: " "
+
+				/*dateTimeFormat: "dd-MM-yyyy HH:mm:ss",
+				dateFormat: "dd-MM-yyyy",
+				timeFormat: "HH:mm",
+
+				maxDate: null,
+				minDate:  null,
+
+				maxTime: null,
+				minTime: null,
+
+				maxDateTime: null,
+				minDateTime: null,
+
+				shortDayNames: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+				fullDayNames: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+				shortMonthNames: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+				fullMonthNames: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+				formatHumanDate: function(sDate) 
+				{
+				  return sDate.dayShort + ", " + sDate.month + " " + sDate.dd + ", " + sDate.yyyy;
+				},
+
+				minuteInterval: 1,
+				roundOffMinutes: true,
+
+				titleContentDate: "Set Date",
+				titleContentTime: "Set Time",
+				titleContentDateTime: "Set Date & Time",
+
+				buttonsToDisplay: ["HeaderCloseButton", "SetButton", "ClearButton"],
+				setButtonContent: "Set",
+				clearButtonContent: "Clear",
+				setValueInTextboxOnEveryClick: false,
+
+				animationDuration: 400,
+
+				isPopup: true,
+
+				parentElement: null,
+
+				addEventHandlers: null,  // addEventHandlers(oDateTimePicker)
+				beforeShow: null,  // beforeShow(oInputElement)
+				afterShow: null,  // afterShow(oInputElement)
+				beforeHide: null,  // beforeHide(oInputElement)
+				afterHide: null,  // afterHide(oInputElement)
+				buttonClicked: null  // buttonClicked(sButtonType, oInputElement) where sButtonType = "SET"|"CLEAR"|"CANCEL"*/
+			}
+		);
+	$("#discard").click(function(){
+		$("#agregar").hide();
+	});
+	//click redes
+	$(".fa").click(function(){
+		switch(this.id){
+			case "facebook":
+			if(facebook == true){
+				facebook = false;
+				$('#redes ul li #facebook').css('color', '#333');
+			}else{
+				$('#redes ul li #facebook').css('color', '#72cfbd');
+				facebook = true;				
+			}
+			break;
+			case "twitter":
+			if(twitter){
+				twitter = false;
+				$('#redes ul li #twitter').css('color', '#333');
+			}else{
+				twitter = true;				
+				$('#redes ul li #twitter').css('color', '#72cfbd');
+			}
+			break;
+			case "instagram":
+			if(instagram){
+				instagram = false;
+				$('#redes ul li #instagram').css('color', '#333');
+			}else{
+				instagram = true;	
+				$('#redes ul li #instagram').css('color', '#72cfbd');
+			}
+			break;
+			case "linkedin":
+			if(linkedin){
+				linkedin = false;
+				$('#redes ul li #linkedin').css('color', '#333');
+			}else{
+				linkedin = true;	
+				$('#redes ul li #linkedin').css('color', '#72cfbd');
+			}
+			break;
+			case "pinterest":
+			if(pinterest){
+				pinterest = false;
+				$('#redes ul li #pinterest').css('color', '#333');
+			}else{
+				pinterest = true;
+				$('#redes ul li #pinterest').css('color', '#72cfbd');
+			}
+			break;
+			case "youtube":
+			if(youtube){
+				youtube = false;
+				$('#redes ul li #youtube').css('color', '#333');
+			}else{
+				youtube = true;		
+				$('#redes ul li #youtube').css('color', '#72cfbd');
+			}
+			break;
+			case "plus":
+			if(plus){
+				plus = false;
+				$('#redes ul li #plus').css('color', '#333');
+			}else{
+				plus = true;		
+				$('#redes ul li #plus').css('color', '#72cfbd');	
+			}
+			break;
+		}
+	});
+	$("#save").click(function(){
+		newEvent = {
+				title: $("#taskText textarea").val(),
+				start: fechaSelect,
+				constraint: $("#taskDescription textarea").val(), // defined below
+				color: '#257e4a',
+				author: $("#taskAuthor textarea").val(),
+				file: "urlFile",
+				networks:{
+					facebook:facebook,
+					twitter:twitter,
+					instagram:instagram,
+					linkedin:linkedin,
+					pinterest:pinterest,
+					youtube:youtube,
+					plus:plus
+				}
+			};
+		Events.push(newEvent);
+		$("#agregar").hide();
+		$('#calendar').fullCalendar( 'removeEventSource', Events);
+		$('#calendar').fullCalendar( 'addEventSource', Events);
+		
+		console.log("Events = ", Events);
+	});
+}
+
+</script>
 </html>

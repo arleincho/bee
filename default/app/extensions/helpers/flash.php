@@ -1,99 +1,151 @@
 <?php
-
 /**
- * KumbiaPHP web & app Framework
  *
- * LICENSE
+ * Extension para el manejo de mensajes sin hacer uso del "echo" en los controladores o modelos
  *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://wiki.kumbiaphp.com/Licencia
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@kumbiaphp.com so we can send you a copy immediately.
- *
- * Flash Es la clase standard para enviar advertencias,
- * informacion y errores a la pantalla
+ * @category    Flash
+ * @package     Helpers
+ *  
+ * Se utiliza en el método content de la clase view.php 
  * 
- * @category   Kumbia
- * @package    Flash 
- * @copyright  Copyright (c) 2005-2009 Kumbia Team (http://www.kumbiaphp.com)
- * @license    http://wiki.kumbiaphp.com/Licencia     New BSD License
+ * Flash::output();
+ * 
  */
+
 class Flash {
+    
+    /**
+     * Mensajes almacenados en un request
+     */
+    private static $_contentMsj = array();
+        
+    /**
+     * Setea un mensaje
+     *
+     * @param string $name Tipo de mensaje y para CSS class='$name'.
+     * @param string $msg Mensaje a mostrar
+     * @param boolean $audit Indica si el mensaje se almacena como auditoría
+     */
+    public static function set($name, $msg, $audit=FALSE) {        
+        //Verifico si hay mensajes almacenados en sesión por otro request.
+        if(self::hasMessage()) {            
+            self::$_contentMsj = Session::get('flash_message');                
+        }        
+        //Guardo el mensaje en el array
+        if (isset($_SERVER['SERVER_SOFTWARE'])) {                    
+            $tmp_id              = round(1, 5000);
+            self::$_contentMsj[] = '<div id="alert-id-'.$tmp_id.'" class="alert alert-block alert-'.$name.'"><button type="button" class="close" data-dismiss="alert">×</button>'.$msg.'</div>'.PHP_EOL.'<script type="text/javascript">$("#alert-id-'.$tmp_id.'").hide().fadeIn(500).delay(4000).fadeOut(500);</script>';            
+        } else {
+            self::$_contentMsj[] = $name.': '.Filter::get($msg, 'striptags').PHP_EOL;            
+        }        
+        //Almaceno los mensajes guardados en una variable de sesión, para mostrar los mensajes provenientes de otro request.
+        Session::set('flash_message', self::$_contentMsj);
+        //Verifico si el mensaje se almacena como looger
+        if($audit) {
+            if($name=='success') {
+                DwAudit::debug($msg);
+            } else if($name=='danger') {
+                DwAudit::error($msg);
+            } else {
+                DwAudit::$name($msg);                
+            }
+        }            
+    }
+    
+    /**
+     * Verifica si tiene mensajes para mostrar.
+     *
+     * @return bool
+     */
+    public static function hasMessage() {
+        return Session::has('flash_message') ?  TRUE : FALSE;
+    }
+    
+    /**
+     * Método para limpiar los mensajes almacenados
+     */
+    public static function clean() {
+        //Reinicio la variable de los mensajes
+        self::$_contentMsj = array();
+        //Elimino los almacenados en sesión
+        Session::delete('flash_message');
+    }
 
     /**
-     * Visualiza un mensaje flash
-     *
-     * @param string $name	Para tipo de mensaje y para CSS class='$name'.
-     * @param string $text 	Mensaje a mostrar
+     * Muestra los mensajes
      */
-    public static function show($name, $text) {
-        if (isset($_SERVER['SERVER_SOFTWARE'])) {
-            echo '<div class="', $name, ' alert flash" data-alert="alert" data-dismiss1="alert">
-                <a class="close" data-dismiss="alert"  href="#">×</a>', $text, '</div>', PHP_EOL;
-        } else {
-            echo $name, ': ', strip_tags($text), PHP_EOL;
+    public static function output() {
+        if(Flash::hasMessage()) {
+            //Asigno los mensajes almacenados en sesión en una variable temporal
+            $tmp = Session::get('flash_message');
+            //Recorro los mensajes
+            foreach($tmp as $msg) {
+                // Imprimo los mensajes
+                echo $msg;
+            }
+            self::clean();
         }
     }
-
+    
     /**
-     * Visualiza un mensaje de error
-     *
-     * @param string $text
+     * Retorna los mensajes cargados como string
      */
-    public static function error($text) {
-        return self::show('alert-error error', $text);
+    public static function toString() {        
+        //Asigno los mensajes almacenados en sesión en una variable temporal
+        $tmp = self::hasMessage() ? Session::get('flash_message') : array();
+        $msg = array();
+        //Recorro los mensajes
+        foreach($tmp as $item) {            
+            //Limpio los mensajes
+            $item  = explode('<script', $item);
+            if(!empty($item[0])) {
+                $msg[] = str_replace('×', '', Filter::get($item[0], 'striptags'));                
+            }
+        }
+        $flash = Filter::get(ob_get_clean(), 'striptags', 'trim'); //Almaceno los mensajes que hay en el buffer por los echo
+        $msg = Filter::get(join('<br />', $msg), 'trim');
+        self::clean(); //Limpio los mensajes de la sesión               
+        return ($flash) ? $flash.'<br />'.$msg : $msg;        
     }
 
     /**
-     * Visualiza un mensaje de advertencia en pantalla
+     * Carga un mensaje de error
      *
-     * @param string $text
+     * @param string $msg
+     * @param boolean $autid Indica si se registra el mensaje como una auditoría
      */
-    public static function warning($text) {
-        return self::show('alert-warning warning', $text);
+    public static function error($msg, $audit=FALSE) {
+        self::set('danger',$msg, $audit);          
     }
 
     /**
-     * Visualiza informacion en pantalla
+     * Carga un mensaje de advertencia en pantalla
      *
-     * @param string $text
+     * @param string $msg
+     * @param boolean $autid Indica si se registra el mensaje como una auditoría
      */
-    public static function info($text) {
-        return self::show('alert-info info', $text);
+    public static function warning($msg, $audit=FALSE) {
+        self::set('warning',$msg, $audit);
     }
 
     /**
-     * Visualiza informacion de suceso correcto en pantalla
+     * Carga informacion en pantalla
      *
-     * @param string $text
+     * @param string $msg
+     * @param boolean $autid Indica si se registra el mensaje como una auditoría
      */
-    public static function valid($text) {
-        return self::show('alert-valid alert-success valid', $text);
+    public static function info($msg, $audit=FALSE) {
+        self::set('info',$msg, $audit);
     }
-
+    
     /**
-     * Visualiza informacion en pantalla
+     * Carga información de suceso correcto en pantalla
      *
-     * @param string $text
-     *
-     * @deprecated  ahora Flah::info()
+     * @param string $msg
+     * @param boolean $autid Indica si se registra el mensaje como una auditoría
      */
-    public static function notice($text) {
-        return self::show('alert-info info', $text);
-    }
-
-    /**
-     * Visualiza informacion de Suceso en pantalla
-     *
-     * @param string $text
-     *
-     * @deprecated  ahora Flash::valid()
-     */
-    public static function success($text) {
-        return self::show('alert-valid alert-success valid', $text);
-    }
-
+    public static function valid($msg, $audit=FALSE) {
+        self::set('success',$msg, $audit);
+    }    
+    
 }

@@ -14,7 +14,7 @@
  *
  * @category   Kumbia
  * @package    Flash 
- * @copyright  Copyright (c) 2005-2012 Kumbia Team (http://www.kumbiaphp.com)
+ * @copyright  Copyright (c) 2005-2014 Kumbia Team (http://www.kumbiaphp.com)
  * @license    http://wiki.kumbiaphp.com/Licencia     New BSD License
  */
 
@@ -92,12 +92,11 @@ abstract class Logger
     {
         self::$log_path = APP_PATH . 'temp/logs/';
         if ($name === '' || $name === true) {
-            $name = 'log' . date('dmY') . '.txt';
+            $name = 'log' . date('Y-m-d') . '.txt';
         }
         self::$fileLogger = fopen(self::$log_path . $name, 'a');
         if (!self::$fileLogger) {
             throw new KumbiaException("No se puede abrir el log llamado: " . $name);
-            return false;
         }
     }
 

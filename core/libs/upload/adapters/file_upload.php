@@ -14,7 +14,7 @@
  *
  * @category   Kumbia
  * @package    Upload
- * @copyright  Copyright (c) 2005-2012 Kumbia Team (http://www.kumbiaphp.com)
+ * @copyright  Copyright (c) 2005-2014 Kumbia Team (http://www.kumbiaphp.com)
  * @license    http://wiki.kumbiaphp.com/Licencia     New BSD License
  */
 
@@ -44,7 +44,7 @@ class FileUpload extends Upload
         parent::__construct($name);
 
         // Ruta donde se guardara el archivo
-        $this->_path = dirname(APP_PATH) . '/public/files/upload';
+        $this->_path = dirname($_SERVER['SCRIPT_FILENAME']) . '/files/upload';
     }
 
     /**

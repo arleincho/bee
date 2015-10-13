@@ -15,7 +15,7 @@
  * @category   Kumbia
  * @package    Db
  * @subpackage Adapters 
- * @copyright  Copyright (c) 2005-2012 Kumbia Team (http://www.kumbiaphp.com)
+ * @copyright  Copyright (c) 2005-2014 Kumbia Team (http://www.kumbiaphp.com)
  * @license    http://wiki.kumbiaphp.com/Licencia     New BSD License
  */
 /**
@@ -102,22 +102,24 @@ class DbPdoMsSQL extends DbPDO
     /**
      * Devuelve un LIMIT valido para un SELECT del RBDM
      *
-     * @param integer $number
+     * @param string $sql
      * @return string
      */
-    public function limit($sql, $number)
+    public function limit($sql)
     {
-        if (!is_numeric($number)) {
-            return $sql;
-        }
-        $orderby = stristr($sql, 'ORDER BY');
-        if ($orderby !== false) {
+        $params = Util::getParams(func_get_args());
+
+        if(!isset($params['offset']) && isset($params['limit'])){
+			return str_ireplace("SELECT ", "SELECT TOP $params[limit] ", $sql);
+		}
+		$orderby = stristr($sql, 'ORDER BY');
+		if ($orderby !== false) {
             $sort = (stripos($orderby, 'desc') !== false) ? 'desc' : 'asc';
             $order = str_ireplace('ORDER BY', '', $orderby);
             $order = trim(preg_replace('/ASC|DESC/i', '', $order));
         }
-        $sql = preg_replace('/^SELECT\s/i', 'SELECT TOP ' . ($number) . ' ', $sql);
-        $sql = 'SELECT * FROM (SELECT TOP ' . $number . ' * FROM (' . $sql . ') AS itable';
+        $sql = preg_replace('/^SELECT\s/i', 'SELECT TOP ' . $params[offset] . ' ', $sql);
+        $sql = 'SELECT * FROM (SELECT TOP ' . $params[limit] . ' * FROM (' . $sql . ') AS itable';
         if ($orderby !== false) {
             $sql.= ' ORDER BY ' . $order . ' ';
             $sql.= ( stripos($sort, 'asc') !== false) ? 'DESC' : 'ASC';
@@ -172,8 +174,8 @@ class DbPdoMsSQL extends DbPDO
         $index = array();
         $unique_index = array();
         $primary = array();
-        $not_null = "";
-        $size = "";
+        //$not_null = "";
+        //$size = "";
         foreach ($definition as $field => $field_def) {
             if (isset($field_def['not_null'])) {
                 $not_null = $field_def['not_null'] ? 'NOT NULL' : '';

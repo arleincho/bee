@@ -12,7 +12,7 @@
  * obtain it through the world-wide-web, please send an email
  * to license@kumbiaphp.com so we can send you a copy immediately.
  *
- * @copyright  Copyright (c) 2005-2012 KumbiaPHP Team (http://www.kumbiaphp.com)
+ * @copyright  Copyright (c) 2005-2014 KumbiaPHP Team (http://www.kumbiaphp.com)
  * @license    http://wiki.kumbiaphp.com/Licencia     New BSD License
  */
 
@@ -83,9 +83,12 @@ class ModelForm
                     break;
 
                 case 'enum': case 'set': case 'bool':
-                    // Intentar usar select y lo mismo para los field_id
-                    echo "<input id=\"$formId\" class=\"select\" name=\"$formName\" type=\"text\" value=\"{$model->$field}\">" . PHP_EOL;
-                    break;
+					$enumList = explode(",", str_replace("'", "", substr($model->_data_type[$field], 5, (strlen($model->_data_type[$field])-6))));
+					echo "<select id=\"$formId\" class=\"select\" name=\"$formName\" >". PHP_EOL;
+					foreach($enumList as $value)
+						echo "<option value=\"{$value}\">$value</option>". PHP_EOL;
+					echo "</select>". PHP_EOL;
+					break;
 
                 case 'text': case 'mediumtext': case 'longtext':
                 case 'blob': case 'mediumblob': case 'longblob': // Usar textarea

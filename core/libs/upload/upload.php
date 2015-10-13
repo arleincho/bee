@@ -14,7 +14,7 @@
  *
  * @category   Kumbia
  * @package    Upload
- * @copyright  Copyright (c) 2005-2012 Kumbia Team (http://www.kumbiaphp.com)
+ * @copyright  Copyright (c) 2005-2014 Kumbia Team (http://www.kumbiaphp.com)
  * @license    http://wiki.kumbiaphp.com/Licencia     New BSD License
  */
 
@@ -169,7 +169,7 @@ abstract class Upload
      * Guarda el archivo subido
      *
      * @param string $name nombre con el que se guardara el archivo
-     * @return boolean
+     * @return boolean|string Nombre de archivo generado con la extensión o FALSE si falla
      */
     public function save($name = NULL)
     {
@@ -184,8 +184,9 @@ abstract class Upload
         // Guarda el archivo
         if ($this->_beforeSave($name) !== FALSE && $this->_overwrite($name) && $this->_validates() && $this->_saveFile($name)) {
             $this->_afterSave($name);
-            return TRUE;
+            return $name;
         }
+        return FALSE;
     }
 
     /**
@@ -288,13 +289,10 @@ abstract class Upload
      */
     protected function _getExtension()
     {
-        if ($ext = explode('.', $_FILES[$this->_name]['name'])) {
-            $ext = '.' . end($ext);
-        } else {
-            $ext = NULL;
+        if($ext = pathinfo($_FILES[$this->_name]['name'], PATHINFO_EXTENSION)){
+            return '.'. $ext;
         }
-
-        return $ext;
+        return NULL;
     }
 
     /**

@@ -15,7 +15,7 @@
  * @category   Kumbia
  * @package    Db
  * @subpackage Adapters 
- * @copyright  Copyright (c) 2005-2012 Kumbia Team (http://www.kumbiaphp.com)
+ * @copyright  Copyright (c) 2005-2014 Kumbia Team (http://www.kumbiaphp.com)
  * @license    http://wiki.kumbiaphp.com/Licencia     New BSD License
  */
 
@@ -46,7 +46,7 @@ class DbMySQLi extends DbBase implements DbBaseInterface
      *
      * @var string
      */
-    private $last_query;
+    protected $last_query;
     /**
      * Último error generado por MySQL
      *
@@ -113,31 +113,24 @@ class DbMySQLi extends DbBase implements DbBaseInterface
      * Hace una conexión a la base de datos de MySQL
      *
      * @param array $config
-     * @return resource_connection
+     * @return bool
      */
     public function connect($config)
     {
-
-        if (!extension_loaded('mysqli')) {
-            throw new KumbiaException('Debe cargar la extensión de PHP llamada php_mysqli');
-        }
+        if (!extension_loaded('mysqli')) throw new KumbiaException('Debe cargar la extensión de PHP llamada php_mysqli');
 
         $this->id_connection = new mysqli($config['host'], $config['username'], $config['password'], $config['name'], $config['port']);
-        if (mysqli_connect_error ()) { //no se usa $object->error() ya que solo funciona a partir de 5.2.9 y 5.3
-            throw new KumbiaException(mysqli_connect_error());
-        } else {
-            //Selecciona charset
-            if (isset($config['charset'])) {
-                $this->id_connection->set_charset($config['charset']);
-            }
-            return TRUE;
-        }
+        //no se usa $object->error() ya que solo funciona a partir de 5.2.9 y 5.3
+        if (mysqli_connect_error ()) throw new KumbiaException(mysqli_connect_error());
+        //Selecciona charset
+        if (isset($config['charset'])) $this->id_connection->set_charset($config['charset']);
+        return TRUE;
     }
 
     /**
      * Efectua operaciones SQL sobre la base de datos
      *
-     * @param string $sqlQuery
+     * @param string $sql_query
      * @return resource or false
      */
     public function query($sql_query)
@@ -146,18 +139,12 @@ class DbMySQLi extends DbBase implements DbBaseInterface
         if ($this->logger) {
             Logger::debug($sql_query);
         }
-        if (!$this->id_connection) {
-            $this->connect();
-            if (!$this->id_connection) {
-                return false;
-            }
-        }
+        
         $this->last_query = $sql_query;
         if ($result_query = mysqli_query($this->id_connection, $sql_query)) {
             $this->last_result_query = $result_query;
             return $result_query;
         } else {
-            $this->last_result_query = false;
             throw new KumbiaException($this->error(" al ejecutar <em>\"$sql_query\"</em>"));
         }
     }
@@ -183,9 +170,6 @@ class DbMySQLi extends DbBase implements DbBaseInterface
      */
     public function fetch_array($result_query='', $opt=MYSQLI_BOTH)
     {
-        if (!$this->id_connection) {
-            return false;
-        }
         if (!$result_query) {
             $result_query = $this->last_result_query;
             if (!$result_query) {
@@ -210,9 +194,6 @@ class DbMySQLi extends DbBase implements DbBaseInterface
      */
     public function num_rows($result_query='')
     {
-        if (!$this->id_connection) {
-            return false;
-        }
         if (!$result_query) {
             $result_query = $this->last_result_query;
             if (!$result_query) {
@@ -224,7 +205,6 @@ class DbMySQLi extends DbBase implements DbBaseInterface
         } else {
             throw new KumbiaException($this->error());
         }
-        return false;
     }
 
     /**
@@ -236,9 +216,7 @@ class DbMySQLi extends DbBase implements DbBaseInterface
      */
     public function field_name($number, $result_query='')
     {
-        if (!$this->id_connection) {
-            return false;
-        }
+
         if (!$result_query) {
             $result_query = $this->last_result_query;
             if (!$result_query) {
@@ -251,7 +229,6 @@ class DbMySQLi extends DbBase implements DbBaseInterface
         } else {
             throw new KumbiaException($this->error());
         }
-        return false;
     }
 
     /**
@@ -274,7 +251,6 @@ class DbMySQLi extends DbBase implements DbBaseInterface
         } else {
             throw new KumbiaException($this->error());
         }
-        return false;
     }
 
     /**
@@ -290,7 +266,6 @@ class DbMySQLi extends DbBase implements DbBaseInterface
         } else {
             throw new KumbiaException($this->error());
         }
-        return false;
     }
 
     /**
@@ -325,9 +300,6 @@ class DbMySQLi extends DbBase implements DbBaseInterface
      */
     public function last_insert_id($table='', $primary_key='')
     {
-        if (!$this->id_connection) {
-            return false;
-        }
         return mysqli_insert_id($this->id_connection);
     }
 
@@ -375,7 +347,7 @@ class DbMySQLi extends DbBase implements DbBaseInterface
      * Borra una tabla de la base de datos
      *
      * @param string $table
-     * @return boolean
+     * @return resource
      */
     public function drop_table($table, $if_exists=true)
     {
@@ -397,7 +369,7 @@ class DbMySQLi extends DbBase implements DbBaseInterface
      *
      * @param string $table
      * @param array $definition
-     * @return boolean
+     * @return resource
      */
     public function create_table($table, $definition, $index=array())
     {
@@ -409,8 +381,8 @@ class DbMySQLi extends DbBase implements DbBaseInterface
         $index = array();
         $unique_index = array();
         $primary = array();
-        $not_null = "";
-        $size = "";
+        //$not_null = "";
+        //$size = "";
         foreach ($definition as $field => $field_def) {
             if (isset($field_def['not_null'])) {
                 $not_null = $field_def['not_null'] ? 'NOT NULL' : '';
