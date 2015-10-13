@@ -1,9 +1,9 @@
 @font-face {
 	font-family: 'Tungsten-Medium';
-    src: url('../fonts/bee/original_Tungsten-Medium_0.eot?#iefix') format('embedded-opentype'), 
-         url('../fonts/bee/original_Tungsten-Medium_0.woff') format('woff'),
-         url('../fonts/bee/original_Tungsten-Medium_0.ttf') format('truetype'),
-         url('../fonts/bee/original_Tungsten-Medium_0.svg') format('svg');
+    src: url('../../fonts/bee/original_Tungsten-Medium_0.eot?#iefix') format('embedded-opentype'), 
+         url('../../fonts/bee/original_Tungsten-Medium_0.woff') format('woff'),
+         url('../../fonts/bee/original_Tungsten-Medium_0.ttf') format('truetype'),
+         url('../../fonts/bee/original_Tungsten-Medium_0.svg') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
@@ -37,7 +37,7 @@ article{
 	position:relative;
 	width: 40px;
 	height: 40px;
-	background: url("../img/bee.png") no-repeat no-repeat center center #00c1b8;
+	background: url("../../img/bee.png") no-repeat no-repeat center center #00c1b8;
 }
 #panels{
     display: inline-block;
