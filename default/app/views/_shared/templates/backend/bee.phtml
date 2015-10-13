@@ -16,12 +16,12 @@
 <body>
 	<header>
 		<div id="menu"></div>
-		<div id="logout">[ Log Out ]</div>
+		<div id="logout"><?php echo DwHtml::link('sistema/login/salir', '[ Log Out ]'); ?></div>
 	</header>
 	<article id="panels">
 		<div id="usuario">[ <?php echo Session::get('nombre');?> ]</div>
 		<div id="logoCliente">
-			<?php echo DwHtml::img('bee/logocliente.png.', 'Calendario');?>
+			<?php echo DwHtml::img('bee/logocliente.png', 'Calendario');?>
 		</div>
 		<div id="paneles">
 			<div class="tab" id="progress">
