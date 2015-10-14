@@ -34,7 +34,7 @@ class Calendario extends ActiveRecord {
             $obj->dump_result_self($optData);
         }
         //Verifico que no exista otro menu, y si se encuentra inactivo lo active
-        $conditions = empty($obj->id) ? "usuario_id='$obj->usuario_id'":"id = $obj->id";
+        $conditions = "usuario_id = $obj->usuario_id";
         $old = new Calendario();
         if($old->find_first($conditions)) {
             if($method == 'create') {
@@ -42,7 +42,7 @@ class Calendario extends ActiveRecord {
                 $method = 'update';
             }
         }
-        
+
         return ($obj->$method()) ? $obj : FALSE;
     }
 
