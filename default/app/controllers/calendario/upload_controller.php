@@ -9,31 +9,26 @@
 
 Load::models('calendario/calendario');
 
-class IndexController extends BackendController {
-    
-    public $page_title = 'Upload Ficheros';
+class  UploadController extends BackendController {
+
+    public $page_title = 'Subir Ficheros';
     
     public $page_module = 'upload';
     
     public function index() {
-
-        
+        Redirect::toAction('listar');
     }
 
-    public function guardar() {
 
-    	View::select(null, null);
-
-    	if(Input::hasPost('eventos')) {
-    		$data = array('configuracion' => json_encode(Input::post('eventos')), 'usuario_id' => Session::get('id'));
-            if(Calendario::setCalendario('create', $data)){
-                if(APP_AJAX) {
-                    Flash::valid('El Calendario se ha creado correctamente! <br/>Por favor recarga la página para verificar los cambios.');
-                } else {
-                    Flash::valid('El Evento se ha creado correctamente!');
-                }
-            }
-        }
+    /**
+     * Método para listar
+     */
+    public function listar($order='order.id.asc', $page='page.1') { 
+        $page = (Filter::get($page, 'page') > 0) ? Filter::get($page, 'page') : 1;
+        $usuario = new Usuario();
+        $this->usuarios = $usuario->getListadoUsuariosCalendario('todos', $order, $page);
+        $this->order = $order;
+        $this->page_title = 'Listado de usuarios del sistema';
     }
 
 

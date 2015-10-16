@@ -16,6 +16,11 @@ class Perfil extends ActiveRecord {
      * Constante para definir el perfil de Super Usuario
      */
     const SUPER_USUARIO = 1;
+
+    /**
+     * Constante para definir el perfil de Calendario
+     */
+    const CALENDARIO = 2;
     
     /**
      * Constante para definir un perfil como activo
