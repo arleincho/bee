@@ -46,4 +46,14 @@ class Calendario extends ActiveRecord {
         return ($obj->$method()) ? $obj : FALSE;
     }
 
+    public static function getCalendario($id){
+        $cal = new Calendario();
+        $conditions = "usuario_id = {$id}";
+        $eventos = array();
+        if($cal->find_first($conditions)) {
+            $eventos = json_decode($cal->configuracion);
+        }
+        return $eventos;
+    }
+
 }

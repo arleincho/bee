@@ -11,11 +11,12 @@ Load::models('calendario/calendario');
 
 class IndexController extends BackendController {
     
-    public $page_title = 'Calendario';
+    public $page_title = 'Upload Ficheros';
     
-    public $page_module = 'Calendario';
+    public $page_module = 'upload';
     
     public function index() {
+
         
     }
 
