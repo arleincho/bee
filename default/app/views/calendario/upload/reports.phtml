@@ -1,0 +1,87 @@
+<?php View::flash(); ?>
+
+
+<div class="container shell-view">
+        
+    <?php View::process($page_module, $page_title, $set_title); ?>
+    
+    <ul class="nav nav-tabs hidden-xs">
+        <li class="active"><a href="#tab1" data-toggle="tab">Subir Reportes del Mes</a></li>
+        <li><a href="#tab2" data-toggle="tab">Reportes Subidos anteriormente</a></li>
+    </ul>
+    <ul class="nav nav-pills nav-stacked visible-xs">        
+        <li class="active"><a href="#tab1" data-toggle="tab">Subir Reportes del Mes</a></li>
+        <li><a href="#tab2" data-toggle="tab">Reportes Subidos anteriormente</a></li>
+    </ul>
+    <div class="tab-content">
+        
+        <div class="tab-pane active" id="tab1">
+
+
+            <?php echo DwForm::open(); ?>
+                <div class="row">
+                    <div class="col-md-6">
+                    </div>
+                    <div class="col-md-6">
+                    </div>
+                    <div class="col-md-6">
+                        
+                    </div>
+                </div>
+            
+            <?php echo DwForm::close(); ?>
+
+                <div class="row">
+                    <div class="form-actions">
+                        <div class="pull-left">
+                            <?php echo DwButton::back(); ?>                           
+                        </div>
+                        <?php echo DwForm::nextTab(); ?>
+                    </div>
+                </div>
+            
+
+        </div>
+
+        <div class="tab-pane" id="tab2">
+
+            <?php View::process('Información de usuarios', NULL, FALSE); ?>
+
+            <table class="table table-bordered table-hover table-striped table-condensed table-responsive">
+                <thead>
+                    <tr>
+                        <th>NUM</th>
+                        <th data-order="usuario">FECHA</th>
+                        <th data-order="nombre">PRIMERO</th>
+                        <th data-order="nombre">SEGUNDO</th>
+                        <th data-order="nombre">TERCERO</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach($usuarios->items as $usuario): ?>
+                        <tr>
+                            <td><?php echo $usuarios->counter; ?></td>
+                            <td><?php echo $usuario->login; ?></td>
+                            <td><?php echo $usuario->nombre; ?></td>
+                            <td><?php echo $usuario->apellido; ?></td>                                
+                            <td><?php echo $usuario->apellido; ?></td>                                
+                        </tr>
+                        <?php $usuarios->counter++; ?>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+
+            <?php View::partial('paginators/default', false, array('page'=>$usuarios, 'url'=>"sistema/perfiles/ver/$key/$order/")); ?>
+            
+            <div class="row">
+                <div class="form-actions">
+                    <div class="text-left">
+                        <?php echo DwForm::prevTab(); ?>                        
+                    </div>                                        
+                </div>
+            </div>
+
+        </div>
+    </div>
+   
+</div>

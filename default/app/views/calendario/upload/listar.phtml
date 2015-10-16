@@ -1,15 +1,5 @@
 <?php View::flash(); ?>
 
-<script type="text/javascript">
-    $(function() {
-        $('table').kgrid({
-            form_to         : $.KumbiaPHP.publicPath+'sistema/usuarios/buscar/',            
-            order_attr      : '<?php echo (APP_AJAX) ? 'class="js-link js-spinner"' : ''; ?>',
-            order_to        : $.KumbiaPHP.publicPath+'sistema/usuarios/listar/'
-        });
-    });
-</script>
-
 <div class="container shell-view">
 
     <?php View::process($page_module, $page_title, $set_title); ?>
@@ -30,24 +20,16 @@
             </thead>
             <tbody>
                 <?php foreach($usuarios->items as $usuario): ?>
-                    <?php $key_shw = Security::setKey($usuario->id, 'shw_usuario'); ?>
-                    <?php $key_ina = Security::setKey($usuario->id, 'bloquear_usuario'); ?>
-                    <?php $key_rea = Security::setKey($usuario->id, 'reactivar_usuario'); ?>
+                    <?php $key_shw = Security::setKey($usuario->id, 'upload_reports'); ?>
                     <tr>
                         <td><?php echo $usuarios->counter; ?></td>
                         <td><?php echo $usuario->login; ?></td>
                         <td><?php echo $usuario->nombre; ?></td>
                         <td><?php echo $usuario->apellido; ?></td>
                         <td><?php echo $usuario->email; ?></td>
-                        <td><?php print_r($usuario->estado_usuario)?></td>
                         <td><?php echo ($usuario->estado_usuario == EstadoUsuario::ACTIVO) ? '<span class="label label-success" title="'.$usuario->descripcion.'" rel="tooltip">Activo</span>' : '<span class="label label-danger" title="'.$usuario->descripcion.'" rel="tooltip">Bloqueado</span>'; ; ?></td>
                         <td>
-                            <?php echo DwHtml::buttonTable('Ver usuario', "sistema/usuarios/ver/$key_shw/", NULL, 'info', 'fa-search'); ?>                            
-                            <?php if($usuario->estado_usuario == EstadoUsuario::ACTIVO) { ?>
-                                <?php echo DwHtml::buttonTable('Bloquear usuario', "sistema/usuarios/estado/bloquear/$key_ina/", NULL, 'success', 'fa-flag'); ?>
-                            <?php } else { ?>
-                                <?php echo DwHtml::buttonTable('Reactivar usuario', "sistema/usuarios/estado/reactivar/$key_rea/", NULL, 'danger', 'fa-flag'); ?>
-                            <?php } ?>
+                            <?php echo DwHtml::buttonTable('Subir Reporte', "calendario/upload/reports/$key_shw/", NULL, 'info', 'fa-upload'); ?>                            
                         </td>
                     </tr>
                     <?php $usuarios->counter++; ?>

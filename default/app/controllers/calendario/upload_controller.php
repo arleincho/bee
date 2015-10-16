@@ -19,6 +19,20 @@ class  UploadController extends BackendController {
         Redirect::toAction('listar');
     }
 
+    public function reports($key, $order='order.perfil.asc', $page='page.1') { 
+        $page = (Filter::get($page, 'page') > 0) ? Filter::get($page, 'page') : 1;     
+        if(!$id = Security::getKey($key, 'upload_reports', 'int')) {
+            return Redirect::toAction('listar');
+        }        
+        
+        $usuario = new Usuario();
+        $this->usuarios = $usuario->getListadoUsuariosCalendario('todos', $order, $page);
+        
+        $this->order = $order;        
+        $this->page_title = 'Información del Usuario';
+        $this->key = $key;        
+    }
+
 
     /**
      * Método para listar
