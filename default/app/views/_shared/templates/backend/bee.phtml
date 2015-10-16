@@ -99,8 +99,10 @@
 					<div id="taskDescription"><textarea type="text" value="add task"></textarea></div>
 					<div id="taskAuthor"><textarea type="text" value="add task"></textarea></div>
 					<!--date-->
-					<input type="datetime" data-field="datetime" readonly>
-					<div id="dtBox"></div>
+					<div class="input-group bootstrap-timepicker timepicker">
+			            <input id="timepicker1" type="text" class="form-control input-small">
+			            <span class="input-group-addon"><i class="fa fa-calendar-o"></i></span>
+			        </div>
 					<!--date-->
 					<div id="buttons">
 						<div class="taskButton" id="upload" style="float:left;"><i class="fa fa-upload"></i>   upload file</div>
@@ -122,7 +124,7 @@
     <?php echo Tag::js('bee/jquery.min'); ?>
     <?php echo Tag::js('bee/moment.min'); ?>
     <?php echo Tag::js('bee/fullcalendar'); ?>
-    <?php echo Tag::js('bee/DateTimePicker.min'); ?>
+    <?php echo Tag::js('bee/bootstrap-timepicker'); ?>
     <?php echo Tag::js('html5shiv'); ?>    
 	<?php echo Tag::js('backend'); ?>
     <?php echo Tag::js('bee/bee'); ?>
