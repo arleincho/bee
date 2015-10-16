@@ -11,6 +11,7 @@ var linkedin = false;
 var pinterest = false;
 var youtube = false;
 var plus = false;
+var nameWinner= "";
 
 function crearCalendario(){
 	 $('#calendar').fullCalendar({
@@ -207,7 +208,8 @@ function crearCalendario(){
 					pinterest:pinterest,
 					youtube:youtube,
 					plus:plus
-				}
+				},
+				winner:nameWinner
 			};
 		Events.push(newEvent);
 		$.ajax({
@@ -225,4 +227,16 @@ function crearCalendario(){
 		
 		console.log("Events = ", Events);
 	});
+	$("#WinnerButton").click(function(){
+		var texto = $(".texto").val();
+		var candidatos = texto.split("\n");
+		console.log('candidatos :',candidatos);
+		var winner = parseInt(Math.random()*candidatos.length);
+		var name= candidatos[winner];
+		$("#winnerName").text(name);
+
+		nameWinner = name;
+		$(".texto").val("");
+	});
+	
 }

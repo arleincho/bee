@@ -32,6 +32,10 @@ article{
     position: relative;
     width: 65px;
 }
+#logout a {
+    color: #fff;
+    text-decoration: none;
+}
 #menu{
 	display: inline-block;
 	position:relative;
@@ -182,6 +186,13 @@ article{
 }
 .winner{
     height: 178px !important;
+}
+#winnerName{
+    display: block;
+    height: 27px;
+    padding-top: 6px;
+    position: absolute;
+    width: 141px;
 }
 #WinnerButton{
     background: #fff none repeat scroll 0 0;
