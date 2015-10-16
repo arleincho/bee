@@ -21,7 +21,7 @@
 	<article id="panels">
 		<div id="usuario">[ <?php echo Session::get('nombre');?> ]</div>
 		<div id="logoCliente">
-			<?php echo DwHtml::img('bee/logocliente.png', 'Calendario');?>
+			<?php echo DwHtml::img("upload/personas/" . Session::get('fotografia'), Session::get('nombre') . ' ' . Session::get('apellido')); ?>
 		</div>
 		<div id="paneles">
 			<div class="tab" id="progress">
