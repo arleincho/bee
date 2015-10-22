@@ -30,7 +30,7 @@ class  UploadController extends BackendController {
         
         $this->order = $order;        
         $this->page_title = 'Información del Usuario';
-        $this->key = $key;        
+        $this->key = $key;
     }
 
 
@@ -45,6 +45,19 @@ class  UploadController extends BackendController {
         $this->page_title = 'Listado de usuarios del sistema';
     }
 
+    /**
+     * Método para subir los ficheros
+     */
+    public function upload($report) {
+        $upload = new DwUpload($report, 'files/upload/' . $report);
+        $upload->setAllowedTypes('pdf');
+        $upload->setEncryptName(true);
+        if(!$data = $upload->save()) { //retorna un array('path'=>'ruta', 'name'=>'nombre.ext');
+            $data = array('error'=>TRUE, 'message'=>$upload->getError());
+        }
+        $this->data = $data;
+        View::json();
+    }
 
 
 }

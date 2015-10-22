@@ -417,7 +417,7 @@
             // Carga el datetimepicker, para poder usar cache
             $.ajax({ dataType: "script",cache: true, url: $.KumbiaPHP.publicPath + 'javascript/bootstrap/bootstrap-datetimepicker.min.js'}).done(function() {                
                 bindInputs();
-            });            
+            });
             
         },
         

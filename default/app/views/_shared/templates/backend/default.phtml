@@ -10,7 +10,7 @@
         <link rel="shortcut icon" href="<?php echo PUBLIC_PATH; ?>img/favicon.ico" type="image/x-icon" />
         <?php Tag::css('bootstrap/bootstrap.min'); ?>
         <?php Tag::css('bootstrap/bootstrap-theme.min'); ?>        
-        <?php Tag::css('bootstrap/bootstrap-datetimepicker.min'); ?>
+        
         <?php Tag::css('bootstrap/typehead'); ?>
         <?php Tag::css('file-upload/jquery.fileupload'); ?>
         <?php Tag::css('file-upload/jquery.fileupload-ui'); ?>
@@ -19,7 +19,8 @@
         <?php Tag::css('backend/style'); ?>
         <?php Tag::css('backend/themes/'.SKIN.'/'.SKIN); ?>
         <?php echo Html::includeCss(); ?>        
-        <link href="http://fonts.googleapis.com/css?family=Play:400,700" rel="stylesheet" type="text/css">        
+        <link href="http://fonts.googleapis.com/css?family=Play:400,700" rel="stylesheet" type="text/css">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/css/bootstrap-datepicker.min.css" rel="stylesheet" type="text/css">    
         <style type="text/css">
             <?php if(APP_MAYUS) { ?>            
             .input-lower, .input-email, email, .mask-email, .js-datepicker { text-transform: none !important; font-size: 14px !important}

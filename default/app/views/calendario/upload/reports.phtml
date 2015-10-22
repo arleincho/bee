@@ -15,73 +15,113 @@
     </ul>
     <div class="tab-content">
         
-        <div class="tab-pane active" id="tab1">
-
-
+            <div class="tab-pane active" id="tab1">
             <?php echo DwForm::open(); ?>
-                <div class="row">
-                    <div class="col-md-6">
-                    </div>
-                    <div class="col-md-6">
-                    </div>
-                    <div class="col-md-6">
-                        
+
+                <?php echo DwForm::hidden('key', NULL, $key); ?>
+
+                <div class="row fileupload-buttonbar">
+                    <div class="col-md-6" style="margin-bottom: 20px;">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <?php echo DwForm::text('date_report', array('class'=>'input-lower input-required form-control'), NULL, 'Fecha de los reportes'); ?>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <?php echo DwForm::upload('progress_report',
+                                    array('disabled' => 'true', 'data-to'=>PUBLIC_PATH.'calendario/upload/upload/progress_report',
+                                    'data-size'=>5000000, 'data-files'=>"/(\.|\/)(pdf)$/i"), 'Progress Report'); ?>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <?php echo DwForm::upload('demographics_report',
+                                    array('disabled' => 'true', 'data-to'=>PUBLIC_PATH.'calendario/upload/upload/demographics_report',
+                                    'data-size'=>5000000, 'data-files'=>"/(\.|\/)(pdf)$/i"), 'Demographics Report'); ?>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <?php echo DwForm::upload('beehive_report',
+                                    array('disabled' => 'true', 'data-to'=>PUBLIC_PATH.'calendario/upload/upload/beehive_report',
+                                    'data-size'=>5000000, 'data-files'=>"/(\.|\/)(pdf)$/i"), 'Beehive of Ideas'); ?>
+                            </div>
+                        </div>
                     </div>
                 </div>
             
-            <?php echo DwForm::close(); ?>
-
                 <div class="row">
                     <div class="form-actions">
                         <div class="pull-left">
-                            <?php echo DwButton::back(); ?>                           
-                        </div>
-                        <?php echo DwForm::nextTab(); ?>
+                            <?php echo DwForm::nextTab(); ?>                        
+                        </div>                    
+                        <?php echo DwForm::send('Crear usuario'); ?>
+                        <?php echo DwForm::cancel(); ?>
+                        <?php echo DwForm::focus('usuario.nombre'); ?>
                     </div>
                 </div>
-            
+                <?php echo DwForm::close(); ?>
+            </div>      
+                
 
-        </div>
+            <div class="tab-pane" id="tab2">
 
-        <div class="tab-pane" id="tab2">
+                <?php View::process('Información de usuarios', NULL, FALSE); ?>
 
-            <?php View::process('Información de usuarios', NULL, FALSE); ?>
-
-            <table class="table table-bordered table-hover table-striped table-condensed table-responsive">
-                <thead>
-                    <tr>
-                        <th>NUM</th>
-                        <th data-order="usuario">FECHA</th>
-                        <th data-order="nombre">PRIMERO</th>
-                        <th data-order="nombre">SEGUNDO</th>
-                        <th data-order="nombre">TERCERO</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach($usuarios->items as $usuario): ?>
+                <table class="table table-bordered table-hover table-striped table-condensed table-responsive">
+                    <thead>
                         <tr>
-                            <td><?php echo $usuarios->counter; ?></td>
-                            <td><?php echo $usuario->login; ?></td>
-                            <td><?php echo $usuario->nombre; ?></td>
-                            <td><?php echo $usuario->apellido; ?></td>                                
-                            <td><?php echo $usuario->apellido; ?></td>                                
+                            <th>NUM</th>
+                            <th data-order="usuario">FECHA</th>
+                            <th data-order="nombre">PRIMERO</th>
+                            <th data-order="nombre">SEGUNDO</th>
+                            <th data-order="nombre">TERCERO</th>
                         </tr>
-                        <?php $usuarios->counter++; ?>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <?php foreach($usuarios->items as $usuario): ?>
+                            <tr>
+                                <td><?php echo $usuarios->counter; ?></td>
+                                <td><?php echo $usuario->login; ?></td>
+                                <td><?php echo $usuario->nombre; ?></td>
+                                <td><?php echo $usuario->apellido; ?></td>                                
+                                <td><?php echo $usuario->apellido; ?></td>                                
+                            </tr>
+                            <?php $usuarios->counter++; ?>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
 
-            <?php View::partial('paginators/default', false, array('page'=>$usuarios, 'url'=>"sistema/perfiles/ver/$key/$order/")); ?>
-            
-            <div class="row">
-                <div class="form-actions">
-                    <div class="text-left">
-                        <?php echo DwForm::prevTab(); ?>                        
-                    </div>                                        
+                <?php View::partial('paginators/default', false, array('page'=>$usuarios, 'url'=>"sistema/perfiles/ver/$key/$order/")); ?>
+                
+                <div class="row">
+                    <div class="form-actions">
+                        <div class="text-left">
+                            <?php echo DwForm::prevTab(); ?>                        
+                        </div>                                        
+                    </div>
                 </div>
             </div>
-
-        </div>
+        
     </div>
    
 </div>
+
+
+<script type="text/javascript">
+    $(function(){
+        $.ajax({ dataType: "script",cache: true, url: 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.min.js'}).done(function(){    
+            $("#date_report").datepicker({
+                orientation: "bottom",
+                format: "yyyy-mm",
+                viewMode: "months", 
+                minViewMode: "months"
+            }).on('changeDate', function(e){
+                $('#progress_report').prop('disabled', false);
+                $('#demographics_report').prop('disabled', false);
+                $('#beehive_report').prop('disabled', false);
+            })
+        });
+    });
+</script>
