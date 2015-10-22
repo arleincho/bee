@@ -1,11 +1,3 @@
-$(document).ready(function() {
-	$("#agregar").hide();
-	
-   crearCalendario();
-
-   SetEventsCalendar();
-});
-
 var facebook = false;
 var twitter = false;
 var instagram = false;
@@ -21,6 +13,88 @@ var Events=[];
 var fechaSelect;
 var editando = false;
 var hora;
+var fileExtension = "";
+var file;
+//obtenemos el nombre del archivo
+var fileName;
+//obtenemos el tamaño del archivo
+var fileSize;
+//obtenemos el tipo de archivo image/png ejemplo
+var fileType;
+var eventFile = "";
+
+$(document).ready(function() {
+	$("#agregar").hide();
+	$('#uploadModule').hide();
+    crearCalendario();
+
+    SetEventsCalendar();
+
+
+   
+    //función que observa los cambios del campo file y obtiene información
+    $(':file').change(function()
+    {
+        //obtenemos un array con los datos del archivo
+        file = $("#imagen")[0].files[0];
+        //obtenemos el nombre del archivo
+        fileName = file.name;
+        //obtenemos la extensión del archivo
+        fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
+        //obtenemos el tamaño del archivo
+        fileSize = file.size;
+        //obtenemos el tipo de archivo image/png ejemplo
+        fileType = file.type;
+        //mensaje con la información del archivo
+        showMessage("<span class='info'>File to load: "+fileName+", size: "+fileSize+" bytes.</span>");
+    });
+ 
+    //al enviar el formulario
+    $(':button').click(function(){
+        //información del formulario
+        var formData = new FormData($(".formulario")[0]);
+        var message = ""; 
+        //hacemos la petición ajax  
+        $.ajax({
+            url: '../php/upload.php',  
+            type: 'POST',
+            // Form data
+            //datos del formulario
+            data: formData,
+            //necesario para subir archivos via ajax
+            cache: false,
+            contentType: false,
+            processData: false,
+            //mientras enviamos el archivo
+            beforeSend: function(){
+                message = $("<span class='before'>Uploading file...</span>");
+                showMessage(message)        
+            },
+            //una vez finalizado correctamente
+            success: function(data){
+                message = $("<span class='success'>Done!</span>");
+                showMessage(message);
+                
+                //$(".showImage").html("<img src='files/"+fileName+"' />");
+                $('#imagen').val("")
+                eventFile = "../upload/"+fileName;
+                console.log('data:', data);
+            },
+            //si ha ocurrido un error
+            error: function(){
+                message = $("<span class='error'>Ha ocurrido un error.</span>");
+                showMessage(message);
+            }
+        });
+    });
+});
+
+function showMessage(message){
+    $(".messages").html("").show();
+    $(".messages").html(message);
+}
+
+
 function crearCalendario(){
 	 $('#calendar').fullCalendar({
 		editable: true,
@@ -91,6 +165,7 @@ function crearCalendario(){
 				file: urlFile,
 				idPosicion:id,
 				hour:hora,
+				fileUrl:eventFile,
 				networks:{
 					facebook:facebook,
 					twitter:twitter,
@@ -138,6 +213,9 @@ function crearCalendario(){
 		nameWinner = name;
 		$(".texto").val("");
 	});
+	$('#upload').click(function(){
+		$('#uploadModule').toggle( 'display' );
+	})
 	
 }
 function SetEventsCalendar(){
@@ -161,6 +239,7 @@ function editEvents(evento){
 	currentId = evento.idPosicion;
 	hora = evento.hour;
 	$("#timepicker1").val(hora);
+	eventFile = evento.fileUrl;
 	facebook= stringToBoolean(""+evento.networks.facebook);
 	lightNetworks2("facebook");
 	twitter= stringToBoolean(""+evento.networks.twitter);

@@ -317,6 +317,16 @@ article{
     width: auto;
     cursor: pointer;
 }
+.formulario{
+    font-family: 'Tungsten-Medium';
+}
+.formulario input {
+    background-color: #fff;
+    border: medium none;
+    font-family: tungsten-medium;
+    font-size: 15px;
+    letter-spacing: 2px;
+}
 .fc-left{
     float: right !important;
     font-size: 30px;
