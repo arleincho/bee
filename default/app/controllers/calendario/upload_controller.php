@@ -70,7 +70,7 @@ class  UploadController extends BackendController {
                         'usuario_id' => $id,
                         'fecha' => $date->format('Y-m-d'),
                         'nombre' => $report,
-                        'ruta' => PUBLIC_PATH . "files/upload/{$report}/{$this->data['name']}"
+                        'ruta' => "files/upload/{$report}/{$this->data['name']}"
                     );
                     if(!Reporte::setReporte('create', $info)){
                         $data = array('error'=>TRUE, 'message'=>'El archivo no se subio!.');
