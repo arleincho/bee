@@ -141,7 +141,23 @@ function crearCalendario(){
 
 		$("#taskText textarea").click(function(){$("#taskText textarea").val("");})
 		$("#taskDescription textarea").click(function(){$("#taskDescription textarea").val("");})
-		$("#taskAuthor textarea").click(function(){$("#taskAuthor textarea").val("");})
+		$("#taskAuthor textarea").click(function(){$("#taskAuthor textarea").val("");});
+
+		//setear iconos redes deseleccionados
+		facebook = false;
+		twitter = false;
+		instagram = false;
+		linkedin = false;
+		pinterest = false;
+		youtube = false;
+		plus = false;
+		lightNetworks(facebook);
+		lightNetworks(twitter);
+		lightNetworks(instagram);
+		lightNetworks(linkedin);
+		lightNetworks(pinterest);
+		lightNetworks(youtube);
+		lightNetworks(plus);
 
 		
 	});
@@ -199,6 +215,8 @@ function crearCalendario(){
 		$('#calendar').fullCalendar( 'removeEventSource', Events);
 		$('#calendar').fullCalendar( 'addEventSource', Events);
 		editando = false;
+
+
 		console.log("Events = ", Events);
 
 	});
