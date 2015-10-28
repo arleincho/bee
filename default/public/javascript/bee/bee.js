@@ -233,7 +233,24 @@ function crearCalendario(){
 	});
 	$('#upload').click(function(){
 		$('#uploadModule').toggle( 'display' );
-	})
+	});
+	//generar pdf
+	var doc = new jsPDF();
+	
+
+	$('#iconos .fa-download').click(function () {		
+	    var table = $('.fc-view-container div table').tableToJSON();
+	    console.log('table > ', table);
+        var doc = new jsPDF('p','pt', 'a4', true);
+        doc.cellInitialize();
+        $.each(table, function (i, row){
+            console.debug(row);
+            $.each(row, function (j, cell){
+                doc.cell(0, 50,50, 50, cell, i);  // 2nd parameter=top margin,1st=left margin 3rd=row cell width 4th=Row height
+            })
+        })
+	    doc.save('sample-file.pdf');
+	});
 	
 }
 function SetEventsCalendar(){

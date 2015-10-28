@@ -369,7 +369,7 @@ article{
 }
 .fc-event {
     background: #fff !important;
-    border: 1px solid #000 !important;
+    border: none !important;
     border-radius: 6px !important;
     display: block ;
     font-size: 4px !important;

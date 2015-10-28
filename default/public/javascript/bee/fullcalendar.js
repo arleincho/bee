@@ -5303,7 +5303,7 @@ DayGrid.mixin({
 				timeHtml = '<span class="fc-time">' + htmlEscape(timeText) + '</span>';
 			}
 		}
-
+		
 		titleHtml =
 			'<span class="fc-title">' +
 				(htmlEscape(event.title || '') || '&nbsp;') + // we always want one line of height
