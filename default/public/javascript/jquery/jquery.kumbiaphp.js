@@ -193,6 +193,7 @@
             var url         = este.attr('href');
             var before_load = este.attr('before-load');//Callback antes de enviar
             var after_load  = este.attr('after-load');//Callback después de enviar
+            
             if(before_load!=null) {
                 try { val = eval(before_load); } catch(e) { }
             }

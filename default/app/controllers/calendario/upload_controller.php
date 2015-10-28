@@ -7,7 +7,7 @@
  * @package     Controllers 
  */
 
-Load::models('calendario/calendario');
+Load::models('calendario/calendario', 'calendario/reporte');
 
 class  UploadController extends BackendController {
 
@@ -19,14 +19,14 @@ class  UploadController extends BackendController {
         Redirect::toAction('listar');
     }
 
-    public function reports($key, $order='order.perfil.asc', $page='page.1') { 
+    public function reports($key, $order='order.fecha.asc', $page='page.1') { 
         $page = (Filter::get($page, 'page') > 0) ? Filter::get($page, 'page') : 1;     
         if(!$id = Security::getKey($key, 'upload_reports', 'int')) {
             return Redirect::toAction('listar');
         }        
         
-        $usuario = new Usuario();
-        $this->usuarios = $usuario->getListadoUsuariosCalendario('todos', $order, $page);
+        $reportes = new Reporte();
+        $this->reportes = $reportes->getListadoReportePorUsuario($id, $order, $page);
         
         $this->order = $order;        
         $this->page_title = 'Información del Usuario';
@@ -49,14 +49,36 @@ class  UploadController extends BackendController {
      * Método para subir los ficheros
      */
     public function upload($report) {
-        $upload = new DwUpload($report, 'files/upload/' . $report);
-        $upload->setAllowedTypes('pdf');
-        $upload->setEncryptName(true);
-        if(!$data = $upload->save()) { //retorna un array('path'=>'ruta', 'name'=>'nombre.ext');
-            $data = array('error'=>TRUE, 'message'=>$upload->getError());
+
+
+
+        if(Input::hasPost('reporte')) {
+            $upload = new DwUpload($report, 'files/upload/' . $report);
+            $upload->setAllowedTypes('pdf');
+            $upload->setEncryptName(true);
+            if(!$data = $upload->save()) { //retorna un array('path'=>'ruta', 'name'=>'nombre.ext');
+                $data = array('error'=>TRUE, 'message'=>$upload->getError());
+            }else{
+                $this->data = $data;
+                $post = Input::post('reporte');
+                if ($post){
+                    if(!$id = Security::getKey($post['key'], 'upload_reports', 'int')) {
+                        return Redirect::toAction('listar');
+                    }
+                    $date = DateTime::createFromFormat('Y-m', $post['date_report']);
+                    $info = array(
+                        'usuario_id' => $id,
+                        'fecha' => $date->format('Y-m-d'),
+                        'nombre' => $report,
+                        'ruta' => PUBLIC_PATH . "files/upload/{$report}/{$this->data['name']}"
+                    );
+                    if(!Reporte::setReporte('create', $info)){
+                        $data = array('error'=>TRUE, 'message'=>'El archivo no se subio!.');
+                    }
+                    View::json();
+                }
+            }
         }
-        $this->data = $data;
-        View::json();
     }
 
 

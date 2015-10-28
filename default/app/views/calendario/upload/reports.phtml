@@ -7,24 +7,24 @@
     
     <ul class="nav nav-tabs hidden-xs">
         <li class="active"><a href="#tab1" data-toggle="tab">Subir Reportes del Mes</a></li>
-        <li><a href="#tab2" data-toggle="tab">Reportes Subidos anteriormente</a></li>
+        <li><?php echo DwHtml::link("calendario/upload/reports/$key/#tab2", 'Reportes Subidos anteriormente', array('after-load' => 'selectTab()', 'data-toggle' => "tab")); ?></li>
     </ul>
     <ul class="nav nav-pills nav-stacked visible-xs">        
         <li class="active"><a href="#tab1" data-toggle="tab">Subir Reportes del Mes</a></li>
-        <li><a href="#tab2" data-toggle="tab">Reportes Subidos anteriormente</a></li>
+        <li><?php echo DwHtml::link("calendario/upload/reports/$key/#tab2", 'Reportes Subidos anteriormente', array('after-load' => 'selectTab()', 'data-toggle' => "tab")); ?></li>
     </ul>
     <div class="tab-content">
         
             <div class="tab-pane active" id="tab1">
             <?php echo DwForm::open(); ?>
 
-                <?php echo DwForm::hidden('key', NULL, $key); ?>
+                <?php echo DwForm::hidden('reporte[key]', NULL, $key); ?>
 
                 <div class="row fileupload-buttonbar">
                     <div class="col-md-6" style="margin-bottom: 20px;">
                         <div class="row">
                             <div class="col-md-6">
-                                <?php echo DwForm::text('date_report', array('class'=>'input-lower input-required form-control'), NULL, 'Fecha de los reportes'); ?>
+                                <?php echo DwForm::text('reporte[date_report]', array('class'=>'input-lower input-required form-control', 'id' => "date_report"), NULL, 'Fecha de los reportes'); ?>
                             </div>
                         </div>
                         <div class="row">
@@ -55,10 +55,7 @@
                     <div class="form-actions">
                         <div class="pull-left">
                             <?php echo DwForm::nextTab(); ?>                        
-                        </div>                    
-                        <?php echo DwForm::send('Crear usuario'); ?>
-                        <?php echo DwForm::cancel(); ?>
-                        <?php echo DwForm::focus('usuario.nombre'); ?>
+                        </div>
                     </div>
                 </div>
                 <?php echo DwForm::close(); ?>
@@ -74,19 +71,19 @@
                         <tr>
                             <th>NUM</th>
                             <th data-order="usuario">FECHA</th>
-                            <th data-order="nombre">PRIMERO</th>
-                            <th data-order="nombre">SEGUNDO</th>
-                            <th data-order="nombre">TERCERO</th>
+                            <th data-order="nombre">REPORTE</th>
+                            <th data-order="nombre">DESCARGA</th>
+                            <th data-order="nombre">CREADO</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach($usuarios->items as $usuario): ?>
+                        <?php foreach($reportes->items as $reporte): ?>
                             <tr>
                                 <td><?php echo $usuarios->counter; ?></td>
-                                <td><?php echo $usuario->login; ?></td>
+                                <td><?php echo $usuario->fecha; ?></td>
                                 <td><?php echo $usuario->nombre; ?></td>
-                                <td><?php echo $usuario->apellido; ?></td>                                
-                                <td><?php echo $usuario->apellido; ?></td>                                
+                                <td><?php echo $usuario->ruta; ?></td>                                
+                                <td><?php echo $usuario->creado_ay; ?></td>                                
                             </tr>
                             <?php $usuarios->counter++; ?>
                         <?php endforeach; ?>
@@ -94,14 +91,6 @@
                 </table>
 
                 <?php View::partial('paginators/default', false, array('page'=>$usuarios, 'url'=>"sistema/perfiles/ver/$key/$order/")); ?>
-                
-                <div class="row">
-                    <div class="form-actions">
-                        <div class="text-left">
-                            <?php echo DwForm::prevTab(); ?>                        
-                        </div>                                        
-                    </div>
-                </div>
             </div>
         
     </div>
@@ -112,7 +101,7 @@
 <script type="text/javascript">
     $(function(){
         $.ajax({ dataType: "script",cache: true, url: 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.min.js'}).done(function(){    
-            $("#date_report").datepicker({
+            $("#reporte\\[date_report\\]").datepicker({
                 orientation: "bottom",
                 format: "yyyy-mm",
                 viewMode: "months", 
@@ -123,5 +112,12 @@
                 $('#beehive_report').prop('disabled', false);
             })
         });
+
+        selectTab = function(){
+            a = $('.nav-tabs a:last');
+            href = a.attr('href').replace(/\/$/g, '');
+            a.attr('href', href);
+            a.tab('show')
+        }
     });
 </script>
