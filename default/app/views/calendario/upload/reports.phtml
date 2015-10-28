@@ -79,18 +79,18 @@
                     <tbody>
                         <?php foreach($reportes->items as $reporte): ?>
                             <tr>
-                                <td><?php echo $usuarios->counter; ?></td>
-                                <td><?php echo $usuario->fecha; ?></td>
-                                <td><?php echo $usuario->nombre; ?></td>
-                                <td><?php echo $usuario->ruta; ?></td>                                
-                                <td><?php echo $usuario->creado_ay; ?></td>                                
+                                <td><?php echo $reportes->counter; ?></td>
+                                <td><?php echo $reporte->fecha; ?></td>
+                                <td><?php echo $reporte->nombre; ?></td>
+                                <td><?php echo $reporte->ruta; ?></td>                                
+                                <td><?php echo $reporte->creado_at; ?></td>                                
                             </tr>
-                            <?php $usuarios->counter++; ?>
+                            <?php $reportes->counter++; ?>
                         <?php endforeach; ?>
                     </tbody>
                 </table>
 
-                <?php View::partial('paginators/default', false, array('page'=>$usuarios, 'url'=>"sistema/perfiles/ver/$key/$order/")); ?>
+                <?php View::partial('paginators/default', false, array('page'=>$reportes, 'url'=>"calendario/upload/reports/$key/$order/")); ?>
             </div>
         
     </div>

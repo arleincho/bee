@@ -49,6 +49,16 @@ class Reporte extends ActiveRecord {
     public function getListadoReportePorUsuario($usuario_id, $order='', $page=0) {
 
         $conditions = "usuario_id = {$usuario_id}";
+        $order = $this->get_order($order, 'nombre', array(                        
+            'fecha' => array(
+                'ASC'=>'fecha ASC', 
+                'DESC'=>'fecha DESC'
+            ),
+            'nombre' => array(
+                'ASC'=>'nombre ASC', 
+                'DESC'=>'nombre DESC'
+            )
+        ));
         if($page) {
             return $this->paginated("conditions: $conditions", "order: $order", "page: $page", "group: DATE_FORMAT(fecha, '%Y-%m'), nombre");
         }
