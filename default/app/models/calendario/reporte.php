@@ -64,4 +64,10 @@ class Reporte extends ActiveRecord {
         }
     }
 
+    public function getListadoReportePorTipo($usuario_id, $tipo) {
+        $conditions = "usuario_id = {$usuario_id} AND nombre = '{$tipo}'";
+        $group = "DATE_FORMAT(fecha, '%Y-%m')";
+        return $this->find("conditions: {$conditions}", "limit: 4", "group: {$group}", "order: fecha desc");
+    }
+
 }

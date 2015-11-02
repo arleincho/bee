@@ -64,19 +64,21 @@
                             <th>NUM</th>
                             <th data-order="usuario">FECHA</th>
                             <th data-order="nombre">REPORTE</th>
-                            <th data-order="nombre">DESCARGA</th>
                             <th data-order="nombre">CREADO</th>
+                            <th data-order="nombre">DESCARGA</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php foreach($reportes->items as $reporte): ?>
+                            <?php $key_dwn = Security::setKey($reporte->id, 'descargar_reporte'); ?>
                             <tr>
                                 <td><?php echo $reportes->counter; ?></td>
                                 <td><?php echo $reporte->fecha; ?></td>
                                 <td><?php echo $reporte->nombre; ?></td>
-                                
-                                <td><?php echo DwHtml::link($reporte->ruta, $reporte->nombre, null, '', false); die();?></td>
-                                <td><?php echo $reporte->creado_at; ?></td>                                
+                                <td><?php echo $reporte->creado_at; ?></td>
+                                <td class="btn-actions">
+                                    <?php echo DwHtml::buttonTable('Descargar Reporte', "calendario/upload/descargar/$key_dwn/", array('class'=>'no-ajax', 'target'=>'_self'), 'info', 'fa-download'); ?>
+                                </td>
                             </tr>
                             <?php $reportes->counter++; ?>
                         <?php endforeach; ?>
@@ -105,12 +107,12 @@
                 $('#beehive_report').prop('disabled', false);
             })
         });
-
-        selectTab = function(){
-            a = $('.nav-tabs a:last');
-            href = a.attr('href').replace(/\/$/g, '');
-            a.attr('href', href);
-            a.tab('show')
-        }
     });
+
+    selectTab = function(){
+        a = $('.nav-tabs a:last');
+        href = a.attr('href').replace(/\/$/g, '');
+        a.attr('href', href);
+        a.tab('show')
+    }
 </script>

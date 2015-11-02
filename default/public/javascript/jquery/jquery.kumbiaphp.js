@@ -193,6 +193,7 @@
             var url         = este.attr('href');
             var before_load = este.attr('before-load');//Callback antes de enviar
             var after_load  = este.attr('after-load');//Callback después de enviar
+            console.log(after_load)
             
             if(before_load!=null) {
                 try { val = eval(before_load); } catch(e) { }
@@ -204,7 +205,8 @@
                     options = { capa: capa, spinner: spinner, msg: true, url: url, change_url: change_url};
                     if($.kload(options)) {
                         if(after_load!=null) {
-                            try { eval(after_load); } catch(e) { }
+                            console.log(after_load)
+                            try { eval(after_load); } catch(e) { console.log(e) }
                         }
                     }
                 }

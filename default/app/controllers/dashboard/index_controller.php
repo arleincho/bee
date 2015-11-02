@@ -7,7 +7,7 @@
  * @package     Controllers 
  */
 
-Load::models('calendario/calendario');
+Load::models('calendario/calendario', 'calendario/reporte');
 
 class IndexController extends BackendController {
     
@@ -15,8 +15,16 @@ class IndexController extends BackendController {
     
     public $page_module = 'Dashboard';
     
-    public function index() { 
-        $this->eventos = Calendario::getCalendario(Session::get('id'));
+    public function index() {
+
+    	$usuario_id = Session::get('id');
+
+        $this->eventos = Calendario::getCalendario($usuario_id);
+
+        $reporte = new Reporte();
+        $this->progress_report = $reporte->getListadoReportePorTipo($usuario_id, 'progress_report');
+        $this->demographics_report = $reporte->getListadoReportePorTipo($usuario_id, 'demographics_report');
+        $this->beehive_report = $reporte->getListadoReportePorTipo($usuario_id, 'beehive_report');
     }
 
 }

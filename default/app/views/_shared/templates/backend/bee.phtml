@@ -29,22 +29,26 @@
 				<label for="radio1">Progress Report<i class="fa fa-download"></i><i class="fa fa-filter"></i></label>
 				<div class="contenido">
 					<ul>
-						<li><span>July</span> <span>04/07/2015</span><span>Carolina Collazos</span></li>
-						<li><span>July</span> <span>04/07/2015</span><span>Carolina Collazos</span></li>
-						<li><span>July</span> <span>04/07/2015</span><span>Carolina Collazos</span></li>
-						<li><span>July</span> <span>04/07/2015</span><span>Carolina Collazos</span></li>
+						<?php foreach ($progress_report as $key => $value): ?>
+							<?php $key_dwn = Security::setKey($value->id, 'descargar_reporte'); ?>
+							<?php $dwn = DwHtml::buttonTable('Descargar Reporte', "calendario/upload/descargar/$key_dwn/", array('class'=>'no-ajax', 'target'=>'_self'), 'info', 'fa-download'); ?>
+							<li><span><?php echo $value->fecha?></span><span><?php echo $dwn?></span></li>
+						<?php endforeach; ?>
 					</ul>
 				</div>
 			</div>
+
+
 			<div class="tab" id="demographics">
 				<input id="radio2" type="radio" name="acordeon" value="demographics"/>
 				<label for="radio2">Demographics<i class="fa fa-download"></i><i class="fa fa-filter"></i></label>
 				<div class="contenido">
 					<ul>
-						<li><span>July</span> <span>04/07/2015</span><span>Carolina Collazos</span></li>
-						<li><span>July</span> <span>04/07/2015</span><span>Carolina Collazos</span></li>
-						<li><span>July</span> <span>04/07/2015</span><span>Carolina Collazos</span></li>
-						<li><span>July</span> <span>04/07/2015</span><span>Carolina Collazos</span></li>
+						<?php foreach ($demographics_report as $key => $value): ?>
+							<?php $key_dwn = Security::setKey($value->id, 'descargar_reporte'); ?>
+							<?php $dwn = DwHtml::buttonTable('Descargar Reporte', "calendario/upload/descargar/$key_dwn/", array('class'=>'no-ajax', 'target'=>'_self'), 'info', 'fa-download'); ?>
+							<li><span><?php echo $value->fecha?></span><span><?php echo $dwn?></span></li>
+						<?php endforeach; ?>
 					</ul>
 				</div>
 			</div>
@@ -53,10 +57,11 @@
 				<label for="radio3">Beehive of Ideas<i class="fa fa-download"></i><i class="fa fa-filter"></i></label>
 				<div class="contenido">
 					<ul>
-						<li><span>July</span> <span>04/07/2015</span><span>Carolina Collazos</span></li>
-						<li><span>July</span> <span>04/07/2015</span><span>Carolina Collazos</span></li>
-						<li><span>July</span> <span>04/07/2015</span><span>Carolina Collazos</span></li>
-						<li><span>July</span> <span>04/07/2015</span><span>Carolina Collazos</span></li>
+						<?php foreach ($beehive_report as $key => $value): ?>
+							<?php $key_dwn = Security::setKey($value->id, 'descargar_reporte'); ?>
+							<?php $dwn = DwHtml::buttonTable('Descargar Reporte', "calendario/upload/descargar/$key_dwn/", array('class'=>'no-ajax', 'target'=>'_self'), 'info', 'fa-download'); ?>
+							<li><span><?php echo $value->fecha?></span><span><?php echo $dwn?></span></li>
+						<?php endforeach; ?>
 					</ul>
 				</div>
 			</div>

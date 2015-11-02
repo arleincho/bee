@@ -81,5 +81,32 @@ class  UploadController extends BackendController {
         }
     }
 
+    /**
+     * Método para descargar
+     */
+    public function descargar($key='') {
+        
+        if(!$id = Security::getKey($key, 'descargar_reporte', 'int')) {
+            return Redirect::toAction('listar');
+        }
+
+        
+        $reporte = new Reporte();
+        if(!$reporte->find_first($id)) {
+            Flash::info('El archivo de reporte no fue encontrado');
+            return Redirect::toAction('listar');
+        }
+
+        $this->file = dirname(APP_PATH) . "/public/" . $reporte->ruta;
+        if(!is_file($this->file)) {
+            Flash::warning('No hemos podido localizar el archivo. Por favor contacta al administrador del sistema.');
+            return Redirect::toAction('listar');
+        }
+        
+        View::template(NULL);
+        
+        $this->reporte = $reporte;
+    }
+
 
 }

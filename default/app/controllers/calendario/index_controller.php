@@ -7,7 +7,7 @@
  * @package     Controllers 
  */
 
-Load::models('calendario/calendario');
+Load::models('calendario/calendario', 'calendario/reporte');
 
 class IndexController extends BackendController {
     
@@ -34,7 +34,5 @@ class IndexController extends BackendController {
             }
         }
     }
-
-
 
 }
