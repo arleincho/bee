@@ -556,3 +556,32 @@ article{
         }
     }
 }
+.fc-content{
+    background: #999 none repeat scroll 0 0;
+}
+.horaEvento{
+    display: block;
+    float: left;
+    font-size: 10px !important;
+    overflow: hidden;
+    padding-left: 6px;
+    text-overflow: ellipsis;
+    width: 21%;
+    word-wrap: break-word;
+}
+.descripEvento{
+    display: block;
+    float: left;
+    font-size: 10px !important;
+    overflow: hidden;
+    padding-left: 10px;
+    text-align: left;
+    text-overflow: ellipsis;
+    width: 65%;
+    word-wrap: break-word;
+}
+.redesEvento{
+    display: block;
+    float: left;
+    width: 100%;
+}

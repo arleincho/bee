@@ -22,6 +22,7 @@ var fileSize;
 //obtenemos el tipo de archivo image/png ejemplo
 var fileType;
 var eventFile = "";
+var eventRefence;
 
 $(document).ready(function() {
 	$("#agregar").hide();
@@ -151,15 +152,13 @@ function crearCalendario(){
 		pinterest = false;
 		youtube = false;
 		plus = false;
-		lightNetworks(facebook);
-		lightNetworks(twitter);
-		lightNetworks(instagram);
-		lightNetworks(linkedin);
-		lightNetworks(pinterest);
-		lightNetworks(youtube);
-		lightNetworks(plus);
-
-		
+		$('#redes ul li #facebook').css('color', '#333');
+		$('#redes ul li #twitter').css('color', '#333');
+		$('#redes ul li #instagram').css('color', '#333');
+		$('#redes ul li #linkedin').css('color', '#333');
+		$('#redes ul li #pinterest').css('color', '#333');
+		$('#redes ul li #youtube').css('color', '#333');
+		$('#redes ul li #plus').css('color', '#333');		
 	});
 	$('#timepicker1').timepicker();
 
@@ -172,7 +171,32 @@ function crearCalendario(){
 	});
 	$("#save").click(function(){
 		var hora = $("#timepicker1").val();
-		newEvent = {
+		
+		//$('#calendar').fullCalendar( 'removeEventSource', Events);
+		if(editando == true){			
+			eventRefence.title= $("#taskText textarea").val(),
+			eventRefence.start = fechaSelect;
+			eventRefence.constraint = $("#taskDescription textarea").val(); // defined below
+			eventRefence.color = '#257e4a';
+			eventRefence.author = $("#taskAuthor textarea").val();
+			eventRefence.file = urlFile;
+			eventRefence.idPosicion = id;
+			eventRefence.hour = hora;
+			eventRefence.fileUrl = eventFile;
+			eventRefence.networks.facebook = facebook;
+			eventRefence.networks.twitter = twitter;
+			eventRefence.networks.instagram = instagram;
+			eventRefence.networks.linkedin = linkedin;
+			eventRefence.networks.pinterest = pinterest;
+			eventRefence.networks.youtube = youtube;
+			eventRefence.networks.plus = plus;
+			eventRefence.winner = nameWinner;
+
+			console.log('editar evento');
+			console.log('eventRefence', eventRefence);
+			 $('#calendar').fullCalendar('updateEvent', eventRefence);
+		}else{
+			newEvent = {
 				title: $("#taskText textarea").val(),
 				start: fechaSelect,
 				constraint: $("#taskDescription textarea").val(), // defined below
@@ -193,11 +217,7 @@ function crearCalendario(){
 				},
 				winner:nameWinner
 			};
-		if(editando == true){
-			Events[currentId]=newEvent;
-		}else{
-			Events[id]=newEvent;
-			id = id+1;
+			$('#calendar').fullCalendar( 'addEventSource', Events);
 		}
 		
 		
@@ -212,8 +232,7 @@ function crearCalendario(){
 			}
 		})
 		$("#agregar").hide();
-		$('#calendar').fullCalendar( 'removeEventSource', Events);
-		$('#calendar').fullCalendar( 'addEventSource', Events);
+		
 		editando = false;
 
 
@@ -239,7 +258,7 @@ function crearCalendario(){
 	
 
 	$('#iconos .fa-download').click(function () {		
-	    var table = $('.fc-view-container div table').tableToJSON();
+	   /* var table = $('.fc-view-container div table').tableToJSON();
 	    console.log('table > ', table);
         var doc = new jsPDF('p','pt', 'a4', true);
         doc.cellInitialize();
@@ -249,7 +268,24 @@ function crearCalendario(){
                 doc.cell(0, 50,50, 50, cell, i);  // 2nd parameter=top margin,1st=left margin 3rd=row cell width 4th=Row height
             })
         })
-	    doc.save('sample-file.pdf');
+	    doc.save('sample-file.pdf');*/
+	    var calendarHtml = $('.fc-view-container div').html();
+	    var dat = {datos:calendarHtml}
+	    $.ajax({
+            url: '../php/generarPdf.php',  
+            type: 'POST',
+            // Form data
+            //datos del formulario
+            data:dat,
+            //mientras enviamos el archivo
+            success: function(data){
+                //console.log('calendario enviado data:', calendarHtml);
+            },
+            //si ha ocurrido un error
+            error: function(){
+                console.log('error al enviar el calendario');
+            }
+        });
 	});
 	
 }
@@ -263,7 +299,7 @@ function SetEventsCalendar(){
 }
 function editEvents(evento){
 	console.log("edit event ",evento);
-
+	eventRefence = evento;
 	$("#taskText textarea").val(evento.title);
 	fechaSelect=evento.start._i;
 	console.log("currentId",evento.idPosicion)
@@ -312,7 +348,7 @@ function lightNetworks(idButton){
 				facebook = false;
 				$('#redes ul li #facebook').css('color', '#333');
 			}else{
-				$('#redes ul li #facebook').css('color', '#72cfbd');
+				$('#redes ul li #facebook').css('color', '#3a5a98');
 				facebook = true;				
 			}
 			break;
@@ -322,7 +358,7 @@ function lightNetworks(idButton){
 				$('#redes ul li #twitter').css('color', '#333');
 			}else{
 				twitter = true;				
-				$('#redes ul li #twitter').css('color', '#72cfbd');
+				$('#redes ul li #twitter').css('color', '#60caef');
 			}
 			break;
 			case "instagram":
@@ -331,7 +367,7 @@ function lightNetworks(idButton){
 				$('#redes ul li #instagram').css('color', '#333');
 			}else{
 				instagram = true;	
-				$('#redes ul li #instagram').css('color', '#72cfbd');
+				$('#redes ul li #instagram').css('color', '#326699');
 			}
 			break;
 			case "linkedin":
@@ -340,7 +376,7 @@ function lightNetworks(idButton){
 				$('#redes ul li #linkedin').css('color', '#333');
 			}else{
 				linkedin = true;	
-				$('#redes ul li #linkedin').css('color', '#72cfbd');
+				$('#redes ul li #linkedin').css('color', '#0177b5');
 			}
 			break;
 			case "pinterest":
@@ -349,7 +385,7 @@ function lightNetworks(idButton){
 				$('#redes ul li #pinterest').css('color', '#333');
 			}else{
 				pinterest = true;
-				$('#redes ul li #pinterest').css('color', '#72cfbd');
+				$('#redes ul li #pinterest').css('color', '#840d16');
 			}
 			break;
 			case "youtube":
@@ -358,7 +394,7 @@ function lightNetworks(idButton){
 				$('#redes ul li #youtube').css('color', '#333');
 			}else{
 				youtube = true;		
-				$('#redes ul li #youtube').css('color', '#72cfbd');
+				$('#redes ul li #youtube').css('color', '#ca2128');
 			}
 			break;
 			case "plus":
@@ -367,7 +403,7 @@ function lightNetworks(idButton){
 				$('#redes ul li #plus').css('color', '#333');
 			}else{
 				plus = true;		
-				$('#redes ul li #plus').css('color', '#72cfbd');	
+				$('#redes ul li #plus').css('color', '#e54a55');	
 			}
 			break;
 		}
@@ -378,49 +414,49 @@ function lightNetworks2(idButton){
 			if(facebook == false){
 				$('#redes ul li #facebook').css('color', '#333');
 			}else{
-				$('#redes ul li #facebook').css('color', '#72cfbd');				
+				$('#redes ul li #facebook').css('color', '#3a5a98');				
 			}
 			break;
 			case "twitter":
 			if(twitter == false){
 				$('#redes ul li #twitter').css('color', '#333');
 			}else{			
-				$('#redes ul li #twitter').css('color', '#72cfbd');
+				$('#redes ul li #twitter').css('color', '#60caef');
 			}
 			break;
 			case "instagram":
 			if(instagram == false){
 				$('#redes ul li #instagram').css('color', '#333');
 			}else{
-				$('#redes ul li #instagram').css('color', '#72cfbd');
+				$('#redes ul li #instagram').css('color', '#326699');
 			}
 			break;
 			case "linkedin":
 			if(linkedin == false){
 				$('#redes ul li #linkedin').css('color', '#333');
 			}else{	
-				$('#redes ul li #linkedin').css('color', '#72cfbd');
+				$('#redes ul li #linkedin').css('color', '#0177b5');
 			}
 			break;
 			case "pinterest":
 			if(pinterest == false){
 				$('#redes ul li #pinterest').css('color', '#333');
 			}else{
-				$('#redes ul li #pinterest').css('color', '#72cfbd');
+				$('#redes ul li #pinterest').css('color', '#840d16');
 			}
 			break;
 			case "youtube":
 			if(youtube == false){
 				$('#redes ul li #youtube').css('color', '#333');
 			}else{	
-				$('#redes ul li #youtube').css('color', '#72cfbd');
+				$('#redes ul li #youtube').css('color', '#ca2128');
 			}
 			break;
 			case "plus":
 			if(plus == false){
 				$('#redes ul li #plus').css('color', '#333');
 			}else{	
-				$('#redes ul li #plus').css('color', '#72cfbd');	
+				$('#redes ul li #plus').css('color', '#e54a55');	
 			}
 			break;
 		}
