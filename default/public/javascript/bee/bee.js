@@ -77,9 +77,10 @@ $(document).ready(function() {
             success: function(data){
                 message = $("<span class='success'>Done!</span>");
                 showMessage(message);
-                $("#imaEvent").html("<img src='"+data.urlFile+"' />");
+                $("#imaEvent").html("<img src='../"+data.urlFile+"' />");
                 //$(".showImage").html("<img src='files/"+fileName+"' />");
-                $('#imagen').val("")
+                $('#imagen').val("");
+                urlFile = data.urlFile;
                 eventFile = "../upload/"+fileName;
                 console.log('data:', data);
             },
@@ -200,7 +201,7 @@ function crearCalendario(){
 			eventRefence.constraint = $("#taskDescription textarea").val(); // defined below
 			eventRefence.color = '#257e4a';
 			eventRefence.author = $("#taskAuthor textarea").val();
-			eventRefence.file = urlFile;
+			eventRefence.urlFile = urlFile;
 			eventRefence.idPosicion = id;
 			eventRefence.hour = hora;
 			eventRefence.fileUrl = eventFile;
@@ -223,7 +224,7 @@ function crearCalendario(){
 				constraint: $("#taskDescription textarea").val(), // defined below
 				color: '#257e4a',
 				author: $("#taskAuthor textarea").val(),
-				file: urlFile,
+				urlFile: urlFile,
 				idPosicion:id,
 				hour:hora,
 				fileUrl:eventFile,
@@ -333,7 +334,7 @@ function editEvents(evento){
 	currentId = evento.idPosicion;
 	hora = evento.hour;
 	$("#timepicker1").val(hora);
-	$("#imaEvent").html("<img src='"+evento.urlFile+"' />")
+	$("#imaEvent").html("<img src='../"+evento.urlFile+"' />")
 	eventFile = evento.fileUrl;
 	facebook= stringToBoolean(""+evento.networks.facebook);
 	lightNetworks2("facebook");
