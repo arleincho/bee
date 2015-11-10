@@ -39,7 +39,6 @@ class Calendario extends ActiveRecord {
         if($old->find_first($conditions)) {
             if($method == 'create') {
                 $obj->id = $old->id;
-                $obj->⁠⁠⁠urlFile = $old->⁠⁠⁠urlFile;
                 $method = 'update';
             }
         }
