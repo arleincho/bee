@@ -84,4 +84,3 @@ class IndexController extends BackendController {
     }
 
 }
-
