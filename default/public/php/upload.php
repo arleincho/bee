@@ -1,6 +1,3 @@
-php_value upload_max_filesize 40M
-php_value post_max_size 40M
-
 <?php
 //comprobamos que sea una petición ajax
 if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') 

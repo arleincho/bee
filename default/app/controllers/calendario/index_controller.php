@@ -63,11 +63,11 @@ class IndexController extends BackendController {
                     foreach ($eventos as $key => $value) {
                         if ($value['start'] == $fecha){
                             $find = true;
-                            $eventos[$key]['fileUrl'] = "img/upload/eventos/{$this->data['name']}";
+                            $eventos[$key]['⁠⁠⁠urlFile'] = "img/upload/eventos/{$this->data['name']}";
                         }
                     }
                     if (!$find){
-                        $eventos[] = array('start' => $fecha, 'fileUrl' => "img/upload/eventos/{$this->data['name']}");
+                        $eventos[] = array('start' => $fecha, '⁠⁠⁠urlFile' => "img/upload/eventos/{$this->data['name']}");
                     }
                     $data = array('configuracion' => json_encode($eventos), 'usuario_id' => Session::get('id'));
                     if(!Calendario::setCalendario('create', $data)){
