@@ -77,7 +77,7 @@ $(document).ready(function() {
             success: function(data){
                 message = $("<span class='success'>Done!</span>");
                 showMessage(message);
-                
+                $("#imaEvent").html("<img src='"+data.urlFile+"' />");
                 //$(".showImage").html("<img src='files/"+fileName+"' />");
                 $('#imagen').val("")
                 eventFile = "../upload/"+fileName;
@@ -85,7 +85,7 @@ $(document).ready(function() {
             },
             //si ha ocurrido un error
             error: function(){
-                message = $("<span class='error'>Ha ocurrido un error.</span>");
+                message = $("<span class='error'>Error.</span>");
                 showMessage(message);
             }
         });
@@ -330,10 +330,10 @@ function editEvents(evento){
 	$("#taskDescription textarea").val(evento.constraint);
 	color = evento.color,
 	$("#taskAuthor textarea").val(evento.author),
-	urlFile = evento.file;
 	currentId = evento.idPosicion;
 	hora = evento.hour;
 	$("#timepicker1").val(hora);
+	$("#imaEvent").html("<img src='"+evento.fileUrl+"' />")
 	eventFile = evento.fileUrl;
 	facebook= stringToBoolean(""+evento.networks.facebook);
 	lightNetworks2("facebook");
