@@ -51,7 +51,7 @@ class Calendario extends ActiveRecord {
         $conditions = "usuario_id = {$id}";
         $eventos = array();
         if($cal->find_first($conditions)) {
-            $eventos = json_decode($cal->configuracion);
+            $eventos = json_decode($cal->configuracion, true);
         }
         return $eventos;
     }
