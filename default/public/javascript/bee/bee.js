@@ -333,7 +333,7 @@ function editEvents(evento){
 	currentId = evento.idPosicion;
 	hora = evento.hour;
 	$("#timepicker1").val(hora);
-	$("#imaEvent").html("<img src='"+evento.fileUrl+"' />")
+	$("#imaEvent").html("<img src='"+evento.urlFile+"' />")
 	eventFile = evento.fileUrl;
 	facebook= stringToBoolean(""+evento.networks.facebook);
 	lightNetworks2("facebook");
