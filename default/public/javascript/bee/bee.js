@@ -53,11 +53,14 @@ $(document).ready(function() {
     //al enviar el formulario
     $(':button').click(function(){
         //información del formulario
-        var formData = new FormData($(".formulario")[0]);
+        var formData = new FormData();
+        formData.append('archivo', $('#imagen')[0].files[0])
+        formData.append('fechaSelect', fechaSelect)
         var message = ""; 
+        
         //hacemos la petición ajax  
         $.ajax({
-            url: '../php/upload.php',  
+            url: PUBLIC_PATH + 'calendario/index/fileEventSave',
             type: 'POST',
             // Form data
             //datos del formulario

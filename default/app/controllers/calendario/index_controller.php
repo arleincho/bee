@@ -35,4 +35,50 @@ class IndexController extends BackendController {
         }
     }
 
+
+    public function fileEventSave() {
+
+        View::select(null, null);
+        $data = null;
+
+
+
+        if(Input::hasPost('fechaSelect')) {
+
+
+            $upload = new DwUpload('archivo', 'img/upload/eventos/');
+            $upload->setAllowedTypes('png|jpg|gif|jpeg|png');
+            $upload->setEncryptName(TRUE);
+
+                
+            if(!$data = $upload->save()) { //retorna un array('path'=>'ruta', 'name'=>'nombre.ext');
+                $data = array('error'=>TRUE, 'message'=>$upload->getError());
+            }else{
+                $fecha = Input::post('fechaSelect');
+                if ($fecha){
+                    $this->data = $data;
+                    $eventos = Calendario::getCalendario(Session::get('id'));
+                    $find = false;
+
+                    foreach ($eventos as $key => $value) {
+                        if ($value['start'] == $fecha){
+                            $find = true;
+                            $eventos[$key]['fileUrl'] = "img/upload/eventos/{$this->data['name']}";
+                        }
+                    }
+                    if (!$find){
+                        $eventos[] = array('start' => $fecha, 'fileUrl' => "img/upload/eventos/{$this->data['name']}");
+                    }
+                    $data = array('configuracion' => json_encode($eventos), 'usuario_id' => Session::get('id'));
+                    if(!Calendario::setCalendario('create', $data)){
+                        $this->data = array('error'=>TRUE, 'message'=>'El archivo no se subio!.');
+                    }
+                    $this->data = $eventos;
+                }
+                View::json();
+            }
+        }
+        
+    }
+
 }
