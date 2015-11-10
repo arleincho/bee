@@ -5295,6 +5295,7 @@ DayGrid.mixin({
 		var titleHtml;
 
 		classes.unshift('fc-day-grid-event', 'fc-h-event');
+		console.log('event.networks.facebook', event.networks.facebook)
 
 		// Only display a timed events time if it is the starting segment
 		if (seg.isStart) {
@@ -5324,40 +5325,40 @@ DayGrid.mixin({
 						titleHtml + ' ' + timeHtml : // put a natural space in between
 						timeHtml + ' ' + titleHtml   //
 						)*/
-					'<span class="horaEvento" style="font-size: 12px ! important;">'+
+					'<span class="horaEvento" style="font-size: 12px ! important; font-size: 12px !important;letter-spacing: 0;">'+
 						event.hour+
 					'</span>'+
-					'<span class="descripEvento" style="font-size: 12px ! important;">' + 
+					'<span class="descripEvento" style="font-size: 12px ! important; font-size: 12px !important;letter-spacing: 0;">' + 
 						event.constraint+
 					'</span>'+
 					'<span class="redesEvento">' +
 						(event.networks.facebook ?
 						'<i class="fa fa-facebook"></i>':
-						''
+						'<i></i>'
 						)+
 						(event.networks.twitter ?
 						'<i class="fa fa-twitter"></i>':
-						''
+						'<i></i>'
 						)+
 						(event.networks.instagram ?
 						'<i class="fa fa-instagram"></i>':
-						''
+						'<i></i>'
 						)+
 						(event.networks.linkedin ?
 						'<i class="fa fa-linkedin"></i>':
-						''
+						'<i></i>'
 						)+
 						(event.networks.pinterest ?
 						'<i class="fa fa-pinterest"></i>':
-						''
+						'<i></i>'
 						)+
 						(event.networks.youtube ?
 						'<i class="fa fa-youtube"></i>':
-						''
+						'<i></i>'
 						)+
 						(event.networks.plus ?
 						'<i class="fa fa-plus"></i>':
-						''
+						'<i></i>'
 						)+
 					'</span>'+
 				'</div>' +

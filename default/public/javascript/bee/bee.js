@@ -5,7 +5,6 @@ var linkedin = false;
 var pinterest = false;
 var youtube = false;
 var plus = false;
-var nameWinner= "";
 var urlFile="";
 var id=0;
 var currentId = 0;
@@ -102,7 +101,10 @@ function crearCalendario(){
 		eventStartEditable:true,
 		dragable:true,
 		fixedWeekCount :false,
-
+		droppable: true,
+		drop: function(date) {
+	        console.log("Dropped on " + date.format());
+	    },
 		
 	    eventClick: function(calEvent, jsEvent, view) {
 	        //alert('Event: ' + calEvent.title+', author:'+calEvent.author);
@@ -118,7 +120,7 @@ function crearCalendario(){
 
     var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     
-    var alto = $(window).width() / 2.4;
+    var alto = $(window).width() / 1.7;
 
     $('#calendar').fullCalendar('option', 'height', alto);
 
@@ -187,11 +189,11 @@ function crearCalendario(){
 	});
 	$("#save").click(function(){
 		var hora = $("#timepicker1").val();
-		
+		console.log("editando", editando);
 		//$('#calendar').fullCalendar( 'removeEventSource', Events);
 		if(editando == true){			
 			eventRefence.title= $("#taskText textarea").val(),
-			eventRefence.start = fechaSelect;
+			//eventRefence.start = fechaSelect;
 			eventRefence.constraint = $("#taskDescription textarea").val(); // defined below
 			eventRefence.color = '#257e4a';
 			eventRefence.author = $("#taskAuthor textarea").val();
@@ -206,12 +208,12 @@ function crearCalendario(){
 			eventRefence.networks.pinterest = pinterest;
 			eventRefence.networks.youtube = youtube;
 			eventRefence.networks.plus = plus;
-			eventRefence.winner = nameWinner;
-
 			console.log('editar evento');
 			console.log('eventRefence', eventRefence);
 			 $('#calendar').fullCalendar('updateEvent', eventRefence);
 		}else{
+			console.log("crear nuevo evento");
+			$('#calendar').fullCalendar('removeEvents');
 			newEvent = {
 				title: $("#taskText textarea").val(),
 				start: fechaSelect,
@@ -230,9 +232,9 @@ function crearCalendario(){
 					pinterest:pinterest,
 					youtube:youtube,
 					plus:plus
-				},
-				winner:nameWinner
+				}
 			};
+			Events.push(newEvent);
 			$('#calendar').fullCalendar( 'addEventSource', Events);
 		}
 		
@@ -254,6 +256,7 @@ function crearCalendario(){
 
 		console.log("Events = ", Events);
 
+
 	});
 	$("#WinnerButton").click(function(){
 		var texto = $(".texto").val();
@@ -263,8 +266,8 @@ function crearCalendario(){
 		var name= candidatos[winner];
 		$("#winnerName").text(name);
 
-		nameWinner = name;
-		$(".texto").val("");
+		
+		//$(".texto").val("");
 	});
 	$('#upload').click(function(){
 		$('#uploadModule').toggle( 'display' );
@@ -306,12 +309,14 @@ function crearCalendario(){
 	
 }
 function SetEventsCalendar(){
-	console.log('setevents ',Eventos.length);
-	$('#calendar').fullCalendar( 'addEventSource', Eventos);
-	if(Eventos != undefined || Eventos != null){
-		Events = Eventos;
-		id = Eventos.length;
-	}
+	setTimeout(function(){				
+		if(Eventos != undefined || Eventos != null){
+			console.log('setevents ',Eventos.length);
+			$('#calendar').fullCalendar( 'addEventSource', Eventos);
+			Events = Eventos;
+			id = Eventos.length;
+		}
+	},300);
 }
 function editEvents(evento){
 	console.log("edit event ",evento);
@@ -352,7 +357,6 @@ function editEvents(evento){
 	        default: return Boolean(string);
 	    }
 	}
-	nameWinner = evento.winner;
 	editando = true;
 	$("#agregar").show();
 }

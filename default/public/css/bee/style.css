@@ -7,6 +7,7 @@
 	font-weight: normal;
 	font-style: normal;
 }
+@import url(https://fonts.googleapis.com/css?family=Oswald);
 body{
 	padding: 0px;
 	margin: 0px;
@@ -398,6 +399,7 @@ article{
 }
 .fc-event .fc-content span{
     font-size: 16px !important;
+    font-family: Oswald,sans-serif;
 }
 .fc-event .fc-content span i{
     font-size: 15px;
@@ -583,16 +585,20 @@ article{
     }
 }
 .fc-content{
-    background: #999 none repeat scroll 0 0;
+    background: #9cbfc8 none repeat scroll 0 0;
+    border-top: 2px solid #444;
+    margin-top: 2px;
 }
 .horaEvento{
+    color: #fff !important;
     display: block;
     float: left;
     font-size: 10px !important;
+    font-weight: bold;
     overflow: hidden;
     padding-left: 6px;
     text-overflow: ellipsis;
-    width: 21%;
+    width: 40%;
     word-wrap: break-word;
 }
 .descripEvento{
@@ -600,14 +606,20 @@ article{
     float: left;
     font-size: 10px !important;
     overflow: hidden;
-    padding-left: 10px;
+    padding-left: 6px;
     text-align: left;
     text-overflow: ellipsis;
-    width: 65%;
+    width: 48%;
     word-wrap: break-word;
+    color: #fff !important;
 }
 .redesEvento{
+    margin-bottom: 5px;
+    padding-left: 5px;
     display: block;
     float: left;
-    width: 100%;
+    width: 50%;
+}
+.redesEvento i {
+    width: 15px;
 }
