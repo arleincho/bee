@@ -62,18 +62,20 @@ class IndexController extends BackendController {
 
                     foreach ($eventos as $key => $value) {
                         if ($value['start'] == $fecha){
+                            $return = $value;
                             $find = true;
                             $eventos[$key]['urlFile'] = "img/upload/eventos/{$this->data['name']}";
                         }
                     }
                     if (!$find){
-                        $eventos[] = array('start' => $fecha, '⁠⁠⁠urlFile' => "img/upload/eventos/{$this->data['name']}");
+                        $return = array('start' => $fecha, '⁠⁠⁠urlFile' => "img/upload/eventos/{$this->data['name']}");
+                        $eventos[] = $data;
                     }
                     $data = array('configuracion' => json_encode($eventos), 'usuario_id' => Session::get('id'));
                     if(!Calendario::setCalendario('create', $data)){
-                        $this->data = array('error'=>TRUE, 'message'=>'El archivo no se subio!.');
+                        $return = array('error'=>TRUE, 'message'=>'El archivo no se subio!.');
                     }
-                    $this->data = $eventos;
+                    $this->data = $return;
                 }
                 View::json();
             }
