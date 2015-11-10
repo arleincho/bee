@@ -136,7 +136,27 @@ article{
     font-size: 15px;
     margin-left: 5px;
     margin-top: 8px;
-}  
+} 
+#buttonsCalendar {
+    clear: both;
+    display: block;
+    float: right;
+}
+#buttonsCalendar {
+    clear: both;
+    display: block;
+    float: right;
+    width: 90px;
+}
+.arrow {
+    display: block;
+    float: left;
+    font-size: 18px;
+    margin-top: -4px;
+    padding-left: 5px;
+    padding-right: 5px;
+    cursor: pointer;
+}
 #iconos i{
     display: block;
     float: right;
@@ -378,6 +398,12 @@ article{
 }
 .fc-event .fc-content span{
     font-size: 16px !important;
+}
+.fc-event .fc-content span i{
+    font-size: 15px;
+}
+.fc-event .fc-content span i:before{
+    font-size: 12px;
 }
 .fc-day-header{
     border: medium hidden !important;

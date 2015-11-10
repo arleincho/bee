@@ -128,10 +128,26 @@ function crearCalendario(){
 
 
     $( ".fc-left" ).empty();
-   	$( ".fc-left" ).append('<h2 style="display: block; float: right">' + months[month] + '</h2><span style="display: block; float: right; clear: both; margin-top: -14px; position: relative;">'+year+'</span>');
-
+   	$( ".fc-left" ).append('<h2 style="display: block; float: right">' + months[month] + 
+   		'</h2>'+
+   			'<span id="buttonsCalendar">'+
+	   			'<span id="prevButton" class="arrow">'+
+	   				'<i class="fa fa-chevron-left"></i>'+
+	   			'</span>'+
+	   			'<span id="nextButton" class="arrow">'+
+	   				'<i class="fa fa-chevron-right"></i>'+
+	   			'</span>'+
+	   			'<span style="display: block; float: right; margin-top: -14px; position: relative;">'+
+   				year+'</span>'+
+	   		'</span>');
+   			
    	var newEvent;
-
+   	$("#prevButton").click(function(){
+   		$('#calendar').fullCalendar('prev');
+   	});
+   	$("#nextButton").click(function(){
+   		$('#calendar').fullCalendar('next');
+   	});
 	$(".fc-day").click(function(){
 		fechaSelect = $(this).context.dataset.date;
 

@@ -5330,7 +5330,7 @@ DayGrid.mixin({
 					'<span class="descripEvento" style="font-size: 12px ! important;">' + 
 						event.constraint+
 					'</span>'+
-					'<span class="redesEvento" style="font-size: 12px ! important;">' +
+					'<span class="redesEvento">' +
 						(event.networks.facebook ?
 						'<i class="fa fa-facebook"></i>':
 						''
