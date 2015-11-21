@@ -5293,10 +5293,31 @@ DayGrid.mixin({
 		var timeHtml = '';
 		var timeText;
 		var titleHtml;
+		var colorSocial;
 
 		classes.unshift('fc-day-grid-event', 'fc-h-event');
-		console.log('event.networks.facebook', event.networks.facebook)
 
+		if(event.networks.facebook == "true"){
+			colorSocial = "faceColor";
+		}
+		if(event.networks.twitter == "true"){
+			colorSocial = "tweetColor";
+		}
+		if(event.networks.instagram == "true"){
+			colorSocial = "instaColor";
+		}
+		if(event.networks.linkedin == "true"){
+			colorSocial = "linkColor";
+		}
+		if(event.networks.pinterest == "true"){
+			colorSocial = "pinColor";
+		}
+		if(event.networks.youtube == "true"){
+			colorSocial = "youColor";
+		}
+		if(event.networks.plus == "true"){
+			colorSocial = "googleColor";
+		}
 		// Only display a timed events time if it is the starting segment
 		if (seg.isStart) {
 			timeText = this.getEventTimeText(event);
@@ -5320,45 +5341,48 @@ DayGrid.mixin({
 					''
 					) +
 			'>' +
-				'<div class="fc-content">' +
+				'<div class="fc-content '+colorSocial+'">' +
 					/*(this.isRTL ?
 						titleHtml + ' ' + timeHtml : // put a natural space in between
 						timeHtml + ' ' + titleHtml   //
 						)*/
-					'<span class="horaEvento" style="font-size: 12px ! important; font-size: 12px !important;letter-spacing: 0;">'+
+					'<span class="horaEvento" style="line-height: 17px;font-size: 10px ! important; width: 30%; font-size: 10px !important;letter-spacing: 0;">'+
 						event.hour+
 					'</span>'+
-					'<span class="descripEvento" style="font-size: 12px ! important; font-size: 12px !important;letter-spacing: 0;">' + 
+					'<span class="descripEvento" style="line-height: 17px;font-size: 12px ! important; border-left: 1px solid #fff; text-align:left !important; font-size: 12px !important;letter-spacing: 0;">' + 
 						event.constraint+
 					'</span>'+
+					'<span class="descripEvento" style="line-height: 17px;font-weight: 800;border-left: 1px solid;font-size: 12px ! important; text-align:left !important; font-size: 12px !important;letter-spacing: 0;">' + 
+						event.author+
+					'</span>'+
 					'<span class="redesEvento">' +
-						(event.networks.facebook ?
+						(event.networks.facebook == "true"?
 						'<i class="fa fa-facebook"></i>':
-						'<i></i>'
+						''
 						)+
-						(event.networks.twitter ?
+						(event.networks.twitter == "true" ?
 						'<i class="fa fa-twitter"></i>':
-						'<i></i>'
+						''
 						)+
-						(event.networks.instagram ?
+						(event.networks.instagram == "true" ?
 						'<i class="fa fa-instagram"></i>':
-						'<i></i>'
+						''
 						)+
-						(event.networks.linkedin ?
+						(event.networks.linkedin == "true" ?
 						'<i class="fa fa-linkedin"></i>':
-						'<i></i>'
+						''
 						)+
-						(event.networks.pinterest ?
+						(event.networks.pinterest == "true" ?
 						'<i class="fa fa-pinterest"></i>':
-						'<i></i>'
+						''
 						)+
-						(event.networks.youtube ?
+						(event.networks.youtube == "true" ?
 						'<i class="fa fa-youtube"></i>':
-						'<i></i>'
+						''
 						)+
-						(event.networks.plus ?
-						'<i class="fa fa-plus"></i>':
-						'<i></i>'
+						(event.networks.plus == "true" ?
+						'<i class="fa fa-google"></i>':
+						''
 						)+
 					'</span>'+
 				'</div>' +

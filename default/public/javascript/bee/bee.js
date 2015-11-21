@@ -1,10 +1,10 @@
-var facebook = false;
-var twitter = false;
-var instagram = false;
-var linkedin = false;
-var pinterest = false;
-var youtube = false;
-var plus = false;
+var facebook = "false";
+var twitter = "false";
+var instagram = "false";
+var linkedin = "false";
+var pinterest = "false";
+var youtube = "false";
+var plus = "false";
 var urlFile="";
 var id=0;
 var currentId = 0;
@@ -77,11 +77,11 @@ $(document).ready(function() {
             success: function(data){
                 message = $("<span class='success'>Done!</span>");
                 showMessage(message);
-                $("#imaEvent").html("<img src='../"+data.urlFile+"' />");
+                $("#imaEvent").html("<img src='http://beesocialgroup.com/test/default/public/"+data.urlFile+"' />");
                 //$(".showImage").html("<img src='files/"+fileName+"' />");
                 $('#imagen').val("");
                 urlFile = data.urlFile;
-                eventFile = "../upload/"+fileName;
+                eventFile = data.urlFile;
                 console.log('data:', data);
             },
             //si ha ocurrido un error
@@ -167,13 +167,13 @@ function crearCalendario(){
 		$("#taskAuthor textarea").click(function(){$("#taskAuthor textarea").val("");});
 
 		//setear iconos redes deseleccionados
-		facebook = false;
-		twitter = false;
-		instagram = false;
-		linkedin = false;
-		pinterest = false;
-		youtube = false;
-		plus = false;
+		facebook = "false";
+		twitter = "false";
+		instagram = "false";
+		linkedin = "false";
+		pinterest = "false";
+		youtube = "false";
+		plus = "false";
 		$('#redes ul li #facebook').css('color', '#333');
 		$('#redes ul li #twitter').css('color', '#333');
 		$('#redes ul li #instagram').css('color', '#333');
@@ -186,6 +186,8 @@ function crearCalendario(){
 
 	$("#discard").click(function(){
 		$("#agregar").hide();
+		$("#imaEvent").html("<img src='' />");
+		editando = false;
 	});
 	//click redes
 	$(".fa").click(function(){
@@ -213,7 +215,7 @@ function crearCalendario(){
 			eventRefence.networks.youtube = youtube;
 			eventRefence.networks.plus = plus;
 			console.log('editar evento');
-			console.log('eventRefence', eventRefence);
+			console.log('urlFile ', urlFile);
 			 $('#calendar').fullCalendar('updateEvent', eventRefence);
 		}else{
 			console.log("crear nuevo evento");
@@ -250,7 +252,8 @@ function crearCalendario(){
 			dataType: "json",
 			url: PUBLIC_PATH + 'calendario/index/guardar',
 			success: function(data){
-				console.log(data)
+				console.log(data);
+				urlFile = data.urlFile;
 			}
 		})
 		$("#agregar").hide();
@@ -334,21 +337,21 @@ function editEvents(evento){
 	currentId = evento.idPosicion;
 	hora = evento.hour;
 	$("#timepicker1").val(hora);
-	$("#imaEvent").html("<img src='../"+evento.urlFile+"' />")
+	$("#imaEvent").html("<img src='http://beesocialgroup.com/test/default/public/"+evento.urlFile+"' />")
 	eventFile = evento.fileUrl;
-	facebook= stringToBoolean(""+evento.networks.facebook);
+	facebook= evento.networks.facebook;
 	lightNetworks2("facebook");
-	twitter= stringToBoolean(""+evento.networks.twitter);
+	twitter= evento.networks.twitter;
 	lightNetworks2("twitter");
-	instagram=stringToBoolean(""+ evento.networks.instagram);
+	instagram= evento.networks.instagram;
 	lightNetworks2("instagram");
-	linkedin= stringToBoolean(""+evento.networks.linkedin);
+	linkedin= evento.networks.linkedin;
 	lightNetworks2("linkedin");
-	pinterest= stringToBoolean(""+evento.networks.pinterest);
+	pinterest= evento.networks.pinterest;
 	lightNetworks2("pinterest");
-	youtube= stringToBoolean(""+evento.networks.youtube);
+	youtube= evento.networks.youtube;
 	lightNetworks2("youtube");
-	plus= stringToBoolean(""+evento.networks.plus);
+	plus= evento.networks.plus;
 	lightNetworks2("plus");
 
 
@@ -356,8 +359,8 @@ function editEvents(evento){
 	function stringToBoolean(string){
 		console.log('string rec',string)
 	    switch(string.toLowerCase().trim()){
-	        case "true": case "yes": case "1": return true;
-	        case "false": case "no": case "0": case null: return false;
+	        case "true": case "yes": case "1": return "true";
+	        case "false": case "no": case "0": case null: return "false";
 	        default: return Boolean(string);
 	    }
 	}
@@ -368,65 +371,149 @@ function editEvents(evento){
 function lightNetworks(idButton){
 	switch(idButton){
 			case "facebook":
-			if(facebook == true){
-				facebook = false;
+			twitter = "false";
+			$('#redes ul li #twitter').css('color', '#333');
+			instagram = "false";
+			$('#redes ul li #instagram').css('color', '#333');
+			linkedin = "false";
+			$('#redes ul li #linkedin').css('color', '#333');
+			pinterest = "false";
+			$('#redes ul li #pinterest').css('color', '#333');
+			youtube = "false";
+			$('#redes ul li #youtube').css('color', '#333');
+			plus = "false";
+			$('#redes ul li #plus').css('color', '#333');
+			if(facebook == "true"){
+				facebook = "false";
 				$('#redes ul li #facebook').css('color', '#333');
 			}else{
 				$('#redes ul li #facebook').css('color', '#3a5a98');
-				facebook = true;				
+				facebook = "true";				
 			}
 			break;
 			case "twitter":
-			if(twitter){
-				twitter = false;
+			facebook = "false";
+			$('#redes ul li #facebook').css('color', '#333');
+			instagram = "false";
+			$('#redes ul li #instagram').css('color', '#333');
+			linkedin = "false";
+			$('#redes ul li #linkedin').css('color', '#333');
+			pinterest = "false";
+			$('#redes ul li #pinterest').css('color', '#333');
+			youtube = "false";
+			$('#redes ul li #youtube').css('color', '#333');
+			plus = "false";
+			$('#redes ul li #plus').css('color', '#333');
+			if(twitter == "true"){
+				twitter = "false";
 				$('#redes ul li #twitter').css('color', '#333');
 			}else{
-				twitter = true;				
+				twitter = "true";				
 				$('#redes ul li #twitter').css('color', '#60caef');
 			}
 			break;
 			case "instagram":
-			if(instagram){
-				instagram = false;
+			facebook = "false";
+			$('#redes ul li #facebook').css('color', '#333');
+			twitter = "false";
+			$('#redes ul li #twitter').css('color', '#333');
+			linkedin = "false";
+			$('#redes ul li #linkedin').css('color', '#333');
+			pinterest = "false";
+			$('#redes ul li #pinterest').css('color', '#333');
+			youtube = "false";
+			$('#redes ul li #youtube').css('color', '#333');
+			plus = "false";
+			$('#redes ul li #plus').css('color', '#333');
+			if(instagram == "true"){
+				instagram = "false";
 				$('#redes ul li #instagram').css('color', '#333');
 			}else{
-				instagram = true;	
+				instagram = "true";	
 				$('#redes ul li #instagram').css('color', '#326699');
 			}
 			break;
 			case "linkedin":
-			if(linkedin){
-				linkedin = false;
+			facebook = "false";
+			$('#redes ul li #facebook').css('color', '#333');
+			twitter = "false";
+			$('#redes ul li #twitter').css('color', '#333');
+			instagram = "false";
+			$('#redes ul li #instagram').css('color', '#333');
+			pinterest = "false";
+			$('#redes ul li #pinterest').css('color', '#333');
+			youtube = "false";
+			$('#redes ul li #youtube').css('color', '#333');
+			plus = "false";
+			$('#redes ul li #plus').css('color', '#333');
+			if(linkedin == "true"){
+				linkedin = "false";
 				$('#redes ul li #linkedin').css('color', '#333');
 			}else{
-				linkedin = true;	
+				linkedin = "true";	
 				$('#redes ul li #linkedin').css('color', '#0177b5');
 			}
 			break;
 			case "pinterest":
-			if(pinterest){
-				pinterest = false;
+			facebook = "false";
+			$('#redes ul li #facebook').css('color', '#333');
+			twitter = "false";
+			$('#redes ul li #twitter').css('color', '#333');
+			instagram = "false";
+			$('#redes ul li #instagram').css('color', '#333');
+			linkedin = "false";
+			$('#redes ul li #linkedin').css('color', '#333');
+			youtube = "false";
+			$('#redes ul li #youtube').css('color', '#333');
+			plus = "false";
+			$('#redes ul li #plus').css('color', '#333');
+			if(pinterest == "true"){
+				pinterest = "false";
 				$('#redes ul li #pinterest').css('color', '#333');
 			}else{
-				pinterest = true;
+				pinterest = "true";
 				$('#redes ul li #pinterest').css('color', '#840d16');
 			}
 			break;
 			case "youtube":
-			if(youtube){
-				youtube = false;
+			facebook = "false";
+			$('#redes ul li #facebook').css('color', '#333');
+			twitter = "false";
+			$('#redes ul li #twitter').css('color', '#333');
+			instagram = "false";
+			$('#redes ul li #instagram').css('color', '#333');
+			linkedin = "false";
+			$('#redes ul li #linkedin').css('color', '#333');
+			pinterest = "false";
+			$('#redes ul li #pinterest').css('color', '#333');
+			plus = "false";
+			$('#redes ul li #plus').css('color', '#333');
+			if(youtube == "true"){
+				youtube = "false";
 				$('#redes ul li #youtube').css('color', '#333');
 			}else{
-				youtube = true;		
+				youtube = "true";		
 				$('#redes ul li #youtube').css('color', '#ca2128');
 			}
 			break;
 			case "plus":
-			if(plus){
-				plus = false;
+			facebook = "false";
+			$('#redes ul li #facebook').css('color', '#333');
+			twitter = "false";
+			$('#redes ul li #twitter').css('color', '#333');
+			instagram = "false";
+			$('#redes ul li #instagram').css('color', '#333');
+			linkedin = "false";
+			$('#redes ul li #linkedin').css('color', '#333');
+			pinterest = "false";
+			$('#redes ul li #pinterest').css('color', '#333');
+			youtube = "false";
+			$('#redes ul li #youtube').css('color', '#333');
+			if(plus == "true"){
+				plus = "false";
 				$('#redes ul li #plus').css('color', '#333');
 			}else{
-				plus = true;		
+				plus = "true";		
 				$('#redes ul li #plus').css('color', '#e54a55');	
 			}
 			break;
@@ -435,49 +522,49 @@ function lightNetworks(idButton){
 function lightNetworks2(idButton){
 	switch(idButton){
 			case "facebook":
-			if(facebook == false){
+			if(facebook == "false"){
 				$('#redes ul li #facebook').css('color', '#333');
 			}else{
 				$('#redes ul li #facebook').css('color', '#3a5a98');				
 			}
 			break;
 			case "twitter":
-			if(twitter == false){
+			if(twitter == "false"){
 				$('#redes ul li #twitter').css('color', '#333');
 			}else{			
 				$('#redes ul li #twitter').css('color', '#60caef');
 			}
 			break;
 			case "instagram":
-			if(instagram == false){
+			if(instagram == "false"){
 				$('#redes ul li #instagram').css('color', '#333');
 			}else{
 				$('#redes ul li #instagram').css('color', '#326699');
 			}
 			break;
 			case "linkedin":
-			if(linkedin == false){
+			if(linkedin == "false"){
 				$('#redes ul li #linkedin').css('color', '#333');
 			}else{	
 				$('#redes ul li #linkedin').css('color', '#0177b5');
 			}
 			break;
 			case "pinterest":
-			if(pinterest == false){
+			if(pinterest == "false"){
 				$('#redes ul li #pinterest').css('color', '#333');
 			}else{
 				$('#redes ul li #pinterest').css('color', '#840d16');
 			}
 			break;
 			case "youtube":
-			if(youtube == false){
+			if(youtube == "false"){
 				$('#redes ul li #youtube').css('color', '#333');
 			}else{	
 				$('#redes ul li #youtube').css('color', '#ca2128');
 			}
 			break;
 			case "plus":
-			if(plus == false){
+			if(plus == "false"){
 				$('#redes ul li #plus').css('color', '#333');
 			}else{	
 				$('#redes ul li #plus').css('color', '#e54a55');	

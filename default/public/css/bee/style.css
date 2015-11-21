@@ -405,7 +405,7 @@ article{
     font-size: 15px;
 }
 .fc-event .fc-content span i:before{
-    font-size: 12px;
+    font-size: 14px;
 }
 .fc-day-header{
     border: medium hidden !important;
@@ -585,9 +585,12 @@ article{
     }
 }
 .fc-content{
-    background: #9cbfc8 none repeat scroll 0 0;
+    background: #00c1b8 none repeat scroll 0 0;
     border-top: 2px solid #444;
     margin-top: 2px;
+}
+.fc-content :before{
+    color: #fff !important;
 }
 .horaEvento{
     color: #fff !important;
@@ -602,28 +605,55 @@ article{
     word-wrap: break-word;
 }
 .descripEvento{
+    color: #fff !important;
     display: block;
-    float: left;
+    float: right;
     font-size: 10px !important;
     overflow: hidden;
     padding-left: 6px;
     text-align: left;
     text-overflow: ellipsis;
-    width: 48%;
+    width: 58%;
     word-wrap: break-word;
-    color: #fff !important;
 }
 .redesEvento{
-    margin-bottom: 5px;
-    padding-left: 5px;
     display: block;
     float: left;
-    width: 50%;
+    margin-bottom: 5px;
+    padding-left: 5px;
+    text-align: center;
+    width: 30%;
 }
 .redesEvento i {
     width: 15px;
 }
 #imaEvent{
-    width: 100%;
     display: block;
+    max-width: 322px;
+    padding: 14px;
+    width: 100%;
+}
+#imaEvent img{
+    width: 100%;
+}
+.faceColor{
+     background: #3a5a98 none repeat scroll 0 0 !important;
+}
+.tweetColor{
+     background: #60caef none repeat scroll 0 0 !important;
+}
+.instaColor{
+     background: #326699 none repeat scroll 0 0 !important;
+}
+.linkColor{
+     background: #0177b5 none repeat scroll 0 0 !important;
+}
+.pinColor{
+     background: #840d16 none repeat scroll 0 0 !important;
+}
+.youColor{
+     background: #ca2128 none repeat scroll 0 0 !important;
+}
+.googleColor{
+     background: #e54a55 none repeat scroll 0 0 !important;
 }
