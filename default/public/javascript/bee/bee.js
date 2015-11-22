@@ -71,23 +71,22 @@ $(document).ready(function() {
             //mientras enviamos el archivo
             beforeSend: function(){
                 message = $("<span class='before'>Uploading file...</span>");
-                showMessage(message)        
             },
             //una vez finalizado correctamente
             success: function(data){
                 message = $("<span class='success'>Done!</span>");
-                showMessage(message);
                 $("#imaEvent").html("<img src='http://beesocialgroup.com/test/default/public/"+data.urlFile+"' />");
                 //$(".showImage").html("<img src='files/"+fileName+"' />");
                 $('#imagen').val("");
-                urlFile = data.urlFile;
-                eventFile = data.urlFile;
+                urlFile = 'http://beesocialgroup.com/test/default/public/'+data.urlFile;
+                eventFile = 'http://beesocialgroup.com/test/default/public/'+data.urlFile;
                 console.log('data:', data);
+                console.log('data.urlFile:', data.urlFile);
             },
             //si ha ocurrido un error
-            error: function(){
+            error: function(e){
                 message = $("<span class='error'>Error.</span>");
-                showMessage(message);
+                console.log('data.error ', e);
             }
         });
     });
@@ -155,11 +154,13 @@ function crearCalendario(){
    		$('#calendar').fullCalendar('next');
    	});
 	$(".fc-day").click(function(){
+		console.log('crear evento nuevo')
 		fechaSelect = $(this).context.dataset.date;
 
 		$("#taskText textarea").val("add task");
 		$("#taskDescription textarea").val("add description");
 		$("#taskAuthor textarea").val("author name");
+		$("#imaEvent").html('');
 		$("#agregar").show();
 
 		$("#taskText textarea").click(function(){$("#taskText textarea").val("");})
@@ -197,7 +198,8 @@ function crearCalendario(){
 		var hora = $("#timepicker1").val();
 		console.log("editando", editando);
 		//$('#calendar').fullCalendar( 'removeEventSource', Events);
-		if(editando == true){			
+		if(editando == true){		
+			console.log("modificar evento")	
 			eventRefence.title= $("#taskText textarea").val(),
 			//eventRefence.start = fechaSelect;
 			eventRefence.constraint = $("#taskDescription textarea").val(); // defined below
@@ -206,7 +208,7 @@ function crearCalendario(){
 			eventRefence.urlFile = urlFile;
 			eventRefence.idPosicion = id;
 			eventRefence.hour = hora;
-			eventRefence.fileUrl = eventFile;
+			eventRefence.fileUrl = urlFile;
 			eventRefence.networks.facebook = facebook;
 			eventRefence.networks.twitter = twitter;
 			eventRefence.networks.instagram = instagram;
@@ -229,7 +231,7 @@ function crearCalendario(){
 				urlFile: urlFile,
 				idPosicion:id,
 				hour:hora,
-				fileUrl:eventFile,
+				fileUrl:urlFile,
 				networks:{
 					facebook:facebook,
 					twitter:twitter,
@@ -337,8 +339,8 @@ function editEvents(evento){
 	currentId = evento.idPosicion;
 	hora = evento.hour;
 	$("#timepicker1").val(hora);
-	$("#imaEvent").html("<img src='http://beesocialgroup.com/test/default/public/"+evento.urlFile+"' />")
-	eventFile = evento.fileUrl;
+	$("#imaEvent").html("<img src='"+evento.urlFile+"' />")
+	eventFile = evento.urlFile;
 	facebook= evento.networks.facebook;
 	lightNetworks2("facebook");
 	twitter= evento.networks.twitter;
