@@ -76,7 +76,7 @@ $(document).ready(function() {
             //una vez finalizado correctamente
             success: function(data){
                 message = $("<span class='success'>Done!</span>");
-                $("#imaEvent").html("<img src='"+data.urlFile+"' />");
+                $("#imaEvent").html("<img src='"+ PUBLIC_PATH + data.urlFile+"' />");
                 //$(".showImage").html("<img src='files/"+fileName+"' />");
                 $('#imagen').val("");
                 urlFile = data.urlFile;
@@ -191,8 +191,6 @@ function crearCalendario(){
 		$("#taskDescription textarea").click(function(){$("#taskDescription textarea").val("");})
 		$("#taskAuthor textarea").click(function(){$("#taskAuthor textarea").val("");});
 
-		//setear iconos redes deseleccionados
-		plus = "false";
 		$('#redes ul li #facebook').css('color', '#333');
 		$('#redes ul li #twitter').css('color', '#333');
 		$('#redes ul li #instagram').css('color', '#333');
@@ -357,7 +355,7 @@ function editEvents(evento){
 	currentId = evento.idPosicion;
 	hora = evento.hour;
 	$("#timepicker1").val(hora);
-	$("#imaEvent").html("<img src='"+evento.urlFile+"' />")
+	$("#imaEvent").html("<img src='"+PUBLIC_PATH+evento.urlFile+"' />")
 	eventFile = evento.urlFile;
 	facebook= evento.networks.facebook;
 	lightNetworks2("facebook");
