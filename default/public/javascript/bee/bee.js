@@ -271,7 +271,7 @@ function crearCalendario(){
 
 		$.ajax({
 			type: "POST",
-			data: {eventos: $('#calendar').fullCalendar('clientEvents');},
+			data: {eventos: $('#calendar').fullCalendar('clientEvents')},
 			dataType: "json",
 			url: PUBLIC_PATH + 'calendario/index/guardar',
 			success: function(data){
