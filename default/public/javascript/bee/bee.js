@@ -232,7 +232,8 @@ function crearCalendario(){
 			eventRefence.networks.plus = plus;
 			console.log('editar evento');
 			console.log('urlFile ', urlFile);
-			 $('#calendar').fullCalendar('updateEvent', eventRefence);
+			$('#calendar').fullCalendar('updateEvent', eventRefence);
+			Events = $('#calendar').fullCalendar( 'clientEvents');
 		}else{
 			console.log("crear nuevo evento");
 			$('#calendar').fullCalendar('removeEvents');
