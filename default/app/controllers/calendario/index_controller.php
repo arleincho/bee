@@ -60,13 +60,16 @@ class IndexController extends BackendController {
                     $eventos = Calendario::getCalendario(Session::get('id'));
                     $find = false;
 
-                    foreach ($eventos as $key => $value) {
-                        if (isset($value['start']) && $value['start'] == $fecha){
-                            $find = true;
-                            $eventos[$key]['urlFile'] = "img/upload/eventos/{$this->data['name']}";
-                            $return = $eventos[$key];
+                    if (count($eventos) > 0){
+                        foreach ($eventos as $key => $value) {
+                            if (isset($value['start']) && $value['start'] == $fecha){
+                                $find = true;
+                                $eventos[$key]['urlFile'] = "img/upload/eventos/{$this->data['name']}";
+                                $return = $eventos[$key];
+                            }
                         }
                     }
+
                     if (!$find){
                         $return = array('start' => $fecha, '⁠⁠⁠urlFile' => "img/upload/eventos/{$this->data['name']}");
                         $eventos[] = $data;
