@@ -233,7 +233,7 @@ function crearCalendario(){
 			console.log('editar evento');
 			console.log('urlFile ', urlFile);
 			$('#calendar').fullCalendar('updateEvent', eventRefence);
-			Events[tv.getIndexBy("start", eventRefence.start)] = eventRefence;
+			// Events[tv.getIndexBy("start", eventRefence.start)] = eventRefence;
 			console.log(Events)
 		}else{
 			console.log("crear nuevo evento");
@@ -591,10 +591,10 @@ function lightNetworks2(idButton){
 		}
 }
 
-Array.prototype.getIndexBy = function (name, value) {
-    for (var i = 0; i < this.length; i++) {
-        if (this[i][name] == value) {
-            return i;
-        }
-    }
-}
+// Array.prototype.getIndexBy = function (name, value) {
+//     for (var i = 0; i < this.length; i++) {
+//         if (this[i][name] == value) {
+//             return i;
+//         }
+//     }
+// }
