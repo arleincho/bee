@@ -240,7 +240,7 @@ function crearCalendario(){
 			Events[i] = eventRefence;
 			
 			// Events = $('#calendar').fullCalendar( 'clientEvents');
-			Events[tv.getIndexBy("start", eventRefence.start)] = eventRefence;
+			// Events[tv.getIndexBy("start", eventRefence.start)] = eventRefence;
 			// console.log(Events)
 		}else{
 			console.log("crear nuevo evento");
