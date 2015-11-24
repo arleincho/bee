@@ -111,7 +111,6 @@ function crearCalendario(){
 		
 	    eventClick: function(calEvent, jsEvent, view) {
 	        //alert('Event: ' + calEvent.title+', author:'+calEvent.author);
-	        console.log(calEvent, jsEvent, view)
 	        editEvents(calEvent);
 	    },
 	    dayMouseover: function( event, jsEvent, view ) {
@@ -234,9 +233,9 @@ function crearCalendario(){
 			console.log('editar evento');
 			console.log('urlFile ', urlFile);
 			$('#calendar').fullCalendar('updateEvent', eventRefence);
-			i = Events.getIndexBy("start", fechaSelect)
+			// i = Events.getIndexBy("start", fechaSelect)
 			
-			Events[i] = eventRefence;
+			// Events[i] = eventRefence;
 			
 			// Events = $('#calendar').fullCalendar( 'clientEvents');
 			// Events[tv.getIndexBy("start", eventRefence.start)] = eventRefence;
@@ -272,7 +271,7 @@ function crearCalendario(){
 
 		$.ajax({
 			type: "POST",
-			data: {eventos: Events},
+			data: {eventos: $('#calendar').fullCalendar('clientEvents')},
 			dataType: "json",
 			url: PUBLIC_PATH + 'calendario/index/guardar',
 			success: function(data){
@@ -350,7 +349,6 @@ function SetEventsCalendar(){
 	},300);
 }
 function editEvents(evento){
-	console.log(evento)
 	console.log("edit event ",evento);
 	eventRefence = evento;
 	$("#taskText textarea").val(evento.title);
