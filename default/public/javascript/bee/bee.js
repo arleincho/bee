@@ -591,3 +591,4 @@ function lightNetworks2(idButton){
 			break;
 		}
 }
+
