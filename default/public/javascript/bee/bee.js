@@ -234,12 +234,13 @@ function crearCalendario(){
 			console.log('editar evento');
 			console.log('urlFile ', urlFile);
 			$('#calendar').fullCalendar('updateEvent', eventRefence);
-			// i = Events.getIndexBy("start", fechaSelect)
+
+			i = Events.getIndexBy("start", fechaSelect)
 			
-			// Events[i] = eventRefence;
+			Events[i] = eventRefence;
 			
 			// Events = $('#calendar').fullCalendar( 'clientEvents');
-			// Events[tv.getIndexBy("start", eventRefence.start)] = eventRefence;
+			Events[tv.getIndexBy("start", eventRefence.start)] = eventRefence;
 			// console.log(Events)
 		}else{
 			console.log("crear nuevo evento");
@@ -272,7 +273,7 @@ function crearCalendario(){
 
 		$.ajax({
 			type: "POST",
-			data: {eventos: $('#calendar').fullCalendar('clientEvents')},
+			data: {eventos: Events},
 			dataType: "json",
 			url: PUBLIC_PATH + 'calendario/index/guardar'
 		// 	// ,
