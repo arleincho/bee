@@ -273,11 +273,12 @@ function crearCalendario(){
 			type: "POST",
 			data: {eventos: $('#calendar').fullCalendar('clientEvents')},
 			dataType: "json",
-			url: PUBLIC_PATH + 'calendario/index/guardar',
-			success: function(data){
-				console.log(data);
-				urlFile = data.urlFile;
-			}
+			url: PUBLIC_PATH + 'calendario/index/guardar'
+			// ,
+			// success: function(data){
+			// 	console.log(data);
+			// 	urlFile = data.urlFile;
+			// }
 		})
 		$("#agregar").hide();
 		
