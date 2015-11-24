@@ -54,6 +54,7 @@ $(document).ready(function() {
         var formData = new FormData();
         formData.append('archivo', $('#imagen')[0].files[0])
         formData.append('fechaSelect', fechaSelect)
+        formData.append('hora', $("#timepicker1").val())
         var message = ""; 
         
         //hacemos la petición ajax  
@@ -587,3 +588,4 @@ function lightNetworks2(idButton){
 			break;
 		}
 }
+
