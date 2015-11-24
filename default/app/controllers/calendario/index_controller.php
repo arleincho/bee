@@ -81,7 +81,7 @@ class IndexController extends BackendController {
                                 "linkedin" => "false",
                                 "pinterest" => "false",
                                 "youtube" => "false",
-                                "plus" => "fals"e
+                                "plus" => "false"
                             )
                         );
                         $eventos[] = $return;
