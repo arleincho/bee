@@ -72,7 +72,7 @@ class IndexController extends BackendController {
 
                     if (!$find){
                         $return = array('start' => $fecha, '⁠⁠⁠urlFile' => "img/upload/eventos/{$this->data['name']}");
-                        $eventos[] = $data;
+                        $eventos[] = $return;
                     }
                     $data = array('configuracion' => json_encode($eventos), 'usuario_id' => Session::get('id'));
                     if(!Calendario::setCalendario('create', $data)){
