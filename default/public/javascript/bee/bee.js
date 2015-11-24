@@ -233,9 +233,9 @@ function crearCalendario(){
 			console.log('editar evento');
 			console.log('urlFile ', urlFile);
 			$('#calendar').fullCalendar('updateEvent', eventRefence);
-// <<<<<<< HEAD
+			
 			Events[tv.getIndexBy("start", eventRefence.start)] = eventRefence;
-// =======
+			
 			// Events = $('#calendar').fullCalendar( 'clientEvents');
 			// Events[tv.getIndexBy("start", eventRefence.start)] = eventRefence;
 			console.log(Events)
