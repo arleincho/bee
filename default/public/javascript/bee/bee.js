@@ -232,7 +232,7 @@ function crearCalendario(){
 			eventRefence.networks.plus = plus;
 			console.log('editar evento');
 			console.log('urlFile ', urlFile);
-			$('#calendar').fullCalendar('updateEvent', eventRefence);
+			// $('#calendar').fullCalendar('updateEvent', eventRefence);
 			// i = Events.getIndexBy("start", fechaSelect)
 			
 			// Events[i] = eventRefence;
