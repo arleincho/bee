@@ -64,14 +64,14 @@ class IndexController extends BackendController {
                         foreach ($eventos as $key => $value) {
                             if (isset($value['start']) && $value['start'] == $fecha){
                                 $find = true;
-                                $eventos[$key]['urlFile'] = "img/upload/eventos/{$this->data['name']}";
+                                $eventos[$key]["urlFile"] = "img/upload/eventos/{$this->data['name']}";
                                 $return = $eventos[$key];
                             }
                         }
                     }
 
                     if (!$find){
-                        $return = array('start' => $fecha, '⁠⁠⁠urlFile' => "img/upload/eventos/{$this->data['name']}");
+                        $return = array('start' => $fecha, "urlFile" => "img/upload/eventos/{$this->data['name']}");
                         $eventos[] = $return;
                     }
                     $data = array('configuracion' => json_encode($eventos), 'usuario_id' => Session::get('id'));
