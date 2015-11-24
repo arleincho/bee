@@ -61,7 +61,7 @@ class IndexController extends BackendController {
                     $find = false;
 
                     foreach ($eventos as $key => $value) {
-                        if ($value['start'] == $fecha){
+                        if (isset($value['start']) && $value['start'] == $fecha){
                             $find = true;
                             $eventos[$key]['urlFile'] = "img/upload/eventos/{$this->data['name']}";
                             $return = $eventos[$key];
