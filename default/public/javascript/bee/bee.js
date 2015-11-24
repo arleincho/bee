@@ -20,7 +20,6 @@ var fileName;
 var fileSize;
 //obtenemos el tipo de archivo image/png ejemplo
 var fileType;
-var eventFile = "";
 var eventRefence;
 
 $(document).ready(function() {
@@ -80,7 +79,6 @@ $(document).ready(function() {
                 //$(".showImage").html("<img src='files/"+fileName+"' />");
                 $('#imagen').val("");
                 urlFile = data.urlFile;
-                eventFile = data.urlFile;
                 console.log('data:', data);
                 console.log('data.urlFile:', data.urlFile);
             },
@@ -176,7 +174,6 @@ function crearCalendario(){
 		fileSize = '';
 		//obtenemos el tipo de archivo image/png ejemplo
 		fileType = '';
-		eventFile = "";
 		eventRefence = null;
 		console.log('crear evento nuevo')
 		fechaSelect = $(this).context.dataset.date;
@@ -356,7 +353,7 @@ function editEvents(evento){
 	hora = evento.hour;
 	$("#timepicker1").val(hora);
 	$("#imaEvent").html("<img src='"+PUBLIC_PATH+evento.urlFile+"' />")
-	eventFile = evento.urlFile;
+	urlFile = evento.urlFile;
 	facebook= evento.networks.facebook;
 	lightNetworks2("facebook");
 	twitter= evento.networks.twitter;
