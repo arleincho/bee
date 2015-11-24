@@ -71,7 +71,19 @@ class IndexController extends BackendController {
                     }
 
                     if (!$find){
-                        $return = array('start' => $fecha, "urlFile" => "img/upload/eventos/{$this->data['name']}");
+                        $return = array(
+                            "start" => $fecha,
+                            "urlFile" => "img/upload/eventos/{$this->data['name']}",
+                            "networks" => array(
+                                "facebook" => false,
+                                "twitter" => false,
+                                "instagram" => false,
+                                "linkedin" => false,
+                                "pinterest" => false,
+                                "youtube" => false,
+                                "plus" => falses
+                            )
+                        );
                         $eventos[] = $return;
                     }
                     $data = array('configuracion' => json_encode($eventos), 'usuario_id' => Session::get('id'));
