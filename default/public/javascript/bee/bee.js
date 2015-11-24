@@ -66,7 +66,8 @@ $(document).ready(function() {
             data: formData,
             //necesario para subir archivos via ajax
             cache: false,
-            contentType: 'json',
+            contentType: false,
+            dataType: 'json',
             processData: false,
             //mientras enviamos el archivo
             beforeSend: function(){
@@ -81,7 +82,7 @@ $(document).ready(function() {
                 urlFile = 'http://beesocialgroup.com/test/default/public/'+data.urlFile;
                 eventFile = 'http://beesocialgroup.com/test/default/public/'+data.urlFile;
                 console.log('data:', data);
-                console.log('data.urlFile:', data['urlFile']);
+                console.log('data.urlFile:', data.urlFile);
             },
             //si ha ocurrido un error
             error: function(e){
