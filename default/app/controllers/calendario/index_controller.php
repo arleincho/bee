@@ -55,6 +55,7 @@ class IndexController extends BackendController {
                 $data = array('error'=>TRUE, 'message'=>$upload->getError());
             }else{
                 $fecha = Input::post('fechaSelect');
+                $hora = Input::post('hora');
                 if ($fecha){
                     $this->data = $data;
                     $eventos = Calendario::getCalendario(Session::get('id'));
@@ -76,7 +77,7 @@ class IndexController extends BackendController {
                             "urlFile" => "img/upload/eventos/{$this->data['name']}",
                             "constraint" => "",
                             "author" => "",
-                            "hour" => "",
+                            "hour" => $hora,
                             "networks" => array(
                                 "facebook" => "false",
                                 "twitter" => "false",
