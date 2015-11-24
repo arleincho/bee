@@ -269,23 +269,23 @@ function crearCalendario(){
 		
 		
 
-		$.ajax({
-			type: "POST",
-			data: {eventos: $('#calendar').fullCalendar('clientEvents')},
-			dataType: "json",
-			url: PUBLIC_PATH + 'calendario/index/guardar'
-			// ,
-			// success: function(data){
-			// 	console.log(data);
-			// 	urlFile = data.urlFile;
-			// }
-		})
-		$("#agregar").hide();
+		// $.ajax({
+		// 	type: "POST",
+		// 	data: {eventos: $('#calendar').fullCalendar('clientEvents')},
+		// 	dataType: "json",
+		// 	url: PUBLIC_PATH + 'calendario/index/guardar'
+		// 	// ,
+		// 	// success: function(data){
+		// 	// 	console.log(data);
+		// 	// 	urlFile = data.urlFile;
+		// 	// }
+		// })
+		// $("#agregar").hide();
 		
-		editando = false;
+		// editando = false;
 
 
-		console.log("Events = ", Events);
+		// console.log("Events = ", Events);
 
 
 	});
