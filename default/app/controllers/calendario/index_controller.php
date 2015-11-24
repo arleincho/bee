@@ -74,6 +74,9 @@ class IndexController extends BackendController {
                         $return = array(
                             "start" => $fecha,
                             "urlFile" => "img/upload/eventos/{$this->data['name']}",
+                            "constraint" => "",
+                            "author" => "",
+                            "hour" => "",
                             "networks" => array(
                                 "facebook" => "false",
                                 "twitter" => "false",

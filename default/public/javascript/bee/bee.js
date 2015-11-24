@@ -55,6 +55,7 @@ $(document).ready(function() {
         var formData = new FormData();
         formData.append('archivo', $('#imagen')[0].files[0])
         formData.append('fechaSelect', fechaSelect)
+        formData.append('hora', $("#timepicker1").val())
         var message = ""; 
         
         //hacemos la petición ajax  
@@ -76,7 +77,7 @@ $(document).ready(function() {
             //una vez finalizado correctamente
             success: function(data){
                 message = $("<span class='success'>Done!</span>");
-                $("#imaEvent").html("<img src='http://beesocialgroup.com/test/default/public/"+data.urlFile+"' />");
+                $("#imaEvent").html("<img src='"+ PUBLIC_PATH + data.urlFile+"' />");
                 //$(".showImage").html("<img src='files/"+fileName+"' />");
                 $('#imagen').val("");
                 urlFile = 'http://beesocialgroup.com/test/default/public/'+data.urlFile;
