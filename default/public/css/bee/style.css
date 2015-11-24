@@ -632,6 +632,7 @@ article{
     display: block;
     float: left;
     max-width: 92px;
+    max-height: 92px;
     padding: 0 0 14px 14px;
     position: relative;
     width: 100%;
