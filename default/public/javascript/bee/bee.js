@@ -80,8 +80,8 @@ $(document).ready(function() {
                 $("#imaEvent").html("<img src='"+ PUBLIC_PATH + data.urlFile+"' />");
                 //$(".showImage").html("<img src='files/"+fileName+"' />");
                 $('#imagen').val("");
-                urlFile = 'http://beesocialgroup.com/test/default/public/'+data.urlFile;
-                eventFile = 'http://beesocialgroup.com/test/default/public/'+data.urlFile;
+                urlFile = data.urlFile;
+                eventFile = data.urlFile;
                 console.log('data:', data);
                 console.log('data.urlFile:', data.urlFile);
             },
@@ -156,6 +156,29 @@ function crearCalendario(){
    		$('#calendar').fullCalendar('next');
    	});
 	$(".fc-day").click(function(){
+		//setear iconos redes deseleccionados
+		facebook = "false";
+		twitter = "false";
+		instagram = "false";
+		linkedin = "false";
+		pinterest = "false";
+		youtube = "false";
+		plus = "false";
+		urlFile="";
+		id=0;
+		currentId = 0;
+		editando = false;
+		hora = '';
+		fileExtension = "";
+		file = '';
+		//obtenemos el nombre del archivo
+		fileName = '';
+		//obtenemos el tamaño del archivo
+		fileSize = '';
+		//obtenemos el tipo de archivo image/png ejemplo
+		fileType = '';
+		eventFile = "";
+		eventRefence = null;
 		console.log('crear evento nuevo')
 		fechaSelect = $(this).context.dataset.date;
 
@@ -169,14 +192,6 @@ function crearCalendario(){
 		$("#taskDescription textarea").click(function(){$("#taskDescription textarea").val("");})
 		$("#taskAuthor textarea").click(function(){$("#taskAuthor textarea").val("");});
 
-		//setear iconos redes deseleccionados
-		facebook = "false";
-		twitter = "false";
-		instagram = "false";
-		linkedin = "false";
-		pinterest = "false";
-		youtube = "false";
-		plus = "false";
 		$('#redes ul li #facebook').css('color', '#333');
 		$('#redes ul li #twitter').css('color', '#333');
 		$('#redes ul li #instagram').css('color', '#333');
@@ -341,7 +356,7 @@ function editEvents(evento){
 	currentId = evento.idPosicion;
 	hora = evento.hour;
 	$("#timepicker1").val(hora);
-	$("#imaEvent").html("<img src='"+evento.urlFile+"' />")
+	$("#imaEvent").html("<img src='"+PUBLIC_PATH+evento.urlFile+"' />")
 	eventFile = evento.urlFile;
 	facebook= evento.networks.facebook;
 	lightNetworks2("facebook");
