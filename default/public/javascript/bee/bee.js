@@ -182,7 +182,7 @@ function crearCalendario(){
 		$("#taskText textarea").val("add task");
 		$("#taskDescription textarea").val("add description");
 		$("#taskAuthor textarea").val("author name");
-		$("#imaEvent").html('');
+		$("#imaEvent").html('<img src="http://beesocialgroup.com/test/img/upload/indice.png">');
 		$("#agregar").show();
 
 		$("#taskText textarea").click(function(){$("#taskText textarea").val("");})

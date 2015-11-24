@@ -283,11 +283,12 @@ article{
 }
 #taskDescription{
     border: 1px solid;
-    width: 90%;
-    height: 90px;    
-    margin: auto;
-    display: block; 
-    margin: auto auto 15px;  
+    display: block;
+    float: right;
+    height: 90px;
+    margin: auto 18px 15px 0;
+    position: relative;
+    width: 61%; 
 }
 #taskDescription textarea{
     border: medium none;
@@ -303,11 +304,11 @@ article{
 }
 #taskAuthor{
     border: 1px solid;
-    width: 90%;
-    height: 50px;    
-    margin: auto;
+    clear: both;
     display: block;
+    height: 50px;
     margin: auto auto 15px;
+    width: 90%;
 }
 #taskAuthor textarea{
     border: medium none;
@@ -629,8 +630,10 @@ article{
 }
 #imaEvent{
     display: block;
-    max-width: 322px;
-    padding: 14px;
+    float: left;
+    max-width: 92px;
+    padding: 0 0 14px 14px;
+    position: relative;
     width: 100%;
 }
 #imaEvent img{
