@@ -235,7 +235,8 @@ function crearCalendario(){
 			eventRefence.networks.plus = plus;
 			console.log('editar evento');
 			console.log('urlFile ', urlFile);
-			 $('#calendar').fullCalendar('updateEvent', eventRefence);
+			$('#calendar').fullCalendar('updateEvent', eventRefence);
+			Events[tv.getIndexBy("start", eventRefence.start)] = eventRefence;
 		}else{
 			console.log("crear nuevo evento");
 			$('#calendar').fullCalendar('removeEvents');
@@ -592,3 +593,10 @@ function lightNetworks2(idButton){
 		}
 }
 
+Array.prototype.getIndexBy = function (name, value) {
+    for (var i = 0; i < this.length; i++) {
+        if (this[i][name] == value) {
+            return i;
+        }
+    }
+}
