@@ -155,6 +155,29 @@ function crearCalendario(){
    		$('#calendar').fullCalendar('next');
    	});
 	$(".fc-day").click(function(){
+		//setear iconos redes deseleccionados
+		facebook = "false";
+		twitter = "false";
+		instagram = "false";
+		linkedin = "false";
+		pinterest = "false";
+		youtube = "false";
+		plus = "false";
+		urlFile="";
+		id=0;
+		currentId = 0;
+		editando = false;
+		hora = '';
+		fileExtension = "";
+		file = '';
+		//obtenemos el nombre del archivo
+		fileName = '';
+		//obtenemos el tamaño del archivo
+		fileSize = '';
+		//obtenemos el tipo de archivo image/png ejemplo
+		fileType = '';
+		eventFile = "";
+		eventRefence = null;
 		console.log('crear evento nuevo')
 		fechaSelect = $(this).context.dataset.date;
 
@@ -169,12 +192,6 @@ function crearCalendario(){
 		$("#taskAuthor textarea").click(function(){$("#taskAuthor textarea").val("");});
 
 		//setear iconos redes deseleccionados
-		facebook = "false";
-		twitter = "false";
-		instagram = "false";
-		linkedin = "false";
-		pinterest = "false";
-		youtube = "false";
 		plus = "false";
 		$('#redes ul li #facebook').css('color', '#333');
 		$('#redes ul li #twitter').css('color', '#333');
