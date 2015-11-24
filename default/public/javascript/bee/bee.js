@@ -75,11 +75,11 @@ $(document).ready(function() {
             //una vez finalizado correctamente
             success: function(data){
                 message = $("<span class='success'>Done!</span>");
-                $("#imaEvent").html("<img src='http://beesocialgroup.com/test/default/public/"+data.urlFile+"' />");
+                $("#imaEvent").html("<img src='"+data.urlFile+"' />");
                 //$(".showImage").html("<img src='files/"+fileName+"' />");
                 $('#imagen').val("");
-                urlFile = 'http://beesocialgroup.com/test/default/public/'+data.urlFile;
-                eventFile = 'http://beesocialgroup.com/test/default/public/'+data.urlFile;
+                urlFile = data.urlFile;
+                eventFile = data.urlFile;
                 console.log('data:', data);
                 console.log('data.urlFile:', data['urlFile']);
             },
