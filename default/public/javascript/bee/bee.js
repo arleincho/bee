@@ -111,6 +111,7 @@ function crearCalendario(){
 		
 	    eventClick: function(calEvent, jsEvent, view) {
 	        //alert('Event: ' + calEvent.title+', author:'+calEvent.author);
+	        console.log(calEvent, jsEvent, view)
 	        editEvents(calEvent);
 	    },
 	    dayMouseover: function( event, jsEvent, view ) {
@@ -349,6 +350,7 @@ function SetEventsCalendar(){
 	},300);
 }
 function editEvents(evento){
+	console.log(evento)
 	console.log("edit event ",evento);
 	eventRefence = evento;
 	$("#taskText textarea").val(evento.title);
