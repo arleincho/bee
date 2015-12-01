@@ -105,6 +105,12 @@ function crearCalendario(){
 		dragable:true,
 		fixedWeekCount :false,
 		droppable: true,
+		eventLimit: true, // for all non-agenda views
+	    views: {
+	        agenda: {
+	            eventLimit: 2 // adjust to 6 only for agendaWeek/agendaDay
+	        }
+	    }
 		drop: function(date) {
 	        console.log("Dropped on " + date.format());
 	    },
