@@ -229,6 +229,7 @@ function crearCalendario(){
 			eventRefence.idPosicion = id;
 			eventRefence.hour = hora;
 			eventRefence.fileUrl = urlFile;
+			eventRefence.start = fechaSelect;
 			eventRefence.networks.facebook = facebook;
 			eventRefence.networks.twitter = twitter;
 			eventRefence.networks.instagram = instagram;
@@ -238,14 +239,15 @@ function crearCalendario(){
 			eventRefence.networks.plus = plus;
 			console.log('editar evento');
 			console.log('urlFile ', urlFile);
-			// $('#calendar').fullCalendar('updateEvent', eventRefence);
-			// i = Events.getIndexBy("start", fechaSelect)
+			$('#calendar').fullCalendar('updateEvent', eventRefence);
+
+			i = Events.getIndexBy("start", fechaSelect)
 			
-			// Events[i] = eventRefence;
+			Events[i] = eventRefence;
 			
 			// Events = $('#calendar').fullCalendar( 'clientEvents');
 			// Events[tv.getIndexBy("start", eventRefence.start)] = eventRefence;
-			// console.log(Events)
+			console.log(Events)
 		}else{
 			console.log("crear nuevo evento");
 			$('#calendar').fullCalendar('removeEvents');
@@ -275,17 +277,17 @@ function crearCalendario(){
 		
 		
 
-		// $.ajax({
-		// 	type: "POST",
-		// 	data: {eventos: $('#calendar').fullCalendar('clientEvents')},
-		// 	dataType: "json",
-		// 	url: PUBLIC_PATH + 'calendario/index/guardar'
+		$.ajax({
+			type: "POST",
+			data: {eventos: Events},
+			dataType: "json",
+			url: PUBLIC_PATH + 'calendario/index/guardar'
 		// 	// ,
 		// 	// success: function(data){
 		// 	// 	console.log(data);
 		// 	// 	urlFile = data.urlFile;
 		// 	// }
-		// })
+		})
 		// $("#agregar").hide();
 		
 		// editando = false;
