@@ -282,9 +282,9 @@ function crearCalendario(){
 		// 	// 	urlFile = data.urlFile;
 		// 	// }
 		})
-		// $("#agregar").hide();
+		$("#agregar").hide();
 		
-		// editando = false;
+		editando = false;
 
 
 		// console.log("Events = ", Events);

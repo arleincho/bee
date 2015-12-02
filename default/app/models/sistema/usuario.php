@@ -187,7 +187,7 @@ class Usuario extends ActiveRecord {
         $columns = 'usuario.*, perfil.perfil, empresa.nombre empresa, estado_usuario.estado_usuario, estado_usuario.descripcion';
         $join = self::getInnerEstado();
         $join.= 'INNER JOIN perfil ON perfil.id = usuario.perfil_id ';        
-        $join.= 'INNER JOIN empresa ON empresa.id = usuario.empresa_id ';        
+        // $join.= 'INNER JOIN empresa ON empresa.id = usuario.empresa_id ';        
         $conditions = "usuario.perfil_id != ".Perfil::SUPER_USUARIO;//Por el super usuario
                 
         $order = $this->get_order($order, 'nombre', array(                        
@@ -231,7 +231,7 @@ class Usuario extends ActiveRecord {
         $columns = 'usuario.*, perfil.perfil, estado_usuario.estado_usuario, estado_usuario.descripcion';
         $join = self::getInnerEstado();
         $join.= 'INNER JOIN perfil ON perfil.id = usuario.perfil_id ';        
-        $join.= 'INNER JOIN empresa ON empresa.id = usuario.empresa_id ';        
+        // $join.= 'INNER JOIN empresa ON empresa.id = usuario.empresa_id ';        
         $conditions = "usuario.perfil_id = " . Perfil::CALENDARIO;//Por el super usuario
                 
         $order = $this->get_order($order, 'nombre', array(                        
@@ -383,7 +383,7 @@ class Usuario extends ActiveRecord {
         $columnas = 'usuario.*, perfil.perfil, empresa.nombre empresa, estado_usuario.estado_usuario, estado_usuario.descripcion';
         $join = self::getInnerEstado();
         $join.= 'INNER JOIN perfil ON perfil.id = usuario.perfil_id ';        
-        $join.= 'INNER JOIN empresa ON empresa.id = usuario.empresa_id ';        
+        // $join.= 'INNER JOIN empresa ON empresa.id = usuario.empresa_id ';        
         $condicion = "usuario.id = $usuario";        
         return $this->find_first("columns: $columnas", "join: $join", "conditions: $condicion");
     } 

@@ -55,10 +55,6 @@
                 <div class="col-md-6">
                     <?php echo DwForm::number('usuario.datagrid', array('class'=>'input-numeric input-required mask-pint'), $usuario->datagrid, 'Cantidad de datos por página', 'Esta información se utiliza en los listados de informaciones y reportes'); ?>
                 </div>
-
-                <div class="col-md-6">
-                    <?php echo DwForm::dbSelect('usuario.empresa_id', 'nombre', array('calendario/empresa', 'getListadoEmpresas'), NULL, array('class'=>'input-required'), $usuario->empresa_id, 'Empresa'); ?>
-                </div>
             </div>
             
             <div class="row">
