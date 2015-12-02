@@ -52,7 +52,7 @@ class DwAuth {
             $auth->setAlgos('sha1');
             $auth->setCheckSession(true);
             $auth->setModel('sistema/usuario');                                        
-            $auth->setFields(array('id', 'nombre', 'apellido', 'login', 'tema', 'app_ajax', 'datagrid', 'perfil_id', 'pool', 'fotografia'));                                                
+            $auth->setFields(array('id', 'nombre', 'apellido', 'login', 'info', 'tema', 'app_ajax', 'datagrid', 'perfil_id', 'pool', 'fotografia'));                                                
             if($auth->identify($valUser, $valPass) && $auth->isValid()) {  
                 Session::set(SESSION_KEY, true);
                 return true;
