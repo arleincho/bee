@@ -32,7 +32,6 @@
                     <th class="col-hidden" data-search="nombre" data-order="nombre">NOMBRE</th>
                     <th class="col-hidden" data-search="apellido" data-order="apellido">APELLIDO</th>
                     <th class="col-hidden" data-search="email" data-order="email">EMAIL</th>
-                    <th class="col-hidden" data-search="email" data-order="email">EMPRESA</th>
                     <th class="col-hidden" data-search="perfil" data-order="perfil">PERFIL</th>                                        
                     <th class="col-hidden" data-order="estado_usuario">ESTADO</th>
                     <th class="col-blocked text-center">ACCIONES</th>
@@ -49,7 +48,6 @@
                         <td><?php echo $usuario->nombre; ?></td>
                         <td><?php echo $usuario->apellido; ?></td>
                         <td><?php echo $usuario->email; ?></td>
-                        <td><?php echo $usuario->empresa; ?></td>
                         <td><?php echo $usuario->perfil; ?></td>
                         <td><?php echo ($usuario->estado_usuario == EstadoUsuario::ACTIVO) ? '<span class="label label-success" title="'.$usuario->descripcion.'" rel="tooltip">Activo</span>' : '<span class="label label-danger" title="'.$usuario->descripcion.'" rel="tooltip">Bloqueado</span>'; ; ?></td>
                         <td>
