@@ -52,8 +52,13 @@
             </div>
             
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <?php echo DwForm::number('usuario.datagrid', array('class'=>'input-numeric input-required mask-pint'), $usuario->datagrid, 'Cantidad de datos por página', 'Esta información se utiliza en los listados de informaciones y reportes'); ?>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">
+                        <?php echo DwForm::textarea('usuario.descripcion', array('class'=>'input-lower input-required'), NULL, 'Descripción'); ?>
+                    </div>
                 </div>
             </div>
             

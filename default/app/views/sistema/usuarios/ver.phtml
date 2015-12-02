@@ -67,11 +67,10 @@
                 <div class="row">                    
                     <div class="col-md-6">
                         <?php echo DwForm::text('usuario.datagrid', array('class'=>'input-lower input-readonly'), $usuario->datagrid, 'Cantidad de datos por página'); ?>
-                    </div>      
-
-                    <div class="col-md-6">
-                        <?php echo DwForm::oneSelect('usuario.empresa', $usuario->empresa, array('class'=>' input-readonly'), 'Empresa'); ?>
-                    </div>             
+                    </div>
+                    <div class="col-md-8">
+                        <?php echo DwForm::textarea('usuario.descripcion', array('class'=>'input-lower input-required'), $usuario->descripcion, 'Descripción'); ?>
+                    </div>
                 </div>
 
                 <div class="row">
