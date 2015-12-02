@@ -105,6 +105,21 @@ function crearCalendario(){
 		dragable:true,
 		fixedWeekCount :false,
 		droppable: true,
+		eventLimit: true, // for all non-agenda views
+	    views: {
+	        agenda: {
+	            eventLimit: 2 // adjust to 6 only for agendaWeek/agendaDay
+	        }
+	    },
+	    dropAccept: '*',
+	    eventOverlap: function(stillEvent, movingEvent) {
+	        return stillEvent.allDay && movingEvent.allDay;
+	    },
+	    eventDrop: function(event, delta, revertFunc) {
+
+	        console.log(event.title + " was dropped on " + event.start.format());
+
+	    },
 		drop: function(date) {
 	        console.log("Dropped on " + date.format());
 	    },
@@ -155,6 +170,7 @@ function crearCalendario(){
    	});
 	$(".fc-day").click(function(){
 		//setear iconos redes deseleccionados
+		console.log("click dia");
 		facebook = "false";
 		twitter = "false";
 		instagram = "false";
@@ -183,6 +199,7 @@ function crearCalendario(){
 		$("#taskDescription textarea").val("add description");
 		$("#taskAuthor textarea").val("author name");
 		$("#imaEvent").html('<img src="http://beesocialgroup.com/test/img/upload/indice.png">');
+		$("#delete").hide();
 		$("#agregar").show();
 
 		$("#taskText textarea").click(function(){$("#taskText textarea").val("");})
@@ -235,9 +252,9 @@ function crearCalendario(){
 			console.log('urlFile ', urlFile);
 			$('#calendar').fullCalendar('updateEvent', eventRefence);
 
-			i = Events.getIndexBy("start", fechaSelect)
+			//i = Events.getIndexBy("start", fechaSelect)
 			
-			Events[i] = eventRefence;
+			//Events[i] = eventRefence;
 			
 			// Events = $('#calendar').fullCalendar( 'clientEvents');
 			// Events[tv.getIndexBy("start", eventRefence.start)] = eventRefence;
@@ -391,8 +408,14 @@ function editEvents(evento){
 	    }
 	}
 	editando = true;
+	$("#delete").show();
 	$("#agregar").show();
 }
+$("#delete").click(function(){
+	console.log("eliminar");
+	$('#calendar').fullCalendar( 'removeEvents', eventRefence._id);
+	$("#agregar").hide();
+});
 
 function lightNetworks(idButton){
 	switch(idButton){
