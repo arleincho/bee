@@ -184,7 +184,7 @@ class Usuario extends ActiveRecord {
     
     
     public function getListadoUsuario($estado, $order='', $page=0) {
-        $columns = 'usuario.*, perfil.perfil, empresa.nombre empresa, estado_usuario.estado_usuario, estado_usuario.descripcion';
+        $columns = 'usuario.*, perfil.perfil, estado_usuario.estado_usuario, estado_usuario.descripcion';
         $join = self::getInnerEstado();
         $join.= 'INNER JOIN perfil ON perfil.id = usuario.perfil_id ';        
         // $join.= 'INNER JOIN empresa ON empresa.id = usuario.empresa_id ';        
@@ -380,7 +380,7 @@ class Usuario extends ActiveRecord {
         if(!$usuario) {
             return NULL;
         }
-        $columnas = 'usuario.*, perfil.perfil, empresa.nombre empresa, estado_usuario.estado_usuario, estado_usuario.descripcion';
+        $columnas = 'usuario.*, perfil.perfil, estado_usuario.estado_usuario, estado_usuario.descripcion';
         $join = self::getInnerEstado();
         $join.= 'INNER JOIN perfil ON perfil.id = usuario.perfil_id ';        
         // $join.= 'INNER JOIN empresa ON empresa.id = usuario.empresa_id ';        
