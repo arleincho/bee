@@ -8,6 +8,7 @@
 	font-style: normal;
 }
 @import url(https://fonts.googleapis.com/css?family=Oswald);
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,600,700);
 body{
 	padding: 0px;
 	margin: 0px;
@@ -292,7 +293,7 @@ article{
 }
 #taskDescription textarea{
     border: medium none;
-    font-family: "Tungsten-Medium";
+    font-family: 'Open Sans', sans-serif;
     height: 98%;
     max-height: 98%;
     max-width: 100%;
@@ -312,7 +313,7 @@ article{
 }
 #taskAuthor textarea{
     border: medium none;
-    font-family: "Tungsten-Medium";
+    font-family: 'Open Sans', sans-serif;
     height: 98%;
     max-height: 98%;
     max-width: 100%;
@@ -338,6 +339,7 @@ article{
     padding: 3px;
     width: auto;
     cursor: pointer;
+    border: 1px solid;
 }
 .formulario{
     font-family: 'Tungsten-Medium';
