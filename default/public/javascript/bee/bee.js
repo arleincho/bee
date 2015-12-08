@@ -288,22 +288,14 @@ function crearCalendario(){
 		
 		
 
+		$("#agregar").hide();		
+		editando = false;
 		$.ajax({
 			type: "POST",
 			data: {eventos: Events},
 			dataType: "json",
 			url: PUBLIC_PATH + 'calendario/index/guardar'
-		// 	// ,
-		// 	// success: function(data){
-		// 	// 	console.log(data);
-		// 	// 	urlFile = data.urlFile;
-		// 	// }
 		})
-		$("#agregar").hide();
-		
-		editando = false;
-
-
 		// console.log("Events = ", Events);
 
 
@@ -414,7 +406,31 @@ function editEvents(evento){
 $("#delete").click(function(){
 	console.log("eliminar");
 	$('#calendar').fullCalendar( 'removeEvents', eventRefence._id);
-	$("#agregar").hide();
+	var dataEvents = $('#calendar').fullCalendar('clientEvents');
+	
+	
+	for(var i in Events){
+		console.log("for > ",dataEvents[i]);
+		if(typeof(dataEvents[i]) == "object"){
+			console.log("dataEvents[i]._id > ", dataEvents[i]._id, " : eventRefence._id > ", eventRefence._id);
+			if(dataEvents[i]._id == eventRefence._id){
+				console.log("eliminar de events")
+				Events.splice(i, 1);
+			}		
+			if(Events[i].author == dataEvents[i].author && Events[i].constraint == dataEvents[i].constraint){
+				console.log("eliminar de events")
+				Events.splice(i, 1);
+			}	
+		}
+	}
+	console.log('Events > ',Events);
+	$("#agregar").hide();	
+	$.ajax({
+		type: "POST",
+		data: {eventos: Events},
+		dataType: "json",
+		url: PUBLIC_PATH + 'calendario/index/guardar'
+	})
 });
 
 function lightNetworks(idButton){

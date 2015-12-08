@@ -9872,7 +9872,6 @@ function EventManager(options) { // assumed to be a calendar
 
 	// Ensures the allDay property exists and the timeliness of the start/end dates are consistent
 	function normalizeEventRangeTimes(range) {
-		console.log('range > ', range)
 		if (range.allDay == null) {
 			range.allDay = !(range.start.hasTime() || (range.end && range.end.hasTime()));
 		}
