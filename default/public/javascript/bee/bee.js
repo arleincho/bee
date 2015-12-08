@@ -406,24 +406,22 @@ function editEvents(evento){
 $("#delete").click(function(){
 	console.log("eliminar");
 	$('#calendar').fullCalendar( 'removeEvents', eventRefence._id);
-	var dataEvents = $('#calendar').fullCalendar('clientEvents');
-	
-	
+	var dataEvents = $('#calendar').fullCalendar('clientEvents');	
 	for(var i in Events){
-		console.log("for > ",dataEvents[i]);
-		if(typeof(dataEvents[i]) == "object"){
-			console.log("dataEvents[i]._id > ", dataEvents[i]._id, " : eventRefence._id > ", eventRefence._id);
-			if(dataEvents[i]._id == eventRefence._id){
-				console.log("eliminar de events")
-				Events.splice(i, 1);
-			}		
-			if(Events[i].author == dataEvents[i].author && Events[i].constraint == dataEvents[i].constraint){
+		console.log("for > ",Events[i]);
+		if(typeof(Events[i]) == "object"){
+			console.log("eventRefence.author > ", eventRefence.author, " : Events[i].author > ", Events[i].author);
+				
+			if(Events[i].author == eventRefence.author && Events[i].constraint == eventRefence.constraint){
 				console.log("eliminar de events")
 				Events.splice(i, 1);
 			}	
 		}
 	}
 	console.log('Events > ',Events);
+	if(Events.length == 0){
+		Events = "";
+	}
 	$("#agregar").hide();	
 	$.ajax({
 		type: "POST",
