@@ -81,8 +81,9 @@
 		<div id="contenedor">
 			<div id="calendar"></div>
 			<div id="agregar">
-				<div id="capa"></div>
+				<div class="capa"></div>
 				<div id="taskCont">
+					<div class="taskButton" id="discard" style="float:right;"><i class="fa fa-close"></i> </div>
 					<h2>NEW TASK</h2>
 					<div id="redes">
 						<ul>
@@ -106,22 +107,35 @@
 			        </div>
 					<!--date-->
 					<div id="buttons">
-						<div class="taskButton" id="upload" style="float:left;"><i class="fa fa-upload"></i>   upload file</div>
-						<div class="taskButton" id="discard" style="float:right;">discard</div>
+						<div class="taskButton" id="upload" style="float:left;"><i class="fa fa-upload"></i>   upload file</div>						
 						<div class="taskButton" id="save" style="float:right;">save</div>
 						<div class="taskButton" id="delete" style="float:right;">delete</div>
 					</div>
 					<div id="uploadModule">
 						<form enctype="multipart/form-data" class="formulario">
 					        <input name="archivo" type="file" id="imagen" /><br /><br />
-					        <input style="border:1px solid;" type="button" value="Click to Upload" /><br />
+					        <input style="border:1px solid; background-color: #ff9900; cursor: pointer;" type="button" value="Click to Upload" /><br />
 					    </form>
 					    <!--div para visualizar mensajes-->
 					    <div class="messages"></div>
 					</div>
 				</div>
-				
-				
+			</div>
+
+			<div id="mail">
+				<div class="capa"></div>
+				<div id="data-mail">
+					<h2>Send Notification</h2>
+					<span>To:</span>
+					<div id="subject">
+						<textarea type="text" value="Type Mail"></textarea>
+					</div>
+					<span>Message:</span>
+					<div id="message">
+						<textarea type="text" value="Type Message"></textarea>
+					</div>
+					<div id="sendMessage">SEND</div>
+				</div>
 			</div>
 		</div>
 	</article>

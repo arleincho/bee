@@ -138,7 +138,7 @@ function crearCalendario(){
 
     var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     
-    var alto = $(window).width() / 1.7;
+    var alto = $(window).width() / 1.1;
 
     $('#calendar').fullCalendar('option', 'height', alto);
 
@@ -151,6 +151,9 @@ function crearCalendario(){
    	$( ".fc-left" ).append('<h2 style="display: block; float: right">' + months[month] + 
    		'</h2>'+
    			'<span id="buttonsCalendar">'+
+   				'<span id="Share" class="arrow">'+
+	   				'<i class="fa fa-share"></i>'+
+	   			'</span>'+
 	   			'<span id="prevButton" class="arrow">'+
 	   				'<i class="fa fa-chevron-left"></i>'+
 	   			'</span>'+
@@ -348,16 +351,56 @@ function crearCalendario(){
             }
         });
 	});
+	$('#mail').hide();
+	$('#Share').click(function(){
+		$('#mail').show();		
+	});
+	$('#sendMessage').click(function(){
+		console.log('enviar mensaje')
+		var email = $("#subject textarea").val();
+            validacion_email = /^[a-zA-Z0-9_\.\-]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-\.]+$/;
+            mensaje = $("#message textarea").val();
+ 
+        if(email == "" || !validacion_email.test(email)){
+            $("#subject textarea").focus();    
+            return false;
+        }else if(mensaje == ""){
+            $("#message textarea").focus();
+            return false;
+        }else{
+            var datos = 'name=Bee ' + '&email=' + email + '&message=' + mensaje;
+
+			$.ajax({
+			    type: "POST",
+			    url: "../php/proceso.php",
+			    data: datos,
+			    success: function() {
+			    	console.log('enviado')
+			        $('.ajaxgif').hide();
+			        $('.msg').text('Mensaje enviado!').addClass('msg_ok').animate({ 'right' : '130px' }, 300);  
+			    },
+			    error: function() {
+			        console.log('fallo al enviar')
+			        $('.msg').text('Hubo un error!').addClass('msg_error').animate({ 'right' : '130px' }, 300);                 
+			    }
+			});
+        }
+	})
 	
 }
 function SetEventsCalendar(){
+	console.log("Setear Eventos" , Eventos);
 	setTimeout(function(){				
-		if(Eventos != undefined || Eventos != null){
+		if(Eventos == undefined || Eventos == null || Eventos == ""){
+			Eventos = [];
+			Events = [];			
+		}else{
 			console.log('setevents ',Eventos.length);
 			$('#calendar').fullCalendar( 'addEventSource', Eventos);
 			Events = Eventos;
 			id = Eventos.length;
 		}
+		console.log("Setear Eventos", Eventos);
 	},300);
 }
 function editEvents(evento){
@@ -418,10 +461,11 @@ $("#delete").click(function(){
 			}	
 		}
 	}
-	console.log('Events > ',Events);
+	
 	if(Events.length == 0){
 		Events = "";
 	}
+	console.log('Events > ',Events);
 	$("#agregar").hide();	
 	$.ajax({
 		type: "POST",
@@ -429,6 +473,7 @@ $("#delete").click(function(){
 		dataType: "json",
 		url: PUBLIC_PATH + 'calendario/index/guardar'
 	})
+	Events = [];
 });
 
 function lightNetworks(idButton){

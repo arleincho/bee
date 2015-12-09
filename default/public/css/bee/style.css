@@ -148,7 +148,7 @@ article{
     clear: both;
     display: block;
     float: right;
-    width: 90px;
+    width: 120px;
 }
 .arrow {
     display: block;
@@ -181,7 +181,15 @@ article{
     width: 100%;
     z-index: 8;
 }
-#capa{
+#mail{
+    display: block;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 8; 
+}
+.capa{
     background: #fff none repeat scroll 0 0;
     height: 100%;
     opacity: 0.8;
@@ -225,6 +233,7 @@ article{
     margin-right: 15px;
     margin-top: 5px;
 }
+
 #taskCont{
     background-color: #fff;
     border: 1px solid;
@@ -566,7 +575,73 @@ article{
         }
     }
 }
-
+#data-mail{
+    background-color: #fff;
+    border: 1px solid;
+    color: #333;
+    display: block;
+    height: auto;
+    margin: 8% auto auto;
+    opacity: 1 !important;
+    position: relative;
+    width: 350px;
+}
+#data-mail span{
+    display: block;
+    margin: auto auto auto 25px;
+    position: relative;
+    text-align: left;
+    width: 32px;
+}
+#subject{
+    display: block;
+    margin: auto;
+    max-height: 25px;
+    overflow: hidden;
+    padding-left: 25px;
+    padding-right: 25px;
+    position: relative;
+    width: 86%;
+}
+#subject textarea{
+    max-height: 20px;
+    min-height: 20px;
+    min-width: 300px;
+    width: 300px;
+}
+#message{
+    display: block;
+    margin: auto;
+    height: 150px;
+    overflow: hidden;
+    padding-left: 25px;
+    padding-right: 25px;
+    position: relative;
+    width: 300px
+}
+#message textarea{
+    display: block;
+    max-width: 300px;
+    min-width: 300px;
+    width: 300px;
+    height: 148px;
+    max-height: 148px;
+    min-height: 148px;
+}
+#sendMessage{
+    border: 1px solid;
+    clear: both;
+    display: block;
+    margin: 25px;
+    padding: 5px;
+    position: relative;
+    width: 70px;
+}
+#discard{
+    border: medium none;
+    position: absolute;
+    right: 0;
+}
 .bootstrap-timepicker-widget .modal-content {
     padding: 4px;
 }
