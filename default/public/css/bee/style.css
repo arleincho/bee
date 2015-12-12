@@ -645,7 +645,12 @@ article{
 .bootstrap-timepicker-widget .modal-content {
     padding: 4px;
 }
-
+.edit {
+    cursor: pointer;
+    margin-left: 82%;
+    margin-top: 135%;
+    position: relative;
+}
 @media (min-width: 767px) {
     .bootstrap-timepicker-widget.modal {
         width: 200px;
@@ -724,7 +729,7 @@ article{
      background: #60caef none repeat scroll 0 0 !important;
 }
 .instaColor{
-     background: #326699 none repeat scroll 0 0 !important;
+     background: #895a4d none repeat scroll 0 0 !important;
 }
 .linkColor{
      background: #0177b5 none repeat scroll 0 0 !important;

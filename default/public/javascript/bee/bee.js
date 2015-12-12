@@ -538,7 +538,7 @@ function lightNetworks(idButton){
 				$('#redes ul li #instagram').css('color', '#333');
 			}else{
 				instagram = "true";	
-				$('#redes ul li #instagram').css('color', '#326699');
+				$('#redes ul li #instagram').css('color', '#895a4d');
 			}
 			break;
 			case "linkedin":
@@ -647,7 +647,7 @@ function lightNetworks2(idButton){
 			if(instagram == "false"){
 				$('#redes ul li #instagram').css('color', '#333');
 			}else{
-				$('#redes ul li #instagram').css('color', '#326699');
+				$('#redes ul li #instagram').css('color', '#895a4d');
 			}
 			break;
 			case "linkedin":

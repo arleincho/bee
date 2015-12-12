@@ -3658,7 +3658,7 @@ var Grid = fc.Grid = RowRenderer.extend({
 
 		return '<td class="' + classes.join(' ') + '"' +
 			' data-date="' + date.format('YYYY-MM-DD') + '"' + // if date has a time, won't format it
-			'></td>';
+			'><i class="fa fa-pencil edit"></i></td>';
 	},
 
 
