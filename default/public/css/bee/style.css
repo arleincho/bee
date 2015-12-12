@@ -594,9 +594,12 @@ article{
     width: 32px;
 }
 #subject{
+    clear: both;
     display: block;
-    margin: auto;
-    max-height: 25px;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
     overflow: hidden;
     padding-left: 25px;
     padding-right: 25px;
@@ -604,10 +607,9 @@ article{
     width: 86%;
 }
 #subject textarea{
-    max-height: 20px;
+    max-width: 300px;
     min-height: 20px;
     min-width: 300px;
-    width: 300px;
 }
 #message{
     display: block;
@@ -638,6 +640,11 @@ article{
     width: 70px;
 }
 #discard{
+    border: medium none;
+    position: absolute;
+    right: 0;
+}
+#discard2{
     border: medium none;
     position: absolute;
     right: 0;
