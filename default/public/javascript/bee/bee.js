@@ -368,11 +368,11 @@ function crearCalendario(){
             $("#message textarea").focus();
             return false;
         }else{
-            var datos = 'name=Bee ' + '&email=' + email + '&message=' + mensaje;
+            var datos = 'name=Bee' + '&email=' + email + '&message=' + mensaje;
 
 			$.ajax({
 			    type: "POST",
-			    url: "../php/proceso.php",
+			    url: PUBLIC_PATH + 'calendario/index/enviar',
 			    data: datos,
 			    success: function() {
 			    	console.log('enviado')
