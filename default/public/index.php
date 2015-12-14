@@ -28,7 +28,7 @@
 //error_reporting(0); // Usar este en producción, no envia errores
 error_reporting(E_ALL ^ E_STRICT); // Comentar en producción
 //comentar la siguiente linea en producción
-ini_set('display_errors', 'On'); 
+ini_set('display_errors', 0); 
 
 /**
  * Define marca de tiempo en que inicio el Request
