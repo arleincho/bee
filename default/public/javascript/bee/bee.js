@@ -224,6 +224,11 @@ function crearCalendario(){
 		$("#imaEvent").html("<img src='' />");
 		editando = false;
 	});
+	$("#discard2").click(function(){
+		$("#mail").hide();
+		$("#subject textarea").val("");
+		$("#message textarea").val("");
+	});
 	//click redes
 	$(".fa").click(function(){
 		lightNetworks(this.id);
@@ -360,6 +365,7 @@ function crearCalendario(){
 		var email = $("#subject textarea").val();
             validacion_email = /^[a-zA-Z0-9_\.\-]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-\.]+$/;
             mensaje = $("#message textarea").val();
+            mensaje = mensaje + '\nYou ve received the new calendar for your social media management week by Bee Social Group. Click on the link to view. http://www.beesocialgroup.com/test/'
  
         // if(email == "" || !validacion_email.test(email)){
         if(email == ""){
@@ -376,13 +382,15 @@ function crearCalendario(){
 			    url: PUBLIC_PATH + 'calendario/index/enviar',
 			    data: datos,
 			    success: function() {
-			    	console.log('enviado')
-			        $('.ajaxgif').hide();
-			        $('.msg').text('Mensaje enviado!').addClass('msg_ok').animate({ 'right' : '130px' }, 300);  
+			    	console.log('enviado')  
+			        $("#mail").hide();
+					$("#subject textarea").val("");
+					$("#message textarea").val("");
 			    },
 			    error: function() {
 			        console.log('fallo al enviar')
-			        $('.msg').text('Hubo un error!').addClass('msg_error').animate({ 'right' : '130px' }, 300);                 
+			        $('.msg').text('Hubo un error!').addClass('msg_error').animate({ 'right' : '130px' }, 300); 
+			        $("#mail").hide();                
 			    }
 			});
         }
@@ -539,7 +547,7 @@ function lightNetworks(idButton){
 				$('#redes ul li #instagram').css('color', '#333');
 			}else{
 				instagram = "true";	
-				$('#redes ul li #instagram').css('color', '#326699');
+				$('#redes ul li #instagram').css('color', '#895a4d');
 			}
 			break;
 			case "linkedin":
@@ -648,7 +656,7 @@ function lightNetworks2(idButton){
 			if(instagram == "false"){
 				$('#redes ul li #instagram').css('color', '#333');
 			}else{
-				$('#redes ul li #instagram').css('color', '#326699');
+				$('#redes ul li #instagram').css('color', '#895a4d');
 			}
 			break;
 			case "linkedin":

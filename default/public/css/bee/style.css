@@ -594,9 +594,12 @@ article{
     width: 32px;
 }
 #subject{
+    clear: both;
     display: block;
-    margin: auto;
-    max-height: 25px;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
     overflow: hidden;
     padding-left: 25px;
     padding-right: 25px;
@@ -604,10 +607,9 @@ article{
     width: 86%;
 }
 #subject textarea{
-    max-height: 20px;
+    max-width: 300px;
     min-height: 20px;
     min-width: 300px;
-    width: 300px;
 }
 #message{
     display: block;
@@ -642,10 +644,20 @@ article{
     position: absolute;
     right: 0;
 }
+#discard2{
+    border: medium none;
+    position: absolute;
+    right: 0;
+}
 .bootstrap-timepicker-widget .modal-content {
     padding: 4px;
 }
-
+.edit {
+    cursor: pointer;
+    margin-left: 82%;
+    margin-top: 135%;
+    position: relative;
+}
 @media (min-width: 767px) {
     .bootstrap-timepicker-widget.modal {
         width: 200px;
@@ -724,7 +736,7 @@ article{
      background: #60caef none repeat scroll 0 0 !important;
 }
 .instaColor{
-     background: #326699 none repeat scroll 0 0 !important;
+     background: #895a4d none repeat scroll 0 0 !important;
 }
 .linkColor{
      background: #0177b5 none repeat scroll 0 0 !important;
