@@ -343,7 +343,7 @@ function crearCalendario(){
 	    $.ajax({
             url: '../php/generarPdf.php',  
             type: 'POST',
-            // Form data
+            // Form dataset
             //datos del formulario
             data:dat,
             //mientras enviamos el archivo
@@ -364,8 +364,8 @@ function crearCalendario(){
 		console.log('enviar mensaje')
 		var email = $("#subject textarea").val();
             validacion_email = /^[a-zA-Z0-9_\.\-]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-\.]+$/;
-            mensaje = $("#message textarea").val();
-            mensaje = mensaje + '\nYou ve received the new calendar for your social media management week by Bee Social Group. Click on the link to view. http://www.beesocialgroup.com/test/'
+            // mensaje = $("#message textarea").val();
+            mensaje = 'You ve received the new calendar for your social media management week by Bee Social Group. Click on the link to view. http://www.beesocialgroup.com/test/\n<br>' + $("#message textarea").val();
  
         // if(email == "" || !validacion_email.test(email)){
         if(email == ""){
