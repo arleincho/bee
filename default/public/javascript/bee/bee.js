@@ -361,7 +361,8 @@ function crearCalendario(){
             validacion_email = /^[a-zA-Z0-9_\.\-]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-\.]+$/;
             mensaje = $("#message textarea").val();
  
-        if(email == "" || !validacion_email.test(email)){
+        // if(email == "" || !validacion_email.test(email)){
+        if(email == ""){
             $("#subject textarea").focus();    
             return false;
         }else if(mensaje == ""){

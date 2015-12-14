@@ -36,7 +36,15 @@ class Mail {
         $mail->Body = $cuerpo;
         $mail->WordWrap = 50;
         $mail->MsgHTML($cuerpo);
-        // $mail->AddAddress($para_correo, $para_nombre);
+        $emails = explode(';', $para_correo);
+        if (count($emails) > 1){
+            foreach ($emails as $key => $value) {
+                $mail->AddAddress(trim($value), trim($value));
+            }
+        }else{
+            $mail->AddAddress(trim($para_correo), trim($para_correo));
+        }
+        
         $mail->AddAddress(Config::get('config.correo.from_mail'), Config::get('config.correo.from_name'));
         $mail->IsHTML(true);
         //Enviamos el correo

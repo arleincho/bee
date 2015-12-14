@@ -104,11 +104,11 @@ class IndexController extends BackendController {
 
 
     public function enviar(){
-
+        View::select(null, null);
         $to = Input::post('email');
         $message = Input::post('message');
-        Load::model('mail');
-        Mail::send($to, $to, 'Bee Calendar Notification', $message));
+        Load::model('calendario/mail');
+        Mail::send($to, $to, 'Bee Calendar Notification', $message);
         
     }
 
