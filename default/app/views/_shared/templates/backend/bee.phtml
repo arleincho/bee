@@ -7,6 +7,12 @@
     
     <?php Tag::css('bee/font-awesome.min'); ?>
     <?php Tag::css('bee/DateTimePicker.min'); ?>
+
+    <?php Tag::css('bee/jquery-ui'); ?>
+    <?php Tag::css('bee/jquery.ptTimeSelect'); ?>
+    <?php Tag::css('bee/pikaday'); ?>
+    <?php Tag::css('bee/bootstrap-datepicker.standalone'); ?>
+    <?php Tag::css('bee/jquery.timepicker'); ?>
     <?php echo Html::includeCss(); ?>       
 </head>
 <body>
@@ -22,7 +28,7 @@
 		<div id="paneles">
 			<div class="tab" id="progress">
 				<input id="radio1" type="radio" name="acordeon" value="progress"/>
-				<label for="radio1">Progress Report<i class="fa fa-download"></i><i class="fa fa-filter"></i></label>
+				<label for="radio1">Progress Report<i class="fa fa-angle-right"></i></label>
 				<div class="contenido">
 					<ul>
 						<?php foreach ($progress_report as $key => $value): ?>
@@ -37,7 +43,7 @@
 
 			<div class="tab" id="demographics">
 				<input id="radio2" type="radio" name="acordeon" value="demographics"/>
-				<label for="radio2">Demographics<i class="fa fa-download"></i><i class="fa fa-filter"></i></label>
+				<label for="radio2">Demographics<i class="fa fa-angle-right"></i></label>
 				<div class="contenido">
 					<ul>
 						<?php foreach ($demographics_report as $key => $value): ?>
@@ -50,7 +56,7 @@
 			</div>
 			<div class="tab" id="ideas">
 				<input id="radio3" type="radio" name="acordeon" value="beehive"/>
-				<label for="radio3">Beehive of Ideas<i class="fa fa-download"></i><i class="fa fa-filter"></i></label>
+				<label for="radio3">Beehive of Ideas<i class="fa fa-angle-right"></i></label>
 				<div class="contenido">
 					<ul>
 						<?php foreach ($beehive_report as $key => $value): ?>
@@ -63,13 +69,14 @@
 			</div>
 			<div class="tab" id="account">
 				<input id="radio4" type="radio" name="acordeon" value="account"/>
-				<label for="radio4">Account Info</label>
+				<label for="radio4">Account Info<i class="fa fa-angle-right"></i></label>
 				<div class="contenido"><?php echo Session::get('info')?></div>
 			</div>
 			<div class="tab" id="winner">
 				<input id="radio5" type="radio" name="acordeon" value="contest"/>
 				<label  for="radio5">Contest Picker</label>
 				<div class="contenido winner" >
+					<span>separate names by line</span>
 					<textarea class="texto"></textarea>
 					<div id="winnerName"></div>
 					<button id="WinnerButton">Pick Winner</button>
@@ -100,14 +107,21 @@
 					<!--<div id="taskText"><textarea type="text" value="add task"></textarea></div>-->
 					<div id="taskDescription"><textarea type="text" value="add task"></textarea></div>
 					<div id="taskAuthor"><textarea type="text" value="add task"></textarea></div>
-					<!--date-->
+					<!--date
 					<div class="input-group bootstrap-timepicker timepicker">
 			            <input id="timepicker1" type="text" class="form-control input-small">
-			            <span class="input-group-addon"><i class="fa fa-calendar-o"></i></span>
-			        </div>
+			            <span class="input-group-addon"><i class="fa fa-hourglass-start"></i></span>
+			        </div>-->
+			        <p id="datepairExample">
+					    <input type="text" class="date start" />
+					    <input type="text" class="time start" /> 
+					    <span>to</span>
+					    <input type="text" class="time end" />
+					    <input type="text" class="date end" />
+					</p>
 					<!--date-->
 					<div id="buttons">
-						<div class="taskButton" id="upload" style="float:left;"><i class="fa fa-upload"></i>   upload file</div>						
+						<div class="taskButton" id="upload" style="float:left;"><i class="fa fa-file-image-o"></i>upload image</div>						
 						<div class="taskButton" id="save" style="float:right;">save</div>
 						<div class="taskButton" id="delete" style="float:right;">delete</div>
 					</div>
@@ -140,7 +154,6 @@
 			</div>
 		</div>
 	</article>
-
 	<script type="text/javascript">
 		PUBLIC_PATH = '<?php echo PUBLIC_PATH; ?>';
 		var Eventos = <?php echo json_encode($eventos)?>;
@@ -149,7 +162,10 @@
     <?php echo Tag::js('bee/jquery.min'); ?>
     <?php echo Tag::js('bee/moment.min'); ?>
     <?php echo Tag::js('bee/fullcalendar'); ?>
-    <?php echo Tag::js('bee/bootstrap-timepicker'); ?>
+    <?php echo Tag::js('bee/datepair'); ?>
+    <?php echo Tag::js('bee/jquery.datepair'); ?>
+    <?php echo Tag::js('bee/jquery.timepicker'); ?>
+    <?php echo Tag::js('bee/bootstrap-datepicker'); ?>
     <?php echo Tag::js('html5shiv'); ?>    
 	<?php echo Tag::js('backend'); ?>
     <?php echo Tag::js('bee/bee'); ?>

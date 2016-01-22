@@ -195,13 +195,28 @@ function crearCalendario(){
 		//obtenemos el tipo de archivo image/png ejemplo
 		fileType = '';
 		eventRefence = null;
-		console.log('crear evento nuevo')
+		
 		fechaSelect = $(this).context.dataset.date;
-
+		console.log('crear evento nuevo : ', fechaSelect);
+		var dt = new Date();
+		var _hora;
+		var aa;
+		if(dt.getHours() > 12){
+			_hora = dt.getHours()-12;
+			aa = ' pm';
+		}else{
+			_hora = dt.getHours();
+			aa = ' am';
+		}
 		$("#taskText textarea").val("add task");
 		$("#taskDescription textarea").val("add description");
 		$("#taskAuthor textarea").val("author name");
 		$("#imaEvent").html('<img src="http://beesocialgroup.com/test/img/upload/indice.png">');
+
+		$('#datepairExample input')[0].value = (dt.getMonth()+1) + "-" + dt.getDate() + "-" + dt.getFullYear();
+		$('#datepairExample input')[1].value = _hora + ":" + dt.getMinutes() + aa;
+		$('#datepairExample input')[2].value = _hora + ":" + dt.getMinutes() + aa;
+		$('#datepairExample input')[3].value = (dt.getMonth()+1) + "-" + dt.getDate() + "-" + dt.getFullYear();
 		$("#delete").hide();
 		$("#agregar").show();
 
@@ -217,7 +232,23 @@ function crearCalendario(){
 		$('#redes ul li #youtube').css('color', '#333');
 		$('#redes ul li #plus').css('color', '#333');		
 	});
-	$('#timepicker1').timepicker();
+	//$('#timepicker1').timepicker();
+	///TIME PICKER//////////////////////
+	// initialize input widgets first
+	    $('#datepairExample .time').timepicker({
+	        'showDuration': true,
+	        'timeFormat': 'g:ia'
+	    });
+
+	    $('#datepairExample .date').datepicker({
+	        'format': 'yyyy-m-d',
+	        'autoclose': true
+	    });
+
+	    // initialize datepair
+	    $('#datepairExample').datepair();
+
+	   ////tIME PICKER END
 
 	$("#discard").click(function(){
 		$("#agregar").hide();
@@ -233,9 +264,35 @@ function crearCalendario(){
 	$(".fa").click(function(){
 		lightNetworks(this.id);
 	});
+	$(".tab").click(function(e){
+		var tabs = ['progress', 'demographics', 'ideas', 'account'];
+		var tab = e.target.id;
+		var id;
+		if(tab == 'radio1'){
+			id = 0;
+		}else if(tab == 'radio2'){
+			id = 1;
+		}else if(tab == 'radio3'){
+			id = 2;
+		}else if(tab == 'radio4'){
+			id = 3;
+		}
+		for(var i = 0; i < 4; i++){
+			if($('#'+tabs[i]+' label i').hasClass('fa-angle-down')){
+				$('#'+tabs[i]+' label i').removeClass('fa-angle-down');
+				$('#'+tabs[i]+' label i').addClass('fa-angle-right');
+			}
+		}
+		$('#'+tabs[id]+' label i').removeClass('fa-angle-right');
+		$('#'+tabs[id]+' label i').addClass('fa-angle-down');
+		
+	});
 	$("#save").click(function(){
-		var hora = $("#timepicker1").val();
-		console.log("editando", editando);
+		var hora1 = $('#datepairExample input')[0].value;
+		var dia1 = $('#datepairExample input')[1].value;
+		var hora2 = $('#datepairExample input')[2].value;
+		var dia2 = $('#datepairExample input')[3].value;
+		console.log("editando", fechaSelect);
 		//$('#calendar').fullCalendar( 'removeEventSource', Events);
 		if(editando == true){		
 			console.log("modificar evento")	
@@ -246,7 +303,10 @@ function crearCalendario(){
 			eventRefence.author = $("#taskAuthor textarea").val();
 			eventRefence.urlFile = urlFile;
 			eventRefence.idPosicion = id;
-			eventRefence.hour = hora;
+			eventRefence.hour1 = hora1;
+			eventRefence.day1 = dia1;
+			eventRefence.hour2 = hora2;
+			eventRefence.day2 = dia2;
 			eventRefence.fileUrl = urlFile;
 			eventRefence.start = fechaSelect;
 			eventRefence.networks.facebook = facebook;
@@ -278,7 +338,10 @@ function crearCalendario(){
 				author: $("#taskAuthor textarea").val(),
 				urlFile: urlFile,
 				idPosicion:id,
-				hour:hora,
+				hour1: hora1,
+				day1: dia1,
+				hour2: hora2,
+				day2: dia2,
 				fileUrl:urlFile,
 				networks:{
 					facebook:facebook,
@@ -424,7 +487,11 @@ function editEvents(evento){
 	currentId = evento.idPosicion;
 	hora = evento.hour;
 	$("#timepicker1").val(hora);
-	$("#imaEvent").html("<img src='"+PUBLIC_PATH+evento.urlFile+"' />")
+	$("#imaEvent").html("<img src='"+PUBLIC_PATH+evento.urlFile+"' />");
+	$('#datepairExample input')[0].value = evento.hour1;
+	$('#datepairExample input')[1].value = evento.day1;
+	$('#datepairExample input')[2].value = evento.hour2;
+	$('#datepairExample input')[3].value = evento.day2;
 	urlFile = evento.urlFile;
 	facebook= evento.networks.facebook;
 	lightNetworks2("facebook");

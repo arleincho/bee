@@ -90,12 +90,12 @@ article{
     width: 100%;
 }
 .tab{
-	font-family: "Tungsten-Medium";
-	letter-spacing: 1px;
-	display: block;
-	position: relative;
-	width: 100%;
-	height: auto;
+    display: block;
+    font-family: "Tungsten-Medium";
+    height: auto;
+    letter-spacing: 1px;
+    position: relative;
+    width: 100%;
 }
 .tab ul{
 	padding: 0px;
@@ -118,7 +118,8 @@ article{
     height: auto;
     cursor: pointer;
     font-size: 25px;
-    padding-right: 25px;
+    margin-right: 25px;
+    border-bottom: 1px solid #000;
     -webkit-transition: 0.3s ease-in-out;
     -moz-transition: 0.3s ease-in-out;
     -o-transition: 0.3s ease-in-out;
@@ -135,7 +136,8 @@ article{
 .tab label i{
     display: block;
     float: right;
-    font-size: 15px;
+    font-size: 20px;
+    font-weight: 700;
     margin-left: 5px;
     margin-top: 8px;
 } 
@@ -720,13 +722,37 @@ article{
 #imaEvent{
     display: block;
     float: left;
-    max-width: 92px;
+    height: 92px;
     max-height: 92px;
+    max-width: 92px;
+    overflow: hidden;
     padding: 0 0 14px 14px;
     position: relative;
     width: 100%;
 }
+#datepairExample{
+    height: 18px;
+    padding-left: 16px;
+}
+#datepairExample .date{
+    float: left;
+    width: 70px;
+}
+#datepairExample .time{
+    float: left;
+    margin-left: 3px;
+    margin-right: 3px;
+    width: 76px;
+}
+#datepairExample span{
+    float: left;
+    padding-left: 4px;
+    padding-right: 2px;
+    text-align: center;
+    width: 7px;
+}
 #imaEvent img{
+    max-height: 92px;
     width: 100%;
 }
 .faceColor{
