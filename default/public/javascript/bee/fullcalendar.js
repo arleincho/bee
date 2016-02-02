@@ -3658,7 +3658,7 @@ var Grid = fc.Grid = RowRenderer.extend({
 
 		return '<td class="' + classes.join(' ') + '"' +
 			' data-date="' + date.format('YYYY-MM-DD') + '"' + // if date has a time, won't format it
-			'><i class="fa fa-pencil edit"></i></td>';
+			'><i class="fa fa-plus edit"></i></td>';
 	},
 
 
@@ -5347,7 +5347,7 @@ DayGrid.mixin({
 						timeHtml + ' ' + titleHtml   //
 						)*/
 					'<span class="horaEvento" style="line-height: 17px;font-size: 10px ! important; width: 30%; font-size: 10px !important;letter-spacing: 0;">'+
-						event.hour+
+						event.hour1+
 					'</span>'+
 					'<span class="descripEvento" style="line-height: 17px;font-size: 12px ! important; border-left: 1px solid #fff; text-align:left !important; font-size: 12px !important;letter-spacing: 0;">' + 
 						event.constraint+

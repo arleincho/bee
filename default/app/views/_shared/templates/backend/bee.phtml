@@ -27,8 +27,8 @@
 		</div>
 		<div id="paneles">
 			<div class="tab" id="progress">
-				<input id="radio1" type="radio" name="acordeon" value="progress"/>
-				<label for="radio1">Progress Report<i class="fa fa-angle-right"></i></label>
+				<input id="radio1" type="checkbox" name="acordeon" value="progress"/>
+				<label for="radio1">Progress Report<i class="fa fa-angle-down"></i></label>
 				<div class="contenido">
 					<ul>
 						<?php foreach ($progress_report as $key => $value): ?>
@@ -42,8 +42,8 @@
 
 
 			<div class="tab" id="demographics">
-				<input id="radio2" type="radio" name="acordeon" value="demographics"/>
-				<label for="radio2">Demographics<i class="fa fa-angle-right"></i></label>
+				<input id="radio2" type="checkbox" name="acordeon" value="demographics"/>
+				<label for="radio2">Demographics<i class="fa fa-angle-down"></i></label>
 				<div class="contenido">
 					<ul>
 						<?php foreach ($demographics_report as $key => $value): ?>
@@ -55,8 +55,8 @@
 				</div>
 			</div>
 			<div class="tab" id="ideas">
-				<input id="radio3" type="radio" name="acordeon" value="beehive"/>
-				<label for="radio3">Beehive of Ideas<i class="fa fa-angle-right"></i></label>
+				<input id="radio3" type="checkbox" name="acordeon" value="beehive"/>
+				<label for="radio3">Beehive of Ideas<i class="fa fa-angle-down"></i></label>
 				<div class="contenido">
 					<ul>
 						<?php foreach ($beehive_report as $key => $value): ?>
@@ -68,12 +68,12 @@
 				</div>
 			</div>
 			<div class="tab" id="account">
-				<input id="radio4" type="radio" name="acordeon" value="account"/>
-				<label for="radio4">Account Info<i class="fa fa-angle-right"></i></label>
+				<input id="radio4" type="checkbox" name="acordeon" value="account"/>
+				<label for="radio4">Account Info<i class="fa fa-angle-down"></i></label>
 				<div class="contenido"><?php echo Session::get('info')?></div>
 			</div>
 			<div class="tab" id="winner">
-				<input id="radio5" type="radio" name="acordeon" value="contest"/>
+				<input id="radio5" type="checkbox" name="acordeon" value="contest"/>
 				<label  for="radio5">Contest Picker</label>
 				<div class="contenido winner" >
 					<span>separate names by line</span>
@@ -102,22 +102,18 @@
 							<li><i class="fa fa-youtube" id="youtube"></i></li>
 							<li><i class="fa fa-google-plus" id="plus"></i></li>
 						</ul>
-					</div>
-					<div id="imaEvent"><img src="http://beesocialgroup.com/test/img/upload/indice.png"></div>
-					<!--<div id="taskText"><textarea type="text" value="add task"></textarea></div>-->
+					</div>					
+
 					<div id="taskDescription"><textarea type="text" value="add task"></textarea></div>
 					<div id="taskAuthor"><textarea type="text" value="add task"></textarea></div>
-					<!--date
-					<div class="input-group bootstrap-timepicker timepicker">
-			            <input id="timepicker1" type="text" class="form-control input-small">
-			            <span class="input-group-addon"><i class="fa fa-hourglass-start"></i></span>
-			        </div>-->
+
+			        <div id="imaEvent"><img src="http://beesocialgroup.com/test/img/upload/indice.png"></div>
 			        <p id="datepairExample">
 					    <input type="text" class="date start" />
 					    <input type="text" class="time start" /> 
 					    <span>to</span>
-					    <input type="text" class="time end" />
 					    <input type="text" class="date end" />
+					    <input style="display:none;" type="text" class="time end" />
 					</p>
 					<!--date-->
 					<div id="buttons">
@@ -125,6 +121,7 @@
 						<div class="taskButton" id="save" style="float:right;">save</div>
 						<div class="taskButton" id="delete" style="float:right;">delete</div>
 					</div>
+					<div class="alert"><i class="fa fa-exclamation-triangle"></i><span>Oopzzz, it looks like you forgot some fields</span> </div>
 					<div id="uploadModule">
 						<form enctype="multipart/form-data" class="formulario">
 					        <input name="archivo" type="file" id="imagen" /><br /><br />
@@ -140,14 +137,14 @@
 				<div class="capa"></div>
 				<div id="data-mail">
 					<div class="taskButton" id="discard2" style="float:right;"><i class="fa fa-close"></i> </div>
-					<h2>Send Notification</h2>
-					<span>To:</span>
-					<div id="subject">
-						<textarea type="text" value="Type Mail"></textarea>
+					<h2>Send Notification</h2>					
+					<span>To:</span>					
+					<div id="subject">						
+					<input  type="email" name="email" value="Type Mail" autocomplete="on">						
 					</div>
 					<span>Message:</span>
 					<div id="message">
-						<textarea type="text" value="Type Message"></textarea>
+					<textarea type="text" value="Type Message"></textarea>
 					</div>
 					<div id="sendMessage">SEND</div>
 				</div>
