@@ -174,7 +174,7 @@ function crearCalendario(){
    	});
 	$(".fc-day").click(function(){
 		//setear iconos redes deseleccionados
-		if(readOnly == 0){
+		if(readOnly == false){
 			console.log("click dia");
 			facebook = "false";
 			twitter = "false";
@@ -550,7 +550,7 @@ function editEvents(evento){
 	editando = true;
 		$("#delete").show();
 		$("#agregar").show();
-	if(readOnly == 1){
+	if(readOnly == true){
 		$("#delete").hide();
 		$("#save").hide();
 		$("#upload").hide();
