@@ -174,78 +174,81 @@ function crearCalendario(){
    	});
 	$(".fc-day").click(function(){
 		//setear iconos redes deseleccionados
-		console.log("click dia");
-		facebook = "false";
-		twitter = "false";
-		instagram = "false";
-		linkedin = "false";
-		pinterest = "false";
-		youtube = "false";
-		plus = "false";
-		urlFile="";
-		id=0;
-		currentId = 0;
-		editando = false;
-		hora = '';
-		fileExtension = "";
-		file = '';
-		//obtenemos el nombre del archivo
-		fileName = '';
-		//obtenemos el tamaño del archivo
-		fileSize = '';
-		//obtenemos el tipo de archivo image/png ejemplo
-		fileType = '';
-		eventRefence = null;
-		
-		fechaSelect = $(this).context.dataset.date;
-		console.log('crear evento nuevo : ', fechaSelect);
-		var dt = new Date();
-		var _hora;
-		var aa;
-		if(dt.getHours() > 11){
-			_hora = dt.getHours()-12;
-			aa = ' pm';
-		}else{
-			_hora = dt.getHours();
-			aa = ' am';
+		if(readOnly == 0){
+			console.log("click dia");
+			facebook = "false";
+			twitter = "false";
+			instagram = "false";
+			linkedin = "false";
+			pinterest = "false";
+			youtube = "false";
+			plus = "false";
+			urlFile="";
+			id=0;
+			currentId = 0;
+			editando = false;
+			hora = '';
+			fileExtension = "";
+			file = '';
+			//obtenemos el nombre del archivo
+			fileName = '';
+			//obtenemos el tamaño del archivo
+			fileSize = '';
+			//obtenemos el tipo de archivo image/png ejemplo
+			fileType = '';
+			eventRefence = null;
+			
+			fechaSelect = $(this).context.dataset.date;
+			console.log('crear evento nuevo : ', fechaSelect);
+			var dt = new Date();
+			var _hora;
+			var aa;
+			if(dt.getHours() > 11){
+				_hora = dt.getHours()-12;
+				aa = ' pm';
+			}else{
+				_hora = dt.getHours();
+				aa = ' am';
+			}
+
+			var minutos;
+			if(dt.getMinutes() < 10){
+				minutos = '0'+dt.getMinutes();
+			}else{
+				minutos = dt.getMinutes();
+			}
+
+			$("#taskText textarea").val("add task");
+			$("#taskDescription textarea").val("add description");
+			$("#taskAuthor textarea").val("author name");
+			$("#imaEvent").html('<img src="http://beesocialgroup.com/test/img/upload/indice.png">');
+			var fecAr = fechaSelect.split('-');
+			var fechaInicio = fecAr[1]+'-'+fecAr[2]+'-'+fecAr[0];
+
+			$('#datepairExample input')[0].value = fechaInicio;//(dt.getMonth()+1) + "-" + dt.getDate() + "-" + dt.getFullYear();
+			$('#datepairExample input')[1].value = _hora + ":" + minutos + aa;
+			$('#datepairExample input')[2].value = fecAr[1]+'-'+(parseInt(fecAr[2])+1)+'-'+fecAr[0];//(dt.getMonth()+1) + "-" + dt.getDate() + "-" + dt.getFullYear();
+			$('#datepairExample input')[3].value = _hora + ":" + minutos + aa;
+			
+			$("#delete").hide();
+			$("#agregar").show();
+			$(".alert").hide();
+
+			$("#taskText textarea").click(function(){$("#taskText textarea").val("");})
+			$("#taskDescription textarea").click(function(){$("#taskDescription textarea").val("");})
+			$("#taskAuthor textarea").click(function(){$("#taskAuthor textarea").val("");});
+
+			$('#redes ul li #facebook').css('color', '#333');
+			$('#redes ul li #twitter').css('color', '#333');
+			$('#redes ul li #instagram').css('color', '#333');
+			$('#redes ul li #linkedin').css('color', '#333');
+			$('#redes ul li #pinterest').css('color', '#333');
+			$('#redes ul li #youtube').css('color', '#333');
+			$('#redes ul li #plus').css('color', '#333');
+
+			$('.datepicker').datepicker('daysOfWeekHighlighted ', fechaInicio);
 		}
-
-		var minutos;
-		if(dt.getMinutes() < 10){
-			minutos = '0'+dt.getMinutes();
-		}else{
-			minutos = dt.getMinutes();
-		}
-
-		$("#taskText textarea").val("add task");
-		$("#taskDescription textarea").val("add description");
-		$("#taskAuthor textarea").val("author name");
-		$("#imaEvent").html('<img src="http://beesocialgroup.com/test/img/upload/indice.png">');
-		var fecAr = fechaSelect.split('-');
-		var fechaInicio = fecAr[1]+'-'+fecAr[2]+'-'+fecAr[0];
-
-		$('#datepairExample input')[0].value = fechaInicio;//(dt.getMonth()+1) + "-" + dt.getDate() + "-" + dt.getFullYear();
-		$('#datepairExample input')[1].value = _hora + ":" + minutos + aa;
-		$('#datepairExample input')[2].value = fecAr[1]+'-'+(parseInt(fecAr[2])+1)+'-'+fecAr[0];//(dt.getMonth()+1) + "-" + dt.getDate() + "-" + dt.getFullYear();
-		$('#datepairExample input')[3].value = _hora + ":" + minutos + aa;
 		
-		$("#delete").hide();
-		$("#agregar").show();
-		$(".alert").hide();
-
-		$("#taskText textarea").click(function(){$("#taskText textarea").val("");})
-		$("#taskDescription textarea").click(function(){$("#taskDescription textarea").val("");})
-		$("#taskAuthor textarea").click(function(){$("#taskAuthor textarea").val("");});
-
-		$('#redes ul li #facebook').css('color', '#333');
-		$('#redes ul li #twitter').css('color', '#333');
-		$('#redes ul li #instagram').css('color', '#333');
-		$('#redes ul li #linkedin').css('color', '#333');
-		$('#redes ul li #pinterest').css('color', '#333');
-		$('#redes ul li #youtube').css('color', '#333');
-		$('#redes ul li #plus').css('color', '#333');
-
-		$('.datepicker').datepicker('daysOfWeekHighlighted ', fechaInicio);
 		
 	});
 	//$('#timepicker1').timepicker();
@@ -543,21 +546,23 @@ function editEvents(evento){
 	youtube= evento.networks.youtube;
 	lightNetworks2("youtube");
 	plus= evento.networks.plus;
-	lightNetworks2("plus");
-
-
-
-	function stringToBoolean(string){
-		console.log('string rec',string)
-	    switch(string.toLowerCase().trim()){
-	        case "true": case "yes": case "1": return "true";
-	        case "false": case "no": case "0": case null: return "false";
-	        default: return Boolean(string);
-	    }
-	}
+	lightNetworks2("plus");	
 	editando = true;
-	$("#delete").show();
-	$("#agregar").show();
+		$("#delete").show();
+		$("#agregar").show();
+	if(readOnly == 1){
+		$("#delete").hide();
+		$("#save").hide();
+		$("#upload").hide();
+	}
+}
+function stringToBoolean(string){
+	console.log('string rec',string)
+    switch(string.toLowerCase().trim()){
+        case "true": case "yes": case "1": return "true";
+        case "false": case "no": case "0": case null: return "false";
+        default: return Boolean(string);
+    }
 }
 $("#delete").click(function(){
 	console.log("eliminar");
