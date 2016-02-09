@@ -20,7 +20,8 @@
             </thead>
             <tbody>
                 <?php foreach($usuarios->items as $usuario): ?>
-                    <?php $key_shw = Security::setKey($usuario->id, 'upload_reports'); ?>
+                    <?php $key_upr = Security::setKey($usuario->id, 'upload_reports'); ?>
+                    <?php $key_shw = Security::setKey($usuario->id, 'show_calendar'); ?>
                     <tr>
                         <td><?php echo $usuarios->counter; ?></td>
                         <td><?php echo $usuario->login; ?></td>
@@ -29,7 +30,8 @@
                         <td><?php echo $usuario->email; ?></td>
                         <td><?php echo ($usuario->estado_usuario == EstadoUsuario::ACTIVO) ? '<span class="label label-success" title="'.$usuario->descripcion.'" rel="tooltip">Activo</span>' : '<span class="label label-danger" title="'.$usuario->descripcion.'" rel="tooltip">Bloqueado</span>'; ; ?></td>
                         <td>
-                            <?php echo DwHtml::buttonTable('Subir Reporte', "calendario/upload/reports/$key_shw/", NULL, 'info', 'fa-upload'); ?>                            
+                            <?php echo DwHtml::buttonTable('Subir Reporte', "calendario/upload/reports/$key_upr/", NULL, 'info', 'fa-upload'); ?>
+                            <?php echo DwHtml::buttonTable('Ver Calendario', "calendario/index/show/$key_shw/", array('class' => 'no-ajax', 'target' => '_blank'), 'info', 'fa-search'); ?>
                         </td>
                     </tr>
                     <?php $usuarios->counter++; ?>

@@ -154,6 +154,7 @@
 	<script type="text/javascript">
 		PUBLIC_PATH = '<?php echo PUBLIC_PATH; ?>';
 		var Eventos = <?php echo json_encode($eventos)?>;
+		var readOnly = <?php echo $read_only?>;
 	</script>
 
     <?php echo Tag::js('bee/jquery.min'); ?>
