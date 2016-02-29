@@ -376,7 +376,8 @@ function crearCalendario(){
 				
 				
 
-				$("#agregar").hide();		
+				$("#agregar").hide();
+				console.log('ejecutar guardado');
 				editando = false;
 				$.ajax({
 					type: "POST",
@@ -564,34 +565,50 @@ function stringToBoolean(string){
         default: return Boolean(string);
     }
 }
-$("#delete").click(function(){
-	console.log("eliminar");
-	$('#calendar').fullCalendar( 'removeEvents', eventRefence._id);
-	var dataEvents = $('#calendar').fullCalendar('clientEvents');	
-	for(var i in Events){
-		console.log("for > ",Events[i]);
-		if(typeof(Events[i]) == "object"){
-			console.log("eventRefence.author > ", eventRefence.author, " : Events[i].author > ", Events[i].author);
-				
-			if(Events[i].author == eventRefence.author && Events[i].constraint == eventRefence.constraint){
-				console.log("eliminar de events")
-				Events.splice(i, 1);
-			}	
+$("#delete").click(function(e){
+	if($(e.target).is('#delete')){
+		console.log("eliminar");
+		$('#calendar').fullCalendar( 'removeEvents', eventRefence._id);
+		var dataEvents = $('#calendar').fullCalendar( 'clientEvents');	
+		var dataSend = "{}";
+		var seen = [];
+		if(dataEvents.length == 0){
+			Events = "";
+		}else{
+			//almacenamos la informacion como objetos json
+			console.log('convertir info: ',dataEvents);
+			Events = dataEvents;
+			//convertimos la informacion en string para poder guardarla
+			dataSend = JSON.stringify(dataEvents, function(key, val) {
+			   if (val != null && typeof val == "object") {
+			        console.log('VAL : ', val);
+			        console.log('VAL length : ', val.length());
+			        if (seen.indexOf(val) >= 0) {
+			            return;
+			        }
+			        seen.push(val);
+			    }
+			    return val;
+			});;
 		}
+		
+		$("#agregar").hide();
+		console.log('data a guardar : ', dataSend);
+		$.ajax({
+			type: "POST",
+			data: {eventos: dataSend},
+			dataType: "json",
+			url: PUBLIC_PATH + 'calendario/index/guardar',
+			success:function(data){
+				console.log('guardado exitoso');
+			},
+			error:function(data){
+				console.log('error al guardar, ',data);
+			}
+		});
+		
+		//
 	}
-	
-	if(Events.length == 0){
-		Events = "";
-	}
-	console.log('Events > ',Events);
-	$("#agregar").hide();	
-	$.ajax({
-		type: "POST",
-		data: {eventos: Events},
-		dataType: "json",
-		url: PUBLIC_PATH + 'calendario/index/guardar'
-	})
-	Events = [];
 });
 
 function lightNetworks(idButton){
