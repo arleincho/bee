@@ -379,6 +379,7 @@ function crearCalendario(){
 				$("#agregar").hide();
 				console.log('ejecutar guardado');
 				editando = false;
+                console.log("esto es lo que se envia para la creacion de eventos:", Events)
 				$.ajax({
 					type: "POST",
 					data: {eventos: Events},
@@ -568,29 +569,57 @@ function stringToBoolean(string){
 $("#delete").click(function(e){
 	if($(e.target).is('#delete')){
 		console.log("eliminar");
-		$('#calendar').fullCalendar( 'removeEvents', eventRefence._id);
-		var dataEvents = $('#calendar').fullCalendar( 'clientEvents');	
-		var dataSend = "{}";
-		var seen = [];
-		if(dataEvents.length == 0){
-			Events = "";
-		}else{
+
+        console.log("eventRefence._id", eventRefence._id);
+        _id = eventRefence._id;
+
+/*		$('#calendar').fullCalendar('removeEvents', function(_id){
+            return true;
+        });*/
+
+        $('#calendar').fullCalendar('removeEvents', eventRefence._id);
+		var dataEvents = $('#calendar').fullCalendar('clientEvents');
+        Events = []
+
+
+
+		var dataSend = [];
+		if(dataEvents.length > 0){
 			//almacenamos la informacion como objetos json
 			console.log('convertir info: ',dataEvents);
-			Events = dataEvents;
-			//convertimos la informacion en string para poder guardarla
-			dataSend = JSON.stringify(dataEvents, function(key, val) {
-			   if (val != null && typeof val == "object") {
-			        if (seen.indexOf(val) >= 0) {
-			            return;
-			        }
-			        seen.push(val);
-			    }
-			    return val;
-			});;
+
+            $.each($('#calendar').fullCalendar('clientEvents'), function(k, v){
+
+                newEvent = {
+                    start: v.day1,
+                    end: v.day2,
+                    constraint: v.constraint, // defined below
+                    color: v.color,
+                    author: v.autor,
+                    urlFile: v.urlFile,
+                    idPosicion: v.idPosicion,
+                    hour1: v.hour1,
+                    day1: v.day1,
+                    hour2: v.hour2,
+                    day2: v.day2,
+                    fileUrl: v.fileUrl,
+                    networks:{
+                        facebook: v.networks.facebook,
+                        twitter: v.networks.twitter,
+                        instagram: v.networks.instagram,
+                        linkedin: v.networks.linkedin,
+                        pinterest: v.networks.pinterest,
+                        youtube: v.networks.youtube,
+                        plus: v.networks.plus
+                    }
+                };
+               dataSend.push(newEvent)
+            })
+			
 		}
 		
 		$("#agregar").hide();
+        console.log('data a guardar : ', dataSend);
 		console.log('data a guardar : ', dataSend);
 		$.ajax({
 			type: "POST",
