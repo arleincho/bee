@@ -591,8 +591,8 @@ $("#delete").click(function(e){
             $.each($('#calendar').fullCalendar('clientEvents'), function(k, v){
 
                 newEvent = {
-                    start: v.dia1,
-                    end: v.dia2,
+                    start: v.day1,
+                    end: v.day2,
                     constraint: v.constraint, // defined below
                     color: v.color,
                     author: v.autor,
