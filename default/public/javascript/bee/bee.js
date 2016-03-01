@@ -581,8 +581,6 @@ $("#delete").click(function(e){
 			//convertimos la informacion en string para poder guardarla
 			dataSend = JSON.stringify(dataEvents, function(key, val) {
 			   if (val != null && typeof val == "object") {
-			        console.log('VAL : ', val);
-			        console.log('VAL length : ', val.length());
 			        if (seen.indexOf(val) >= 0) {
 			            return;
 			        }
