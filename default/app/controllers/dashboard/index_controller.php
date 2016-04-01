@@ -25,6 +25,7 @@ class IndexController extends BackendController {
         $this->progress_report = $reporte->getListadoReportePorTipo($usuario_id, 'progress_report');
         $this->demographics_report = $reporte->getListadoReportePorTipo($usuario_id, 'demographics_report');
         $this->beehive_report = $reporte->getListadoReportePorTipo($usuario_id, 'beehive_report');
+        $this->read_only = false;
     }
 
 }

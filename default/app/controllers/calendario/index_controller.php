@@ -112,4 +112,24 @@ class IndexController extends BackendController {
         
     }
 
+    public function show($key) {
+
+        if(!$id = Security::getKey($key, 'show_calendar', 'int')) {
+            return Redirect::toAction('listar');
+        }
+        
+        $usuario_id = $id;
+
+        $this->eventos = Calendario::getCalendario($usuario_id);
+
+        $reporte = new Reporte();
+        $this->progress_report = $reporte->getListadoReportePorTipo($usuario_id, 'progress_report');
+        $this->demographics_report = $reporte->getListadoReportePorTipo($usuario_id, 'demographics_report');
+        $this->beehive_report = $reporte->getListadoReportePorTipo($usuario_id, 'beehive_report');
+        $this->read_only = true;
+        View::setPath('dashboard/index');
+        View::select('index', 'backend/bee');
+
+    }
+
 }

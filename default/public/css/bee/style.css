@@ -43,7 +43,7 @@ article{
 	position:relative;
 	width: 40px;
 	height: 40px;
-	background: url("../../img/bee/bee.png") no-repeat no-repeat center center #00c1b8;
+	background: url("../../img/bee/bee2.png") no-repeat no-repeat center center #fff;
 }
 #panels{
     display: inline-block;
@@ -90,12 +90,12 @@ article{
     width: 100%;
 }
 .tab{
-	font-family: "Tungsten-Medium";
-	letter-spacing: 1px;
-	display: block;
-	position: relative;
-	width: 100%;
-	height: auto;
+    display: block;
+    font-family: "Tungsten-Medium";
+    height: auto;
+    letter-spacing: 1px;
+    position: relative;
+    width: 100%;
 }
 .tab ul{
 	padding: 0px;
@@ -118,7 +118,8 @@ article{
     height: auto;
     cursor: pointer;
     font-size: 25px;
-    padding-right: 25px;
+    margin-right: 25px;
+    border-bottom: 1px solid #000;
     -webkit-transition: 0.3s ease-in-out;
     -moz-transition: 0.3s ease-in-out;
     -o-transition: 0.3s ease-in-out;
@@ -135,7 +136,8 @@ article{
 .tab label i{
     display: block;
     float: right;
-    font-size: 15px;
+    font-size: 20px;
+    font-weight: 700;
     margin-left: 5px;
     margin-top: 8px;
 } 
@@ -206,16 +208,20 @@ article{
     transition: 0.3s ease-in-out;
 }
 .tab input:checked ~ .contenido{
+    border-top: 1px solid #fff;
     height: 140px;
+    margin-top: -1px;
 }
 .texto{
     display: block !important;
     height: 90px;
-    margin-top: 20px;
+    margin-top: 5px;
     width: 92%;
 }
 .winner{
+    border-top: 1px solid #fff;
     height: 178px !important;
+    margin-top: -1px;
 }
 #winnerName{
     display: block;
@@ -226,11 +232,11 @@ article{
 }
 #WinnerButton{
     background: #fff none repeat scroll 0 0;
-    border: 0 none;
+    border: 1px solid;
     float: right;
     font-size: 15px;
     font-weight: 500;
-    margin-right: 15px;
+    margin-right: 23px;
     margin-top: 5px;
 }
 
@@ -240,9 +246,9 @@ article{
     color: #333;
     display: block;
     height: auto;
-    margin: 8% auto auto;
+    margin: 8% auto auto 25%;
     opacity: 1 !important;
-    position: relative;
+    position: fixed;
     width: 350px;
 }
 #taskCont h2{
@@ -298,7 +304,7 @@ article{
     height: 90px;
     margin: auto 18px 15px 0;
     position: relative;
-    width: 61%; 
+    width: 90%;
 }
 #taskDescription textarea{
     border: medium none;
@@ -314,10 +320,10 @@ article{
 }
 #taskAuthor{
     border: 1px solid;
-    clear: both;
     display: block;
-    height: 50px;
-    margin: auto auto 15px;
+    float: right;
+    height: 30px;
+    margin: auto 18px 15px;
     width: 90%;
 }
 #taskAuthor textarea{
@@ -341,14 +347,14 @@ article{
     width: 325px;
 }
 .taskButton{
+    border: 1px solid;
+    cursor: pointer;
     display: inline-block;
     font-size: 25px;
     height: auto;
-    margin: 5px;
+    margin: 5px 7px 5px 5px;
     padding: 3px;
     width: auto;
-    cursor: pointer;
-    border: 1px solid;
 }
 .formulario{
     font-family: 'Tungsten-Medium';
@@ -374,7 +380,7 @@ article{
 .fc-view-container *, .fc-view-container *::before, .fc-view-container *::after {
     text-align: center !important;
     color: #2d2828 !important;
-    font-size: 25px;
+    font-size: 18px;
 }
 .fc-day-header{
 	font-size: 14px;
@@ -424,7 +430,8 @@ article{
     font-size: 18px !important;
 }
 .fc-day:hover{
-    background-color: #f2f2f2;
+    background-color: #96DAEA;
+    cursor: pointer;
 }
 .fc-head{
     border: medium hidden !important;
@@ -606,7 +613,7 @@ article{
     position: relative;
     width: 86%;
 }
-#subject textarea{
+#subject input{
     max-width: 300px;
     min-height: 20px;
     min-width: 300px;
@@ -654,9 +661,12 @@ article{
 }
 .edit {
     cursor: pointer;
-    margin-left: 82%;
-    margin-top: 135%;
+    margin-left: 0px;
+    margin-top: 115%;
     position: relative;
+}
+.edit:hover{
+    color: #fff;
 }
 @media (min-width: 767px) {
     .bootstrap-timepicker-widget.modal {
@@ -720,13 +730,41 @@ article{
 #imaEvent{
     display: block;
     float: left;
-    max-width: 92px;
+    height: 101px;
+    margin-left: 16px;
+    margin-top: -10px;
     max-height: 92px;
-    padding: 0 0 14px 14px;
+    max-width: 92px;
+    overflow: hidden;
     position: relative;
-    width: 100%;
+    width: 24%;
+}
+#datepairExample{
+    height: 18px;
+    padding-left: 16px;
+}
+#datepairExample .date{
+    float: left;
+    margin-left: 5px;
+    width: 67px;
+}
+#datepairExample .time{
+    float: left;
+    margin-left: 3px;
+    margin-right: 3px;
+    width: 62px;
+}
+#datepairExample span{
+    float: left;
+    margin-left: 5px;
+    margin-right: 5px;
+    padding-left: 1px;
+    padding-right: 2px;
+    text-align: center;
+    width: 7px;
 }
 #imaEvent img{
+    max-height: 92px;
     width: 100%;
 }
 .faceColor{
@@ -749,4 +787,21 @@ article{
 }
 .googleColor{
      background: #e54a55 none repeat scroll 0 0 !important;
+}
+.rojo{
+    border: 2px solid #ff0000 !important;
+}
+.alert{
+    clear: both;
+    color: #ff0000;
+    display: block;
+    margin-bottom: 11px;
+    position: relative;
+    width: 100%;
+}
+.alert i{
+
+}
+.alert span{
+    
 }
