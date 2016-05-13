@@ -338,6 +338,26 @@ article{
     width: 100%;
     word-wrap: break-word;
 }
+#taskNotes{
+    border: 1px solid;
+    display: block;
+    float: right;
+    height: 30px;
+    margin: auto 18px 15px;
+    width: 90%;
+}
+#taskNotes textarea{
+    border: medium none;
+    font-family: 'Open Sans', sans-serif;
+    height: 98%;
+    max-height: 98%;
+    max-width: 100%;
+    min-height: 98%;
+    min-width: 100%;
+    padding: 6px;
+    width: 100%;
+    word-wrap: break-word;
+}
 #buttons{
     display: block;
     height: 40px;
@@ -662,8 +682,8 @@ article{
 .edit {
     cursor: pointer;
     margin-left: 0px;
-    margin-top: 115%;
-    position: relative;
+    margin-top: 200px;
+    position: absolute;
 }
 .edit:hover{
     color: #fff;
@@ -688,6 +708,7 @@ article{
     background: #00c1b8 none repeat scroll 0 0;
     border-top: 2px solid #444;
     margin-top: 2px;
+    max-height: 35px;
 }
 .fc-content :before{
     color: #fff !important;
@@ -738,6 +759,15 @@ article{
     overflow: hidden;
     position: relative;
     width: 24%;
+}
+#imaEvent i{
+    bottom: 13px;
+    color: orange;
+    font-size: 20px;
+    position: absolute;
+    right: 0;
+    text-shadow: 1px 1px 1px #000;
+    cursor: pointer;
 }
 #datepairExample{
     height: 18px;
@@ -804,4 +834,39 @@ article{
 }
 .alert span{
     
+}
+@media(max-width: 720px){
+    #panels {
+        display: inline-block;
+        float: left;
+        height: 100%;
+        width: 300px;
+        padding-left: 20px;
+        padding-top: 20px;
+        left: -300px;
+        position: absolute;
+        z-index: 100;
+        background: #fff;
+    }
+    #calendario {
+        clear: both;
+        display: inline-block;
+        float: left;
+        height: auto;
+        position: absolute;
+        width: auto;
+        padding: 5px;
+    }
+    #taskCont {
+        background-color: #fff;
+        border: 1px solid;
+        color: #333;
+        display: block;
+        height: 440px;
+        margin: 20px auto;
+        opacity: 1 !important;
+        position: relative;
+        width: 350px;
+        padding-bottom: 35px;
+    }
 }

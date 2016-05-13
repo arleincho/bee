@@ -10,6 +10,7 @@
 
 class Calendario extends ActiveRecord {
 
+
     /**
      * Método para definir las relaciones y validaciones
      */

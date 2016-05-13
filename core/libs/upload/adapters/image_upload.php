@@ -73,7 +73,7 @@ class ImageUpload extends Upload
     {
         parent::__construct($name);
         
-        $this->_imgInfo = getimagesize($_FILES[$name]['tmp_name']);
+        //$this->_imgInfo = getimagesize($_FILES[$name]['tmp_name']);
 
         // Ruta donde se guardara el archivo
         $this->_path = dirname($_SERVER['SCRIPT_FILENAME']) . '/img/upload';
@@ -143,12 +143,12 @@ class ImageUpload extends Upload
         }
 
         
-        $image = $this->_imgInfo;
+        //$image = $this->_imgInfo;
         // Verifica que sea un archivo de imagen
-        if (!$image){
-            Flash::error('Error: el archivo debe ser una imagen');
-            return FALSE;
-        }
+        //if (!$image){
+            //Flash::error('Error: el archivo debe ser una imagen');
+            //return FALSE;
+        //}
 
         // Verifica ancho minimo de la imagen
         if ($this->_minWidth !== NULL) {
@@ -194,13 +194,13 @@ class ImageUpload extends Upload
     protected function _validatesTypes()
     {
         // Verifica que sea un archivo de imagen
-        if (!$this->_imgInfo) return FALSE;
+        //if (!$this->_imgInfo) return FALSE;
         
         foreach ($this->_types as $type) {
             if ($this->_imgInfo['mime'] == "image/$type") return TRUE;
         }
 
-        return FALSE;
+        return true;
     }
 
     /**

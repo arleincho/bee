@@ -47,7 +47,7 @@ class IndexController extends BackendController {
 
 
             $upload = new DwUpload('archivo', 'img/upload/eventos/');
-            $upload->setAllowedTypes('png|jpg|gif|jpeg|png');
+            //$upload->setAllowedTypes('png|jpg|gif|jpeg|png');
             $upload->setEncryptName(TRUE);
 
                 
