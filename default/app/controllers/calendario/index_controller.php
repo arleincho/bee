@@ -50,7 +50,7 @@ class IndexController extends BackendController {
             //$upload->setAllowedTypes('png|jpg|gif|jpeg|png');
             $upload->setEncryptName(TRUE);
 
-            
+            $data = $upload->save();
             print"<pre>";
             print_r($data);
             var_dump($data);
