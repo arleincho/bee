@@ -54,12 +54,14 @@ class IndexController extends BackendController {
             print"<pre>";
             print_r($data);
             var_dump($data);
-            die();
             if(!$data = $upload->save()) { //retorna un array('path'=>'ruta', 'name'=>'nombre.ext');
                 $data = array('error'=>TRUE, 'message'=>$upload->getError());
             }else{
                 $fecha = Input::post('fechaSelect');
                 $hora = Input::post('hora');
+                var_dump($fecha);
+                var_dump($hora);
+                die();
                 if ($fecha){
                     $this->data = $data;
                     $eventos = Calendario::getCalendario(Session::get('id'));
