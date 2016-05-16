@@ -50,17 +50,15 @@ class IndexController extends BackendController {
             //$upload->setAllowedTypes('png|jpg|gif|jpeg|png');
             $upload->setEncryptName(TRUE);
 
-            $data = $upload->save();
+            // $data = $upload->save();
             print"<pre>";
-            print_r($data);
-            var_dump($data);
             if(!$data = $upload->save()) { //retorna un array('path'=>'ruta', 'name'=>'nombre.ext');
                 $data = array('error'=>TRUE, 'message'=>$upload->getError());
             }else{
                 $fecha = Input::post('fechaSelect');
                 $hora = Input::post('hora');
-                var_dump($fecha);
-                var_dump($hora);
+                var_dump("$fecha ->" . $fecha);
+                var_dump("$hora ->" . $hora);
                 die();
                 if ($fecha){
                     $this->data = $data;

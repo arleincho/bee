@@ -120,7 +120,6 @@ class DwUpload {
      */
     public function save($rename='') {
         
-        var_dump($this->isUploaded());
         if(!$this->isUploaded()) { //Verifico si está cargado el archivo            
             return FALSE;
         }                
@@ -130,10 +129,10 @@ class DwUpload {
         }                
         /*if(!$this->size = $this->isSizeValid()) { //El tamaño es válido?            
             return FALSE;
-        }                              
+        } */                             
         if (!$this->isAllowedFiletype()) {// Verifico si el tipo de archivo es permitido             
             return FALSE;
-        } */        
+        }         
         //Tomo el nomnbre del nuevo archivo
         $this->name = $this->_setFileName($rename);
         //Tomo el archivo temporal
