@@ -55,6 +55,7 @@ class IndexController extends BackendController {
             $data = $upload->save();
             var_dump($data);
             print_r('expression111111');
+            print_r($upload->getError());
             if(!$data) { //retorna un array('path'=>'ruta', 'name'=>'nombre.ext');
                 var_dump('expressionexpressionexpression');
                 $data = array('error'=>TRUE, 'message'=>$upload->getError());
