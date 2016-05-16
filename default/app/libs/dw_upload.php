@@ -120,10 +120,12 @@ class DwUpload {
      */
     public function save($rename='') {
         
-        if(!$this->isUploaded()) { //Verifico si está cargado el archivo            
+        if(!$this->isUploaded()) { //Verifico si está cargado el archivo  
+            var_dump('$this->isUploaded()');          
             return FALSE;
         }                
         if (!$this->isWritable()) { //Permite escrituras la ruta?            
+            var_dump('$this->isWritable()');          
             //Los errores son cargados en el método 
             return FALSE;
         }                
@@ -131,6 +133,7 @@ class DwUpload {
             return FALSE;
         } */                             
         if (!$this->isAllowedFiletype()) {// Verifico si el tipo de archivo es permitido             
+            var_dump('$this->isAllowedFiletype()');          
             return FALSE;
         }         
         //Tomo el nomnbre del nuevo archivo
