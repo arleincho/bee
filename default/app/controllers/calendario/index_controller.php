@@ -50,21 +50,13 @@ class IndexController extends BackendController {
             //$upload->setAllowedTypes('png|jpg|gif|jpeg|png');
             $upload->setEncryptName(TRUE);
 
-            // $data = $upload->save();
-            print"<pre>";
             $data = $upload->save();
-            var_dump($data);
-            print_r('expression111111');
-            print_r($upload->getError());
             if(!$data) { //retorna un array('path'=>'ruta', 'name'=>'nombre.ext');
                 var_dump('expressionexpressionexpression');
                 $data = array('error'=>TRUE, 'message'=>$upload->getError());
             }else{
                 $fecha = Input::post('fechaSelect');
                 $hora = Input::post('hora');
-                var_dump("$fecha ->" . $fecha);
-                var_dump("$hora ->" . $hora);
-                die();
                 if ($fecha){
                     $this->data = $data;
                     $eventos = Calendario::getCalendario(Session::get('id'));
