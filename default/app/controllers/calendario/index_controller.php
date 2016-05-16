@@ -53,6 +53,7 @@ class IndexController extends BackendController {
             // $data = $upload->save();
             print"<pre>";
             if(!$data = $upload->save()) { //retorna un array('path'=>'ruta', 'name'=>'nombre.ext');
+                var_dump('expressionexpressionexpression');
                 $data = array('error'=>TRUE, 'message'=>$upload->getError());
             }else{
                 $fecha = Input::post('fechaSelect');
