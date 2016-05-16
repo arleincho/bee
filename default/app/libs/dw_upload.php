@@ -193,6 +193,7 @@ class DwUpload {
      */
     public function isWritable($path='') {
         $path = empty($path) ? $this->path : $path;
+        var_dump($path);
         if(!file_exists($path)) {
             $this->setError('No fué posible ubicar el directorio de carga del archivo.');
             return FALSE;
