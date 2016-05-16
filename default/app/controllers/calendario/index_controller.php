@@ -50,7 +50,11 @@ class IndexController extends BackendController {
             //$upload->setAllowedTypes('png|jpg|gif|jpeg|png');
             $upload->setEncryptName(TRUE);
 
-                
+            
+            print"<pre>";
+            print_r($data);
+            var_dump($data);
+            die();
             if(!$data = $upload->save()) { //retorna un array('path'=>'ruta', 'name'=>'nombre.ext');
                 $data = array('error'=>TRUE, 'message'=>$upload->getError());
             }else{
