@@ -120,6 +120,7 @@ class DwUpload {
      */
     public function save($rename='') {
         
+        var_dump($this->isUploaded());
         if(!$this->isUploaded()) { //Verifico si está cargado el archivo            
             return FALSE;
         }                
