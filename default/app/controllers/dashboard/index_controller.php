@@ -20,7 +20,9 @@ class IndexController extends BackendController {
     	$usuario_id = Session::get('id');
 
         //$this->eventos = Calendario::getCalendario($usuario_id);
+
         $this->eventos = Evento::getListadoEventos($usuario_id);
+        //$this->eventos = json_encode($this->eventos);
         
 
         $reporte = new Reporte();

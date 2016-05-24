@@ -25,7 +25,6 @@ class IndexController extends BackendController {
 
     	if(Input::hasPost('eventos')) {
     		$data = Input::post('eventos');
-            print_r($data);
             if(Evento::setEvento('create', $data, Session::get('id'))){
                 if(APP_AJAX) {
                     Flash::valid('El Calendario se ha creado correctamente! <br/>Por favor recarga la página para verificar los cambios.');

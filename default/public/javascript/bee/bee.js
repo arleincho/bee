@@ -399,7 +399,7 @@ function crearCalendario(){
 					console.log('editar evento');
 
 					console.log('urlFile ', urlFile);
-                    eventSend = eventRefence;
+                    newEvent = eventRefence;
 					console.log('eventRefence', eventRefence);
 					$('#calendar').fullCalendar('updateEvent', eventRefence);
 
@@ -448,9 +448,9 @@ function crearCalendario(){
 					//dataSend.push(newEvent);
 					$('#calendar').fullCalendar( 'addEventSource', Events);
 				}
-				newEvent = null
+				//newEvent = null
 				
-				$.each($('#calendar').fullCalendar('clientEvents'), function(k, v){
+				/*$.each($('#calendar').fullCalendar('clientEvents'), function(k, v){
 
 		                newEvent = {
 		                    start: v.day1,
@@ -478,7 +478,7 @@ function crearCalendario(){
 		                };
 		               dataSend.push(newEvent)
 		           })
-					console.log('dataSend',dataSend)
+					console.log('dataSend',dataSend)*/
 
 				$("#agregar").hide();
 				console.log('ejecutar guardado');
