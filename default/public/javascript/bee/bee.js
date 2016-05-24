@@ -20,6 +20,7 @@ var fileName;
 var fileSize;
 //obtenemos el tipo de archivo image/png ejemplo
 var fileType;
+
 var eventRefence;
 
 var menuHide = false;
