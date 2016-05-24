@@ -5342,6 +5342,7 @@ DayGrid.mixin({
 					) +
 			'>' +
 				'<div class="fc-content '+colorSocial+'">' +
+				
 					/*(this.isRTL ?
 						titleHtml + ' ' + timeHtml : // put a natural space in between
 						timeHtml + ' ' + titleHtml   //
