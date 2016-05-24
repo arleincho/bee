@@ -7,7 +7,7 @@
  * @package     Controllers 
  */
 
-Load::models('calendario/calendario', 'calendario/reporte');
+Load::models('calendario/calendario', 'calendario/reporte', 'calendario/evento');
 
 class IndexController extends BackendController {
     
@@ -19,7 +19,9 @@ class IndexController extends BackendController {
 
     	$usuario_id = Session::get('id');
 
-        $this->eventos = Calendario::getCalendario($usuario_id);
+        //$this->eventos = Calendario::getCalendario($usuario_id);
+        $this->eventos = Evento::getListadoEventos($usuario_id);
+        
 
         $reporte = new Reporte();
         $this->progress_report = $reporte->getListadoReportePorTipo($usuario_id, 'progress_report');

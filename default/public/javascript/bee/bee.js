@@ -308,12 +308,13 @@ function crearCalendario(){
 		//$('#calendar').fullCalendar( 'removeEventSource', Events);
 		var RedSeleccionada = comprobarSeleccionRed();
 		if(RedSeleccionada == "true"){
+            eventSend = {}
 			if($("#taskDescription textarea").val() != "" && $("#taskAuthor textarea").val() != "" && $("#taskDescription textarea").val() != "add description" && $("#taskAuthor textarea").val() != "author name"){
 				if(editando == true){		
 					console.log("modificar evento")	
 					eventRefence.title = $("#taskText textarea").val(),
 					//eventRefence.start = fechaSelect;
-					eventRefence.constraint = $("#taskDescription textarea").val(); // defined below
+					eventRefence.description = $("#taskDescription textarea").val(); // defined below
 					eventRefence.color = '#257e4a';
 					eventRefence.author = $("#taskAuthor textarea").val();
 					eventRefence.urlFile = urlFile;
@@ -334,6 +335,7 @@ function crearCalendario(){
 					eventRefence.networks.plus = plus;
 					console.log('editar evento');
 					console.log('urlFile ', urlFile);
+                    eventSend = eventRefence;
 					$('#calendar').fullCalendar('updateEvent', eventRefence);
 
 					//i = Events.getIndexBy("start", fechaSelect)
@@ -350,7 +352,7 @@ function crearCalendario(){
 						title: $("#taskText textarea").val(),
 						start: dia1,
 						end: dia2,
-						constraint: $("#taskDescription textarea").val(), // defined below
+						description: $("#taskDescription textarea").val(), // defined below
 						color: '#257e4a',
 						author: $("#taskAuthor textarea").val(),
 						urlFile: urlFile,
@@ -370,6 +372,7 @@ function crearCalendario(){
 							plus:plus
 						}
 					};
+                    eventSend = eventRefence;
 					Events.push(newEvent);
 					$('#calendar').fullCalendar( 'addEventSource', Events);
 				}
@@ -382,7 +385,7 @@ function crearCalendario(){
                 console.log("esto es lo que se envia para la creacion de eventos:", Events)
 				$.ajax({
 					type: "POST",
-					data: {eventos: Events},
+					data: {eventos: newEvent},
 					dataType: "json",
 					url: PUBLIC_PATH + 'calendario/index/guardar'
 				})
@@ -516,7 +519,7 @@ function editEvents(evento){
 	$("#taskText textarea").val(evento.title);
 	fechaSelect=evento.start._i;
 	console.log("currentId",evento.idPosicion)
-	$("#taskDescription textarea").val(evento.constraint);
+	$("#taskDescription textarea").val(evento.description);
 	color = evento.color,
 	$("#taskAuthor textarea").val(evento.author),
 	currentId = evento.idPosicion;
@@ -593,7 +596,7 @@ $("#delete").click(function(e){
                 newEvent = {
                     start: v.day1,
                     end: v.day2,
-                    constraint: v.constraint, // defined below
+                    description: v.description, // defined below
                     color: v.color,
                     author: v.autor,
                     urlFile: v.urlFile,

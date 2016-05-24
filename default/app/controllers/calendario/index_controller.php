@@ -7,7 +7,7 @@
  * @package     Controllers 
  */
 
-Load::models('calendario/calendario', 'calendario/reporte');
+Load::models('calendario/calendario', 'calendario/reporte',  'calendario/evento');
 
 class IndexController extends BackendController {
     
@@ -24,8 +24,9 @@ class IndexController extends BackendController {
     	View::select(null, null);
 
     	if(Input::hasPost('eventos')) {
-    		$data = array('configuracion' => json_encode(Input::post('eventos')), 'usuario_id' => Session::get('id'));
-            if(Calendario::setCalendario('create', $data)){
+    		$data = Input::post('eventos');
+            print_r($data);
+            if(Evento::setEvento('create', $data, Session::get('id'))){
                 if(APP_AJAX) {
                     Flash::valid('El Calendario se ha creado correctamente! <br/>Por favor recarga la página para verificar los cambios.');
                 } else {
