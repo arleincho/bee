@@ -48,11 +48,12 @@ class IndexController extends BackendController {
 
 
             $upload = new DwUpload('archivo', 'img/upload/eventos/');
-            $upload->setAllowedTypes('png|jpg|gif|jpeg|png');
+            //$upload->setAllowedTypes('png|jpg|gif|jpeg|png');
             $upload->setEncryptName(TRUE);
 
-                
-            if(!$data = $upload->save()) { //retorna un array('path'=>'ruta', 'name'=>'nombre.ext');
+            $data = $upload->save();
+            if(!$data) { //retorna un array('path'=>'ruta', 'name'=>'nombre.ext');
+                var_dump('expressionexpressionexpression');
                 $data = array('error'=>TRUE, 'message'=>$upload->getError());
             }else{
                 $fecha = Input::post('fechaSelect');

@@ -1,7 +1,6 @@
 /nbproject/
 /default/app/temp/
 backend.*
-/pruebas/
-/mysql/
-/postgres/
-
+.DS_Store
+/default/public/img/upload/
+/default/public/php/error_log

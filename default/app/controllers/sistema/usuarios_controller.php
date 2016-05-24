@@ -51,7 +51,7 @@ class UsuariosController extends BackendController {
     public function listar($order='order.id.asc', $page='page.1') { 
         $page = (Filter::get($page, 'page') > 0) ? Filter::get($page, 'page') : 1;
         $usuario = new Usuario();
-        $this->usuarios = $usuario->getListadoUsuario('todos', $order, $page);
+        $this->usuarios = $usuario->getListadoUsuario('activos', $order, $page);
         $this->order = $order;        
         $this->page_title = 'Listado de usuarios del sistema';
     }
