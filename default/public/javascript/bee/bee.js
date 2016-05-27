@@ -65,7 +65,7 @@ $(document).ready(function() {
         formData.append('archivo', $('#imagen')[0].files[0])
         formData.append('fechaSelect', fechaSelect)
         formData.append('hora', $("#timepicker1").val())
-        formData.append('id', (eventRefence)?eventRefence._id : null)
+        formData.append('id', (eventRefence != null)?eventRefence._id : null)
         var message = ""; 
         
         //hacemos la petición ajax  
