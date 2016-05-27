@@ -373,13 +373,14 @@ function crearCalendario(){
 				if(editando == true){		
 					console.log("modificar evento")	
 					eventRefence.title = $("#taskText textarea").val();
-					//eventRefence.start = fechaSelect;
+
 					var tareaText = $("#taskDescription textarea").val();
 					var notesText = $("#taskNotes textarea").val();
-					eventRefence.description = escape(tareaText); // defined below
+
+					eventRefence.description = unescape(tareaText); // defined below
 					eventRefence.color = '#257e4a';
 					eventRefence.author = $("#taskAuthor textarea").val();
-					eventRefence.notes = escape(notesText);
+					eventRefence.notes = unescape(notesText);
 					eventRefence.urlFile = urlFile;
 					eventRefence.idPosicion = id;
 					eventRefence.hour1 = hora1;
@@ -399,27 +400,47 @@ function crearCalendario(){
 					console.log('editar evento');
 
 					console.log('urlFile ', urlFile);
-                    newEvent = eventRefence;
 					console.log('eventRefence', eventRefence);
+
+                    accion = 'editar/' + eventRefence._id;
+                    newEvent = {
+                        id: eventRefence._id, 
+                        title:  escape($("#taskText textarea").val()),
+                        start: dia1,
+                        end: dia2,
+                        description: escape(notesText), // defined below
+                        color: '#257e4a',
+                        author: $("#taskAuthor textarea").val(),
+                        notes: escape(notesText),
+                        urlFile: urlFile,
+                        idPosicion:id,
+                        hour1: hora1,
+                        day1: dia1,
+                        hour2: hora2,
+                        day2: dia2,
+                        fileUrl:urlFile,
+                        networks:{
+                            facebook:facebook,
+                            twitter:twitter,
+                            instagram:instagram,
+                            linkedin:linkedin,
+                            pinterest:pinterest,
+                            youtube:youtube,
+                            plus:plus
+                        }
+                    };
+
 					$('#calendar').fullCalendar('updateEvent', eventRefence);
-
-					//i = Events.getIndexBy("start", fechaSelect)
-					
-					//Events[i] = eventRefence;
-					
-					//Events = $('#calendar').fullCalendar( 'clientEvents');
-					//Events[$('#calendar').fullCalendar('clientEvents').getIndexBy("start", eventRefence.start)] = eventRefence;
-
-
-					
 		            
 				}else{
+
+                    accion = 'guardar'
 					console.log("crear nuevo evento");
 					$('#calendar').fullCalendar('removeEvents');
 					var tareaText2 = $("#taskDescription textarea").val();
 					var notesText2 = $("#taskNotes textarea").val();
 					newEvent = {
-						title: $("#taskText textarea").val(),
+						title: escape($("#taskText textarea").val()),
 						start: dia1,
 						end: dia2,
 						description: escape(tareaText2), // defined below
@@ -445,41 +466,9 @@ function crearCalendario(){
 					};
                     eventSend = eventRefence;
 					Events.push(newEvent);
-					//dataSend.push(newEvent);
 					$('#calendar').fullCalendar( 'addEventSource', Events);
 				}
-				//newEvent = null
 				
-				/*$.each($('#calendar').fullCalendar('clientEvents'), function(k, v){
-
-		                newEvent = {
-		                    start: v.day1,
-		                    end: v.day2,
-		                    constraint: v.constraint, // defined below
-		                    color: v.color,
-		                    author: v.author,
-		                    notes: v.notes,
-		                    urlFile: v.urlFile,
-		                    idPosicion: v.idPosicion,
-		                    hour1: v.hour1,
-		                    day1: v.day1,
-		                    hour2: v.hour2,
-		                    day2: v.day2,
-		                    fileUrl: v.fileUrl,
-		                    networks:{
-		                        facebook: v.networks.facebook,
-		                        twitter: v.networks.twitter,
-		                        instagram: v.networks.instagram,
-		                        linkedin: v.networks.linkedin,
-		                        pinterest: v.networks.pinterest,
-		                        youtube: v.networks.youtube,
-		                        plus: v.networks.plus
-		                    }
-		                };
-		               dataSend.push(newEvent)
-		           })
-					console.log('dataSend',dataSend)*/
-
 				$("#agregar").hide();
 				console.log('ejecutar guardado');
 				editando = false;
@@ -488,7 +477,7 @@ function crearCalendario(){
 					type: "POST",
 					data: {eventos: newEvent},
 					dataType: "json",
-					url: PUBLIC_PATH + 'calendario/index/guardar'
+					url: PUBLIC_PATH + 'calendario/index/' + accion
 				})
 				// console.log("Events = ", Events);
 			}else{
@@ -682,13 +671,13 @@ $("#delete").click(function(e){
             return true;
         });*/
 
-        $('#calendar').fullCalendar('removeEvents', eventRefence._id);
-		var dataEvents = $('#calendar').fullCalendar('clientEvents');
-        Events = []
+        
+		//var dataEvents = $('#calendar').fullCalendar('clientEvents');
+        //Events = []
 
 
 
-		var dataSend = [];
+		/*var dataSend = [];
 		if(dataEvents.length > 0){
 			//almacenamos la informacion como objetos json
 			console.log('convertir info: ',dataEvents);
@@ -721,24 +710,26 @@ $("#delete").click(function(e){
                dataSend.push(newEvent)
             })
 			
-		}
+		}*/
 		
 		$("#agregar").hide();
-        console.log('data a guardar : ', dataSend);
-		console.log('data a guardar : ', dataSend);
+        
 		$.ajax({
 			type: "POST",
-			data: {eventos: dataSend},
+			//data: {eventos: {id: eventRefence._id}},
 			dataType: "json",
-			url: PUBLIC_PATH + 'calendario/index/guardar',
+			url: PUBLIC_PATH + 'calendario/index/eliminar/' + eventRefence._id,
 			success:function(data){
 				console.log('guardado exitoso');
 			},
 			error:function(data){
-				console.log('error al guardar, ',data);
+				console.log('error al eliminar, ');
 			}
 		});
-		Events = dataSend;
+        /*.always(function() {
+            $('#calendar').fullCalendar('removeEvents', eventRefence._id);
+        });*/
+		//Events = dataSend;
 		
 		//
 	}

@@ -31,6 +31,56 @@ class IndexController extends BackendController {
                 } else {
                     Flash::valid('El Evento se ha creado correctamente!');
                 }
+                View::json();
+            }
+        }
+    }
+
+    public function editar($id=null) {
+
+        View::select(null, null);
+
+        if (isset($id) && is_numeric($id)){
+
+            if(Input::hasPost('eventos')) {
+                $data = Input::post('eventos');
+                if(Evento::setEvento('edit', $data, Session::get('id'))){
+                    if(APP_AJAX) {
+                        Flash::valid('El Calendario se ha creado correctamente! <br/>Por favor recarga la página para verificar los cambios.');
+                    } else {
+                        Flash::valid('El Evento se ha creado correctamente!');
+                    }
+                    View::json();
+                }
+            }
+        }
+
+
+
+    }
+
+    /**
+     * Método para eliminar
+     */
+    public function eliminar($id) {
+
+        View::select(null, null);
+
+        if (isset($id) && is_numeric($id)){
+            $evento = new Evento();
+            
+            if(!$evento->find_first($id)) {
+                Flash::error('Lo sentimos, pero no se ha podido establecer la información del evento');
+            }
+            try {
+                if($evento->delete()) {
+                    Flash::valid('El evento se ha eliminado correctamente!');
+                    View::json();
+                } else {
+                    Flash::warning('Lo sentimos, pero este evento no se puede eliminar.');
+                }
+            } catch(KumbiaException $e) {
+                Flash::error('Este evento no se puede eliminar porque se encuentra relacionado con otro registro.');
             }
         }
     }
