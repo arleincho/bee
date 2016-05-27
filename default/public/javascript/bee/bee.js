@@ -57,11 +57,15 @@ $(document).ready(function() {
  
     //al enviar el formulario
     $(':button').click(function(){
+
+        console.log("eventRefence", eventRefence);
+
         //información del formulario
         var formData = new FormData();
         formData.append('archivo', $('#imagen')[0].files[0])
         formData.append('fechaSelect', fechaSelect)
         formData.append('hora', $("#timepicker1").val())
+        formData.append('id', (eventRefence)?eventRefence._id : null)
         var message = ""; 
         
         //hacemos la petición ajax  
@@ -721,6 +725,7 @@ $("#delete").click(function(e){
 			url: PUBLIC_PATH + 'calendario/index/eliminar/' + eventRefence._id,
 			success:function(data){
 				console.log('guardado exitoso');
+                $('#calendar').fullCalendar('removeEvents', eventRefence._id);
 			},
 			error:function(data){
 				console.log('error al eliminar, ');

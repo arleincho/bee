@@ -22,6 +22,7 @@ class IndexController extends BackendController {
     public function guardar() {
 
     	View::select(null, null);
+        $this->data = array('success' => false);
 
     	if(Input::hasPost('eventos')) {
     		$data = Input::post('eventos');
@@ -31,32 +32,33 @@ class IndexController extends BackendController {
                 } else {
                     Flash::valid('El Evento se ha creado correctamente!');
                 }
-                View::json();
+                $this->data = array('success' => true);
             }
         }
+        View::json();
     }
 
     public function editar($id=null) {
 
         View::select(null, null);
+        $this->data = array('success' => false);
 
         if (isset($id) && is_numeric($id)){
 
             if(Input::hasPost('eventos')) {
                 $data = Input::post('eventos');
-                if(Evento::setEvento('edit', $data, Session::get('id'))){
+                if(Evento::setEvento('update', $data, Session::get('id'))){
                     if(APP_AJAX) {
                         Flash::valid('El Calendario se ha creado correctamente! <br/>Por favor recarga la página para verificar los cambios.');
+                        $this->data = array('success' => true);
                     } else {
                         Flash::valid('El Evento se ha creado correctamente!');
                     }
-                    View::json();
+                    $this->data = array('success' => true);
                 }
             }
         }
-
-
-
+        View::json();
     }
 
     /**
@@ -65,6 +67,7 @@ class IndexController extends BackendController {
     public function eliminar($id) {
 
         View::select(null, null);
+        $this->data = array('success' => false);
 
         if (isset($id) && is_numeric($id)){
             $evento = new Evento();
@@ -75,7 +78,7 @@ class IndexController extends BackendController {
             try {
                 if($evento->delete()) {
                     Flash::valid('El evento se ha eliminado correctamente!');
-                    View::json();
+                    $this->data = array('success' => true);
                 } else {
                     Flash::warning('Lo sentimos, pero este evento no se puede eliminar.');
                 }
@@ -83,6 +86,7 @@ class IndexController extends BackendController {
                 Flash::error('Este evento no se puede eliminar porque se encuentra relacionado con otro registro.');
             }
         }
+        View::json();
     }
 
 
@@ -100,16 +104,26 @@ class IndexController extends BackendController {
             //$upload->setAllowedTypes('png|jpg|gif|jpeg|png');
             $upload->setEncryptName(TRUE);
 
-            $data = $upload->save();
-            if(!$data) { //retorna un array('path'=>'ruta', 'name'=>'nombre.ext');
-                var_dump('expressionexpressionexpression');
+            $this->data = $upload->save();
+            if(!$this->data) { //retorna un array('path'=>'ruta', 'name'=>'nombre.ext');
                 $data = array('error'=>TRUE, 'message'=>$upload->getError());
             }else{
                 $fecha = Input::post('fechaSelect');
                 $hora = Input::post('hora');
-                if ($fecha){
+                $id = Input::post('id');
+
+
+                if(is_numeric($id) && $evento->find_first($id)) {
+                    $evento = new Evento();
+                    $evento->urlFile = "img/upload/eventos/{$this->data['name']}";
+                    $evento->update();
+                    $data = array('success' => true);
+                }else{
+
+                //}
+                /*if ($fecha){
                     $this->data = $data;
-                    $eventos = Calendario::getCalendario(Session::get('id'));
+                    //$eventos = Calendario::getCalendario(Session::get('id'));
                     $find = false;
 
                     if (count($eventos) > 0){
@@ -120,9 +134,9 @@ class IndexController extends BackendController {
                                 $return = $eventos[$key];
                             }
                         }
-                    }
+                    }*/
 
-                    if (!$find){
+                    
                         $return = array(
                             "start" => $fecha,
                             "urlFile" => "img/upload/eventos/{$this->data['name']}",
@@ -139,18 +153,24 @@ class IndexController extends BackendController {
                                 "plus" => "false"
                             )
                         );
-                        $eventos[] = $return;
-                    }
-                    $data = array('configuracion' => json_encode($eventos), 'usuario_id' => Session::get('id'));
+                        $data = Evento::setEvento('create', $return, Session::get('id'));
+
+                        //$eventos[] = $return;
+                    //}
+                    /*$data = array('configuracion' => json_encode($eventos), 'usuario_id' => Session::get('id'));
+                    
                     if(!Calendario::setCalendario('create', $data)){
                         $return = array('error'=>TRUE, 'message'=>'El archivo no se subio!.');
-                    }
-                    $this->data = $return;
+                    }*/
+                    //}
+                    //$data = array('success' => true);
                 }
-                View::json();
+            //}
             }
         }
+        $this->data = $data;
         
+        View::json();
     }
 
 

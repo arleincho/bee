@@ -10,6 +10,8 @@
 
 class Evento extends ActiveRecord {
 
+    var $debug = true;
+
     /**
      * Método para definir las relaciones y validaciones
      */
@@ -47,6 +49,18 @@ class Evento extends ActiveRecord {
     }
     
     public static function getListadoEventos($usuario_id) {
+
+        $obj = new Evento();
+        $conditions = "usuario_id = {$usuario_id}";
+        $columns = "id, start, end, color, author, notes, urlFile, idPosicion, hour1, day1, hour2, day2, fileUrl, networks, description";
+        $list = $obj->find("columns: $columns", "conditions: $conditions");
+        foreach ($list as $key => $value) {
+            $list[$key]->networks = (isset($value->networks) && $value->networks != "")?json_decode($value->networks):array();
+        }
+        return $list;
+    }
+
+    public static function getListadoEventoss($usuario_id) {
 
         $obj = new Evento();
         $conditions = "usuario_id = {$usuario_id}";
