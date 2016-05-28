@@ -72,8 +72,8 @@ class Evento extends ActiveRecord {
      /**
      * Callback que se ejecuta antes de guardar/modificar
      */
-    public function before_save() {
-        if (!is_array($this->networks)){
+    public function before_create() {
+        if (!is_array($this->networks) && $this->networks = ""){
             $this->networks = array();
         }
         $this->networks     = json_encode($this->networks);

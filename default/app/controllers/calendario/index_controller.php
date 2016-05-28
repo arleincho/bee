@@ -113,8 +113,8 @@ class IndexController extends BackendController {
                 $id = Input::post('id');
 
 
+                $evento = new Evento();
                 if(is_numeric($id) && $evento->find_first($id)) {
-                    $evento = new Evento();
                     $evento->urlFile = "img/upload/eventos/{$this->data['name']}";
                     $evento->update();
                     $data = array('success' => true);
