@@ -189,6 +189,8 @@ function AgregarFuncionDias(){
 				$("#delete").hide();
 				$("#agregar").show();
 				$(".alert").hide();
+				$("#taskCont").show();	
+				$(".message").hide();
 
 				$("#taskText textarea").click(function(){
 					$("#taskText textarea").val("");
@@ -474,16 +476,33 @@ function crearCalendario(){
 					Events.push(newEvent);
 					$('#calendar').fullCalendar( 'addEventSource', Events);
 				}
-				
-				$("#agregar").hide();
+				$("#taskCont").hide();				
 				console.log('ejecutar guardado');
 				editando = false;
+				$(".message").html('Saving...');
+				$(".message").show();
                 console.log("esto es lo que se envia para la creacion de eventos:", dataSend)
 				$.ajax({
 					type: "POST",
 					data: {eventos: newEvent},
 					dataType: "json",
-					url: PUBLIC_PATH + 'calendario/index/' + accion
+					url: PUBLIC_PATH + 'calendario/index/' + accion,
+					success:function(data){
+						console.log('guardado exitoso');
+		                $(".message").html('Saving suscessfully');
+						$(".message").show();
+						setTimeout(function(){
+							$("#agregar").hide();
+						},600);
+					},
+					error:function(data){
+						console.log('error al guardar, ');
+						$(".message").html('Error saving, the database not respond');
+						$(".message").show();
+						setTimeout(function(){
+							$("#agregar").hide();
+						},1000);
+					}
 				})
 				// console.log("Events = ", Events);
 			}else{
@@ -657,6 +676,8 @@ function editEvents(evento){
 		$("#save").hide();
 		$("#upload").hide();
 	}
+	$("#taskCont").show();	
+	$(".message").hide();
 }
 function stringToBoolean(string){
 	console.log('string rec',string)
@@ -718,19 +739,31 @@ $("#delete").click(function(e){
 			
 		}*/
 		
-		$("#agregar").hide();
-        
+		
+        $("#taskCont").hide();	
+		$(".message").html('Deleting...');
+		$(".message").show();	
 		$.ajax({
 			type: "POST",
 			//data: {eventos: {id: eventRefence._id}},
 			dataType: "json",
 			url: PUBLIC_PATH + 'calendario/index/eliminar/' + eventRefence._id,
 			success:function(data){
-				console.log('guardado exitoso');
-                $('#calendar').fullCalendar('removeEvents', eventRefence._id);
+				console.log('eliminado exitoso');
+                $('#calendar').fullCalendar('removeEvents', eventRefence._id);                
+				$(".message").html('Deleting successfully');
+				$(".message").show();
+				setTimeout(function(){
+					$("#agregar").hide();
+				},600);
 			},
 			error:function(data){
 				console.log('error al eliminar, ');
+				$(".message").html("Deleting Error, cant't connect to database");
+				$(".message").show();
+				setTimeout(function(){
+					$("#agregar").hide();
+				},600);
 			}
 		});
         /*.always(function() {

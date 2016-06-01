@@ -67,6 +67,14 @@ article{
     padding: 25px;
     width: 120px;
 }
+.message {
+    color: #000;
+    display: none;
+    margin: auto;
+    opacity: 1;
+    padding: 20px;
+    position: relative;
+}
 #paneles{
 
 }
