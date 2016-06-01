@@ -508,7 +508,7 @@ function crearCalendario(){
 						console.log('guardado exitoso');
 						addImageNew = null;
 						editando = false;
-		                $(".message").html('Saving suscessfully');
+		                $(".message").html('sSved successful');
 						$(".message").show();
 						setTimeout(function(){
 							$("#agregar").hide();
@@ -770,7 +770,7 @@ $("#delete").click(function(e){
 			success:function(data){
 				console.log('eliminado exitoso');
                 $('#calendar').fullCalendar('removeEvents', eventRefence._id);                
-				$(".message").html('Deleting successfully');
+				$(".message").html('Deleted successful');
 				$(".message").show();
 				setTimeout(function(){
 					$("#agregar").hide();
