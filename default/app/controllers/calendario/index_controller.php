@@ -119,54 +119,25 @@ class IndexController extends BackendController {
                     $evento->update();
                     $data = array('success' => true);
                 }else{
-
-                //}
-                /*if ($fecha){
-                    $this->data = $data;
-                    //$eventos = Calendario::getCalendario(Session::get('id'));
-                    $find = false;
-
-                    if (count($eventos) > 0){
-                        foreach ($eventos as $key => $value) {
-                            if (isset($value['start']) && $value['start'] == $fecha){
-                                $find = true;
-                                $eventos[$key]["urlFile"] = "img/upload/eventos/{$this->data['name']}";
-                                $return = $eventos[$key];
-                            }
-                        }
-                    }*/
-
-                    
-                        $return = array(
-                            "start" => $fecha,
-                            "urlFile" => "img/upload/eventos/{$this->data['name']}",
-                            "constraint" => "",
-                            "author" => "",
-                            "hour" => $hora,
-                            "networks" => array(
-                                "facebook" => "false",
-                                "twitter" => "false",
-                                "instagram" => "false",
-                                "linkedin" => "false",
-                                "pinterest" => "false",
-                                "youtube" => "false",
-                                "plus" => "false"
-                            )
-                        );
-                        $data = Evento::setEvento('create', $return, Session::get('id'));
-                        $data->networks = json_decode($data->networks);
-
-                        //$eventos[] = $return;
-                    //}
-                    /*$data = array('configuracion' => json_encode($eventos), 'usuario_id' => Session::get('id'));
-                    
-                    if(!Calendario::setCalendario('create', $data)){
-                        $return = array('error'=>TRUE, 'message'=>'El archivo no se subio!.');
-                    }*/
-                    //}
-                    //$data = array('success' => true);
+                    $return = array(
+                        "start" => $fecha,
+                        "urlFile" => "img/upload/eventos/{$this->data['name']}",
+                        "constraint" => "",
+                        "author" => "",
+                        "hour" => $hora,
+                        "networks" => array(
+                            "facebook" => "false",
+                            "twitter" => "false",
+                            "instagram" => "false",
+                            "linkedin" => "false",
+                            "pinterest" => "false",
+                            "youtube" => "false",
+                            "plus" => "false"
+                        )
+                    );
+                    $data = Evento::setEvento('create', $return, Session::get('id'));
+                    $data->networks = json_decode($data->networks);
                 }
-            //}
             }
         }
         $this->data = $data;

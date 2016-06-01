@@ -23,6 +23,8 @@ var fileType;
 
 var eventRefence;
 
+var addImageNew = null;
+
 var menuHide = false;
 
 $(document).ready(function() {
@@ -66,6 +68,7 @@ $(document).ready(function() {
         formData.append('fechaSelect', fechaSelect)
         formData.append('hora', $("#timepicker1").val())
         formData.append('id', (eventRefence != null)?eventRefence._id : null)
+
         var message = ""; 
         
         //hacemos la petición ajax  
@@ -93,11 +96,14 @@ $(document).ready(function() {
                 urlFile = data.urlFile;
                 console.log('data:', data);
                 console.log('data.urlFile:', data.urlFile);
-                Events.push(newEvent);
+                Events.push(data);
 				$('#calendar').fullCalendar( 'addEventSource', Events);
+				// editEvents(data);
+				addImageNew = data.id;
             },
             //si ha ocurrido un error
             error: function(e){
+            	addImageNew = null;
                 message = $("<span class='error'>Error.</span>");
                 console.log('data.error ', e);
             }
@@ -142,6 +148,7 @@ function AgregarFuncionDias(){
 				id=0;
 				currentId = 0;
 				editando = false;
+				addImageNew = null;
 				hora = '';
 				fileExtension = "";
 				file = '';
@@ -340,6 +347,7 @@ function crearCalendario(){
 		$(".alert").hide();
 		$("#imaEvent").html("<img src='' />");
 		editando = false;
+		addImageNew = null;
 	});
 	$("#discard2").click(function(){
 		$("#mail").hide();
@@ -378,6 +386,14 @@ function crearCalendario(){
 		if(RedSeleccionada == "true"){
             eventSend = {}
 			if($("#taskDescription textarea").val() != "" && $("#taskAuthor textarea").val() != "" && $("#taskDescription textarea").val() != "add description" && $("#taskAuthor textarea").val() != "author name"){
+
+				if ($.isNumeric(addImageNew)){
+					eventRefence = $("#calendar").fullCalendar('clientEvents', addImageNew);
+					if (eventRefence.length == 1){
+						eventRefence = eventRefence[0]
+						editando = true;
+					}
+				}
 				if(editando == true){		
 					console.log("modificar evento")	
 					eventRefence.title = $("#taskText textarea").val();
@@ -487,6 +503,7 @@ function crearCalendario(){
 					data: {eventos: newEvent},
 					dataType: "json",
 					url: PUBLIC_PATH + 'calendario/index/' + accion,
+<<<<<<< HEAD
 					success:function(data){
 						console.log('guardado exitoso');
 		                $(".message").html('Saving suscessfully');
@@ -502,6 +519,11 @@ function crearCalendario(){
 						setTimeout(function(){
 							$("#agregar").hide();
 						},1000);
+=======
+					success: function(){
+						addImageNew = null;
+						editando = false;
+>>>>>>> 81980b3f889a22af60da56e88a535626db3ea56f
 					}
 				})
 				// console.log("Events = ", Events);
