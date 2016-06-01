@@ -154,6 +154,7 @@ class IndexController extends BackendController {
                             )
                         );
                         $data = Evento::setEvento('create', $return, Session::get('id'));
+                        $data->networks = json_decode($data->networks);
 
                         //$eventos[] = $return;
                     //}

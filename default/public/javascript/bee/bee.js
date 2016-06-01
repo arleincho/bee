@@ -93,6 +93,8 @@ $(document).ready(function() {
                 urlFile = data.urlFile;
                 console.log('data:', data);
                 console.log('data.urlFile:', data.urlFile);
+                Events.push(newEvent);
+				$('#calendar').fullCalendar( 'addEventSource', Events);
             },
             //si ha ocurrido un error
             error: function(e){
@@ -412,7 +414,7 @@ function crearCalendario(){
                         title:  escape($("#taskText textarea").val()),
                         start: dia1,
                         end: dia2,
-                        description: escape(notesText), // defined below
+                        description: escape(tareaText), // defined below
                         color: '#257e4a',
                         author: $("#taskAuthor textarea").val(),
                         notes: escape(notesText),
@@ -613,7 +615,7 @@ function editEvents(evento){
 	$("#taskText textarea").val(evento.title);
 	fechaSelect=evento.start._i;
 	console.log("currentId",evento.idPosicion)
-	$("#taskDescription textarea").val(evento.description);
+	$("#taskDescription textarea").val(unescape(evento.description));
 	color = evento.color,
 	$("#taskAuthor textarea").val(evento.author),
 	$("#taskNotes textarea").val(unescape(evento.notes)),
