@@ -503,9 +503,11 @@ function crearCalendario(){
 					data: {eventos: newEvent},
 					dataType: "json",
 					url: PUBLIC_PATH + 'calendario/index/' + accion,
-<<<<<<< HEAD
+					
 					success:function(data){
 						console.log('guardado exitoso');
+						addImageNew = null;
+						editando = false;
 		                $(".message").html('Saving suscessfully');
 						$(".message").show();
 						setTimeout(function(){
@@ -519,11 +521,6 @@ function crearCalendario(){
 						setTimeout(function(){
 							$("#agregar").hide();
 						},1000);
-=======
-					success: function(){
-						addImageNew = null;
-						editando = false;
->>>>>>> 81980b3f889a22af60da56e88a535626db3ea56f
 					}
 				})
 				// console.log("Events = ", Events);
