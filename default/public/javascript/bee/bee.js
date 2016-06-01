@@ -503,7 +503,7 @@ function crearCalendario(){
 					data: {eventos: newEvent},
 					dataType: "json",
 					url: PUBLIC_PATH + 'calendario/index/' + accion,
-					
+
 					success:function(data){
 						console.log('guardado exitoso');
 						addImageNew = null;
@@ -516,7 +516,7 @@ function crearCalendario(){
 					},
 					error:function(data){
 						console.log('error al guardar, ');
-						$(".message").html('Error saving, the database not respond');
+						$(".message").html('Error saving, try later or logOut and them logIn');
 						$(".message").show();
 						setTimeout(function(){
 							$("#agregar").hide();
@@ -778,7 +778,7 @@ $("#delete").click(function(e){
 			},
 			error:function(data){
 				console.log('error al eliminar, ');
-				$(".message").html("Deleting Error, cant't connect to database");
+				$(".message").html("Deleting Error, try later or logOut and them logIn");
 				$(".message").show();
 				setTimeout(function(){
 					$("#agregar").hide();
