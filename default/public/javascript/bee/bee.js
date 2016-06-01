@@ -72,6 +72,8 @@ $(document).ready(function() {
         var message = ""; 
         
         //hacemos la petición ajax  
+
+        $('#save').hide(),
         $.ajax({
             url: PUBLIC_PATH + 'calendario/index/fileEventSave',
             type: 'POST',
@@ -85,11 +87,11 @@ $(document).ready(function() {
             processData: false,
             //mientras enviamos el archivo
             beforeSend: function(){
-                message = $("<span class='before'>Uploading file...</span>");
+                $('.messages').html('Uploading file...');
             },
             //una vez finalizado correctamente
             success: function(data){
-                message = $("<span class='success'>Done!</span>");
+                $('.messages').html('Done!');
                 $("#imaEvent").html("<img src='"+ PUBLIC_PATH + data.urlFile+"' />");
                 //$(".showImage").html("<img src='files/"+fileName+"' />");
                 $('#imagen').val("");
@@ -100,12 +102,13 @@ $(document).ready(function() {
 				$('#calendar').fullCalendar( 'addEventSource', Events);
 				// editEvents(data);
 				addImageNew = data.id;
+				 $('#save').show();
             },
             //si ha ocurrido un error
             error: function(e){
             	addImageNew = null;
-                message = $("<span class='error'>Error.</span>");
-                console.log('data.error ', e);
+                $('.messages').html('Error loading image!');
+                $('#save').show();
             }
         });
     });
