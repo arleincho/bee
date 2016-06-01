@@ -26,13 +26,15 @@ class IndexController extends BackendController {
 
     	if(Input::hasPost('eventos')) {
     		$data = Input::post('eventos');
-            if(Evento::setEvento('create', $data, Session::get('id'))){
-                if(APP_AJAX) {
-                    Flash::valid('El Calendario se ha creado correctamente! <br/>Por favor recarga la página para verificar los cambios.');
-                } else {
-                    Flash::valid('El Evento se ha creado correctamente!');
+            if (isset($data['start']) && $data['start'] != "" && isset($data['end']) && $data['end'] != ""){
+                if(Evento::setEvento('create', $data, Session::get('id'))){
+                    if(APP_AJAX) {
+                        Flash::valid('El Calendario se ha creado correctamente! <br/>Por favor recarga la página para verificar los cambios.');
+                    } else {
+                        Flash::valid('El Evento se ha creado correctamente!');
+                    }
+                    $this->data = array('success' => true);
                 }
-                $this->data = array('success' => true);
             }
         }
         View::json();
@@ -47,14 +49,16 @@ class IndexController extends BackendController {
 
             if(Input::hasPost('eventos')) {
                 $data = Input::post('eventos');
-                if(Evento::setEvento('update', $data, Session::get('id'))){
-                    if(APP_AJAX) {
-                        Flash::valid('El Calendario se ha creado correctamente! <br/>Por favor recarga la página para verificar los cambios.');
+                if (isset($data['start']) && $data['start'] != "" && isset($data['end']) && $data['end'] != ""){
+                    if(Evento::setEvento('update', $data, Session::get('id'))){
+                        if(APP_AJAX) {
+                            Flash::valid('El Calendario se ha creado correctamente! <br/>Por favor recarga la página para verificar los cambios.');
+                            $this->data = array('success' => true);
+                        } else {
+                            Flash::valid('El Evento se ha creado correctamente!');
+                        }
                         $this->data = array('success' => true);
-                    } else {
-                        Flash::valid('El Evento se ha creado correctamente!');
                     }
-                    $this->data = array('success' => true);
                 }
             }
         }
