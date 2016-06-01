@@ -217,7 +217,5 @@ class UsuariosController extends BackendController {
         sleep(1);//Por la velocidad del script no permite que se actualize el archivo
         $this->data = $data;
         View::json();
-    }
-    
+    }   
 }
-
