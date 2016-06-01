@@ -19,6 +19,25 @@ class IndexController extends BackendController {
 
     	$usuario_id = Session::get('id');
 
+        $this->eventos = Calendario::getCalendario($usuario_id);
+
+        // $this->eventos = Evento::getListadoEventos($usuario_id);
+        $this->eventos = json_encode($this->eventos);
+        
+
+        $reporte = new Reporte();
+        $this->progress_report = $reporte->getListadoReportePorTipo($usuario_id, 'progress_report');
+        $this->demographics_report = $reporte->getListadoReportePorTipo($usuario_id, 'demographics_report');
+        $this->beehive_report = $reporte->getListadoReportePorTipo($usuario_id, 'beehive_report');
+        $this->read_only = false;
+    }
+
+
+    public function changed() {
+
+        $usuario_id = Session::get('id');
+        View::select('index');
+
         //$this->eventos = Calendario::getCalendario($usuario_id);
 
         $this->eventos = Evento::getListadoEventos($usuario_id);
