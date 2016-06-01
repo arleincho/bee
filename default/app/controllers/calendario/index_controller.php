@@ -7,7 +7,7 @@
  * @package     Controllers 
  */
 
-Load::models('calendario/calendario', 'calendario/reporte');
+Load::models('calendario/calendario', 'calendario/reporte',  'calendario/evento');
 
 class IndexController extends BackendController {
     
@@ -22,17 +22,71 @@ class IndexController extends BackendController {
     public function guardar() {
 
     	View::select(null, null);
+        $this->data = array('success' => false);
 
     	if(Input::hasPost('eventos')) {
-    		$data = array('configuracion' => json_encode(Input::post('eventos')), 'usuario_id' => Session::get('id'));
-            if(Calendario::setCalendario('create', $data)){
+    		$data = Input::post('eventos');
+            if(Evento::setEvento('create', $data, Session::get('id'))){
                 if(APP_AJAX) {
                     Flash::valid('El Calendario se ha creado correctamente! <br/>Por favor recarga la página para verificar los cambios.');
                 } else {
                     Flash::valid('El Evento se ha creado correctamente!');
                 }
+                $this->data = array('success' => true);
             }
         }
+        View::json();
+    }
+
+    public function editar($id=null) {
+
+        View::select(null, null);
+        $this->data = array('success' => false);
+
+        if (isset($id) && is_numeric($id)){
+
+            if(Input::hasPost('eventos')) {
+                $data = Input::post('eventos');
+                if(Evento::setEvento('update', $data, Session::get('id'))){
+                    if(APP_AJAX) {
+                        Flash::valid('El Calendario se ha creado correctamente! <br/>Por favor recarga la página para verificar los cambios.');
+                        $this->data = array('success' => true);
+                    } else {
+                        Flash::valid('El Evento se ha creado correctamente!');
+                    }
+                    $this->data = array('success' => true);
+                }
+            }
+        }
+        View::json();
+    }
+
+    /**
+     * Método para eliminar
+     */
+    public function eliminar($id) {
+
+        View::select(null, null);
+        $this->data = array('success' => false);
+
+        if (isset($id) && is_numeric($id)){
+            $evento = new Evento();
+            
+            if(!$evento->find_first($id)) {
+                Flash::error('Lo sentimos, pero no se ha podido establecer la información del evento');
+            }
+            try {
+                if($evento->delete()) {
+                    Flash::valid('El evento se ha eliminado correctamente!');
+                    $this->data = array('success' => true);
+                } else {
+                    Flash::warning('Lo sentimos, pero este evento no se puede eliminar.');
+                }
+            } catch(KumbiaException $e) {
+                Flash::error('Este evento no se puede eliminar porque se encuentra relacionado con otro registro.');
+            }
+        }
+        View::json();
     }
 
 
@@ -47,59 +101,48 @@ class IndexController extends BackendController {
 
 
             $upload = new DwUpload('archivo', 'img/upload/eventos/');
-            $upload->setAllowedTypes('png|jpg|gif|jpeg|png');
+            //$upload->setAllowedTypes('png|jpg|gif|jpeg|png');
             $upload->setEncryptName(TRUE);
 
-                
-            if(!$data = $upload->save()) { //retorna un array('path'=>'ruta', 'name'=>'nombre.ext');
+            $this->data = $upload->save();
+            if(!$this->data) { //retorna un array('path'=>'ruta', 'name'=>'nombre.ext');
                 $data = array('error'=>TRUE, 'message'=>$upload->getError());
             }else{
                 $fecha = Input::post('fechaSelect');
                 $hora = Input::post('hora');
-                if ($fecha){
-                    $this->data = $data;
-                    $eventos = Calendario::getCalendario(Session::get('id'));
-                    $find = false;
+                $id = Input::post('id');
 
-                    if (count($eventos) > 0){
-                        foreach ($eventos as $key => $value) {
-                            if (isset($value['start']) && $value['start'] == $fecha){
-                                $find = true;
-                                $eventos[$key]["urlFile"] = "img/upload/eventos/{$this->data['name']}";
-                                $return = $eventos[$key];
-                            }
-                        }
-                    }
 
-                    if (!$find){
-                        $return = array(
-                            "start" => $fecha,
-                            "urlFile" => "img/upload/eventos/{$this->data['name']}",
-                            "constraint" => "",
-                            "author" => "",
-                            "hour" => $hora,
-                            "networks" => array(
-                                "facebook" => "false",
-                                "twitter" => "false",
-                                "instagram" => "false",
-                                "linkedin" => "false",
-                                "pinterest" => "false",
-                                "youtube" => "false",
-                                "plus" => "false"
-                            )
-                        );
-                        $eventos[] = $return;
-                    }
-                    $data = array('configuracion' => json_encode($eventos), 'usuario_id' => Session::get('id'));
-                    if(!Calendario::setCalendario('create', $data)){
-                        $return = array('error'=>TRUE, 'message'=>'El archivo no se subio!.');
-                    }
-                    $this->data = $return;
+                $evento = new Evento();
+                if(is_numeric($id) && $evento->find_first($id)) {
+                    $evento->urlFile = "img/upload/eventos/{$this->data['name']}";
+                    $evento->update();
+                    $data = array('success' => true);
+                }else{
+                    $return = array(
+                        "start" => $fecha,
+                        "urlFile" => "img/upload/eventos/{$this->data['name']}",
+                        "constraint" => "",
+                        "author" => "",
+                        "hour" => $hora,
+                        "networks" => array(
+                            "facebook" => "false",
+                            "twitter" => "false",
+                            "instagram" => "false",
+                            "linkedin" => "false",
+                            "pinterest" => "false",
+                            "youtube" => "false",
+                            "plus" => "false"
+                        )
+                    );
+                    $data = Evento::setEvento('create', $return, Session::get('id'));
+                    $data->networks = json_decode($data->networks);
                 }
-                View::json();
             }
         }
+        $this->data = $data;
         
+        View::json();
     }
 
 

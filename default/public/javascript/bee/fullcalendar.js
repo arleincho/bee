@@ -5342,6 +5342,7 @@ DayGrid.mixin({
 					) +
 			'>' +
 				'<div class="fc-content '+colorSocial+'">' +
+				
 					/*(this.isRTL ?
 						titleHtml + ' ' + timeHtml : // put a natural space in between
 						timeHtml + ' ' + titleHtml   //
@@ -5350,7 +5351,7 @@ DayGrid.mixin({
 						event.hour1+
 					'</span>'+
 					'<span class="descripEvento" style="line-height: 17px;font-size: 12px ! important; border-left: 1px solid #fff; text-align:left !important; font-size: 12px !important;letter-spacing: 0;">' + 
-						event.constraint+
+						unescape(event.description)+
 					'</span>'+
 					'<span class="descripEvento" style="line-height: 17px;font-weight: 800;border-left: 1px solid;font-size: 12px ! important; text-align:left !important; font-size: 12px !important;letter-spacing: 0;">' + 
 						event.author+

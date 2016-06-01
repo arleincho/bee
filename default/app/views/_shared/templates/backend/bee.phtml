@@ -1,6 +1,7 @@
 <html>
 <head>
-	<title>Calendario</title>    
+	<title>Calendario</title>   
+	<meta name="viewport" content="width=device-width, initial-scale=1"> 
     <?php Tag::css('bee/fullcalendar'); ?>
     <?php Tag::css('bee/style'); ?>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
@@ -106,8 +107,11 @@
 
 					<div id="taskDescription"><textarea type="text" value="add task"></textarea></div>
 					<div id="taskAuthor"><textarea type="text" value="add task"></textarea></div>
-
-			        <div id="imaEvent"><img src="http://beesocialgroup.com/test/img/upload/indice.png"></div>
+					<div id="taskNotes"><textarea type="text" value="add task"></textarea></div>
+			        <div id="imaEvent">
+			        	<i class="fa fa-download"></i>
+			        	<img src="http://beesocialgroup.com/test/img/upload/indice.png">
+			        </div>
 			        <p id="datepairExample">
 					    <input type="text" class="date start" />
 					    <input type="text" class="time start" /> 
@@ -131,6 +135,7 @@
 					    <div class="messages"></div>
 					</div>
 				</div>
+				<div class="message">Error saving the data</div>
 			</div>
 
 			<div id="mail">
@@ -164,12 +169,12 @@
     <?php echo Tag::js('bee/jquery.datepair'); ?>
     <?php echo Tag::js('bee/jquery.timepicker'); ?>
     <?php echo Tag::js('bee/bootstrap-datepicker'); ?>
-    <?php echo Tag::js('html5shiv'); ?>    
-	<?php echo Tag::js('backend'); ?>
+    <?php echo Tag::js('html5shiv'); ?> 
     <?php echo Tag::js('bee/bee'); ?>
     <?php echo Tag::js('bee/jspdf.min'); ?>
     <?php echo Tag::js('bee/jquery.tabletojson'); ?>
     <?php echo Tag::js('bee/jspdf.plugin.cell'); ?>
+    
 </body>
 </html>
 
