@@ -57,4 +57,9 @@ class Calendario extends ActiveRecord {
         return $eventos;
     }
 
+    public static function all(){
+        $calendario = new Calendario();
+        return $calendario->find();
+    }
+
 }
