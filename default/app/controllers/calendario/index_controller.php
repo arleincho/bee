@@ -122,6 +122,8 @@ class IndexController extends BackendController {
                     $evento->urlFile = "img/upload/eventos/{$this->data['name']}";
                     $evento->update();
                     $data = array('success' => true);
+                    $data = $evento;
+                    $data->networks = json_decode($data->networks);
                 }else{
                     $return = array(
                         "start" => $fecha,
