@@ -60,8 +60,6 @@ $(document).ready(function() {
     //al enviar el formulario
     $(':button').click(function(){
 
-        console.log("eventRefence", eventRefence);
-
         //información del formulario
         var formData = new FormData();
         formData.append('archivo', $('#imagen')[0].files[0])
@@ -96,11 +94,11 @@ $(document).ready(function() {
                 //$(".showImage").html("<img src='files/"+fileName+"' />");
                 $('#imagen').val("");
                 urlFile = data.urlFile;
-                console.log('data:', data);
-                console.log('data.urlFile:', data.urlFile);
-                Events.push(data);
-				$('#calendar').fullCalendar( 'addEventSource', Events);
-				// editEvents(data);
+                if (eventRefence == null){
+                	Events.push(data);
+                	console.log('se agrega un evento por que es nuevo');
+					$('#calendar').fullCalendar( 'addEventSource', Events);
+                }
 				addImageNew = data.id;
 				 $('#save').show();
             },
@@ -119,7 +117,6 @@ $(document).ready(function() {
 	
 	$('#menu').click(function(){
 		if($(window).width()< 720){
-		    console.log('click, ', menuHide);
 		    if(!menuHide){
 		        $('#panels').animate({left: 0},300);
 		        setTimeout(function(){menuHide = true;},700)
@@ -139,7 +136,6 @@ function AgregarFuncionDias(){
    		$(".fc-day").click(function(){
 			//setear iconos redes deseleccionados
 			if(readOnly['read_only'] == false){
-				console.log("click dia");
 				facebook = "false";
 				twitter = "false";
 				instagram = "false";
@@ -164,7 +160,6 @@ function AgregarFuncionDias(){
 				eventRefence = null;
 				
 				fechaSelect = $(this).context.dataset.date;
-				console.log('crear evento nuevo : ', fechaSelect);
 				var dt = new Date();
 				var _hora;
 				var aa;
@@ -232,7 +227,6 @@ function AgregarFuncionDias(){
 		});
 }	
 function reSise(){
-	console.log('resize');
 	$('.edit').css('margin-top', ($('.fc-day').height()-20));
 	$(window).resize(function(){if($(window).width()< 720){
 		$('#calendar').fullCalendar( 'changeView', 'basicDay' );
@@ -380,10 +374,7 @@ function crearCalendario(){
 		
 		var dia1 = dia1Array[2]+'-'+dia1Array[0]+'-'+dia1Array[1];
 		var dia2 = dia2Array[2]+'-'+dia2Array[0]+'-'+dia2Array[1];
-		console.log("editando", editando);
-		console.log("dia2Array", dia2);
 
-		console.log("Save");
 		//$('#calendar').fullCalendar( 'removeEventSource', Events);
 		var RedSeleccionada = comprobarSeleccionRed();
 		if(RedSeleccionada == "true"){
@@ -398,7 +389,6 @@ function crearCalendario(){
 					}
 				}
 				if(editando == true){		
-					console.log("modificar evento")	
 					eventRefence.title = $("#taskText textarea").val();
 
 					var tareaText = $("#taskDescription textarea").val();
@@ -424,10 +414,6 @@ function crearCalendario(){
 					eventRefence.networks.pinterest = pinterest;
 					eventRefence.networks.youtube = youtube;
 					eventRefence.networks.plus = plus;
-					console.log('editar evento');
-
-					console.log('urlFile ', urlFile);
-					console.log('eventRefence', eventRefence);
 
                     accion = 'editar/' + eventRefence._id;
                     newEvent = {
@@ -462,7 +448,6 @@ function crearCalendario(){
 				}else{
 
                     accion = 'guardar'
-					console.log("crear nuevo evento");
 					$('#calendar').fullCalendar('removeEvents');
 					var tareaText2 = $("#taskDescription textarea").val();
 					var notesText2 = $("#taskNotes textarea").val();
@@ -496,11 +481,9 @@ function crearCalendario(){
 					$('#calendar').fullCalendar( 'addEventSource', Events);
 				}
 				$("#taskCont").hide();				
-				console.log('ejecutar guardado');
 				editando = false;
 				$(".message").html('Saving...');
 				$(".message").show();
-                console.log("esto es lo que se envia para la creacion de eventos:", dataSend)
 				$.ajax({
 					type: "POST",
 					data: {eventos: newEvent},
@@ -508,7 +491,6 @@ function crearCalendario(){
 					url: PUBLIC_PATH + 'calendario/index/' + accion,
 
 					success:function(data){
-						console.log('guardado exitoso');
 						addImageNew = null;
 						editando = false;
 		                $(".message").html('sSved successful');
@@ -518,7 +500,6 @@ function crearCalendario(){
 						},600);
 					},
 					error:function(data){
-						console.log('error al guardar, ');
 						$(".message").html('Error saving, try later or logOut and them logIn');
 						$(".message").show();
 						setTimeout(function(){
@@ -545,7 +526,6 @@ function crearCalendario(){
 	$("#WinnerButton").click(function(){
 		var texto = $(".texto").val();
 		var candidatos = texto.split("\n");
-		console.log('candidatos :',candidatos);
 		var winner = parseInt(Math.random()*candidatos.length);
 		var name= candidatos[winner];
 		$("#winnerName").text(name);
@@ -599,7 +579,6 @@ function crearCalendario(){
 		$('#subject input').val('Type Mail');		
 	});
 	$('#sendMessage').click(function(){
-		console.log('enviar mensaje')
 		var email = $("#subject input").val();
             validacion_email = /^[a-zA-Z0-9_\.\-]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-\.]+$/;
             // mensaje = $("#message textarea").val();
@@ -619,14 +598,12 @@ function crearCalendario(){
 			    type: "POST",
 			    url: PUBLIC_PATH + 'calendario/index/enviar',
 			    data: datos,
-			    success: function() {
-			    	console.log('enviado')  
+			    success: function() { 
 			        $("#mail").hide();
 					$("#subject textarea").val("");
 					$("#message textarea").val("");
 			    },
 			    error: function() {
-			        console.log('fallo al enviar')
 			        $('.msg').text('Hubo un error!').addClass('msg_error').animate({ 'right' : '130px' }, 300); 
 			        $("#mail").hide();                
 			    }
@@ -636,7 +613,6 @@ function crearCalendario(){
 	
 }
 function SetEventsCalendar(){
-	console.log("Setear Eventos" , Eventos);
 	setTimeout(function(){				
 		if(Eventos == undefined || Eventos == null || Eventos == ""){
 			Eventos = [];
@@ -651,11 +627,9 @@ function SetEventsCalendar(){
 	},300);
 }
 function editEvents(evento){
-	console.log("edit event ",evento);
 	eventRefence = evento;
 	$("#taskText textarea").val(evento.title);
 	fechaSelect=evento.start._i;
-	console.log("currentId",evento.idPosicion)
 	$("#taskDescription textarea").val(unescape(evento.description));
 	color = evento.color,
 	$("#taskAuthor textarea").val(evento.author),
@@ -702,7 +676,6 @@ function editEvents(evento){
 	$(".message").hide();
 }
 function stringToBoolean(string){
-	console.log('string rec',string)
     switch(string.toLowerCase().trim()){
         case "true": case "yes": case "1": return "true";
         case "false": case "no": case "0": case null: return "false";
@@ -711,56 +684,8 @@ function stringToBoolean(string){
 }
 $("#delete").click(function(e){
 	if($(e.target).is('#delete')){
-		console.log("eliminar");
 
-        console.log("eventRefence._id", eventRefence._id);
         _id = eventRefence._id;
-
-/*		$('#calendar').fullCalendar('removeEvents', function(_id){
-            return true;
-        });*/
-
-        
-		//var dataEvents = $('#calendar').fullCalendar('clientEvents');
-        //Events = []
-
-
-
-		/*var dataSend = [];
-		if(dataEvents.length > 0){
-			//almacenamos la informacion como objetos json
-			console.log('convertir info: ',dataEvents);
-
-            $.each($('#calendar').fullCalendar('clientEvents'), function(k, v){
-
-                newEvent = {
-                    start: v.day1,
-                    end: v.day2,
-                    description: v.description, // defined below
-                    color: v.color,
-                    author: v.autor,
-                    urlFile: v.urlFile,
-                    idPosicion: v.idPosicion,
-                    hour1: v.hour1,
-                    day1: v.day1,
-                    hour2: v.hour2,
-                    day2: v.day2,
-                    fileUrl: v.fileUrl,
-                    networks:{
-                        facebook: v.networks.facebook,
-                        twitter: v.networks.twitter,
-                        instagram: v.networks.instagram,
-                        linkedin: v.networks.linkedin,
-                        pinterest: v.networks.pinterest,
-                        youtube: v.networks.youtube,
-                        plus: v.networks.plus
-                    }
-                };
-               dataSend.push(newEvent)
-            })
-			
-		}*/
-		
 		
         $("#taskCont").hide();	
 		$(".message").html('Deleting...');
@@ -771,7 +696,6 @@ $("#delete").click(function(e){
 			dataType: "json",
 			url: PUBLIC_PATH + 'calendario/index/eliminar/' + eventRefence._id,
 			success:function(data){
-				console.log('eliminado exitoso');
                 $('#calendar').fullCalendar('removeEvents', eventRefence._id);                
 				$(".message").html('Deleted successful');
 				$(".message").show();
@@ -780,7 +704,6 @@ $("#delete").click(function(e){
 				},600);
 			},
 			error:function(data){
-				console.log('error al eliminar, ');
 				$(".message").html("Deleting Error, try later or logOut and them logIn");
 				$(".message").show();
 				setTimeout(function(){
