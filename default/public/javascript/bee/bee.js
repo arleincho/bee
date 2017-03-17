@@ -308,15 +308,15 @@ function crearCalendario(){
    	var newEvent;
    	$("#prevButton").click(function(){
    		$('#calendar').fullCalendar('prev');
-   		if($(window).width()< 720){
-			AgregarFuncionDias();
-		}
+  //  		if($(window).width()< 720){no me acuerdo porque puse esto entonces toco comentarlo
+		// }
+		AgregarFuncionDias();
    	});
    	$("#nextButton").click(function(){
    		$('#calendar').fullCalendar('next');
-   		if($(window).width()< 720){
-			AgregarFuncionDias();
-		}
+  //  		if($(window).width()< 720){no me acuerdo porque puse esto entonces toco comentarlo
+		// }
+		AgregarFuncionDias();
    	});
    	
    	AgregarFuncionDias();
