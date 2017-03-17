@@ -697,6 +697,27 @@ article{
 .edit:hover{
     color: #fff;
 }
+.recurrent{
+
+}
+.recurrent span{
+    display: block;
+    position: relative;
+    top: 5px;
+    text-align: left;
+    left: 5px;
+}
+.recurrent input{
+    float: left;
+    margin: 12px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+.recurrent select{
+    float: left;
+    margin-top: 10px;
+    margin-bottom: 8px;
+}
 @media (min-width: 767px) {
     .bootstrap-timepicker-widget.modal {
         width: 200px;
