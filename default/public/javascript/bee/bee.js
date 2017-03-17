@@ -484,9 +484,16 @@ function crearCalendario(){
 				editando = false;
 				$(".message").html('Saving...');
 				$(".message").show();
+				recurrent = {recurrent: false};
+				if($('input#checkRecurrent').is(':checked')) {
+					recurrent = {
+						recurrent: true,
+						info: $( "#recurrent" ).val()
+					}
+				}
 				$.ajax({
 					type: "POST",
-					data: {eventos: newEvent},
+					data: {eventos: newEvent, recurrent: recurrent},
 					dataType: "json",
 					url: PUBLIC_PATH + 'calendario/index/' + accion,
 

@@ -30,32 +30,89 @@ class IndexController extends BackendController {
 
     public function guardar() {
 
-    	View::select(null, null);
+        View::select(null, null);
         $this->data = array('success' => false);
 
 
-        
-        $timezone    = 'America/Los_Angeles';
-        $startDate   = new \DateTime(date('Y-m-d'), new \DateTimeZone($timezone));
-        $endtDate   = new \DateTime(date('Y') . '-12-31', new \DateTimeZone($timezone));
-        $rule        = new \Recurr\Rule('FREQ=YEARLY;COUNT=2', $startDate, $endtDate, $timezone);
-        $transformer = new \Recurr\Transformer\ArrayTransformer();
 
-        $transformerConfig = new \Recurr\Transformer\ArrayTransformerConfig();
-        $transformerConfig->enableLastDayOfMonthFix();
-        $transformer->setConfig($transformerConfig);
 
-        print_r($transformer->transform($rule));
-        die();
-
-    	if(Input::hasPost('eventos')) {
-    		$data = Input::post('eventos');
+        if(Input::hasPost('eventos')) {
+            $data = Input::post('eventos');
             if (isset($data['start']) && $data['start'] != "" && isset($data['end']) && $data['end'] != ""){
                 if(Evento::setEvento('create', $data, Session::get('id'))){
                     if(APP_AJAX) {
                         Flash::valid('El Calendario se ha creado correctamente! <br/>Por favor recarga la página para verificar los cambios.');
                     } else {
                         Flash::valid('El Evento se ha creado correctamente!');
+                    }
+
+                    $recurrent = Input::post('recurrent');
+
+                    if (isset($recurrent['recurrent']) && $recurrent['recurrent'] === "true"){
+
+                        $timezone = 'America/Los_Angeles';
+                        $startDate = new \DateTime("{$data['start']}", new \DateTimeZone($timezone));
+                        $endDate  = new \DateTime("{$data['end']}", new \DateTimeZone($timezone));
+                        $untilDate  = date('Y', strtotime("{$data['end']} {$data['hour2']}")) . '-12-31';
+
+                        $freqs = array(
+                            'day' => array(
+                                'freq' => 'DAILY',
+                                'end' => $endDate,
+                                'interval' => 1,
+                                'until' => $untilDate
+                            ),
+                            'week' => array(
+                                'freq' => 'WEEKLY',
+                                'end' => $endDate,
+                                'interval' => 1,
+                                'until' => $untilDate
+                            ),
+                            '2week' => array(
+                                'freq' => 'WEEKLY',
+                                'end' => $endDate,
+                                'interval' => 2,
+                                'until' => $untilDate
+                            ),
+                            'month' => array(
+                                'freq' => 'MONTHLY',
+                                'end' => $endDate,
+                                'interval' => 1,
+                                'until' => $untilDate
+                            ),
+                            'year' => array(
+                                'freq' => 'YEARLY',
+                                'count' => 1,
+                                'end' => null
+                            ),
+                        );
+                    
+                        $freqRule = array();
+                        $freqRule[] = "FREQ={$freqs[$recurrent['info']]['freq']}";
+
+                        if (isset($freqs[$recurrent['info']]['interval']) && $freqs[$recurrent['info']]['interval'] != ""){
+                            $freqRule[] = "INTERVAL={$freqs[$recurrent['info']]['interval']}";
+                        }
+
+                        if (isset($freqs[$recurrent['info']]['count']) && $freqs[$recurrent['info']]['count'] != ""){
+                            $freqRule[] = "COUNT={$freqs[$recurrent['info']]['count']}";
+                        }
+
+                        if (isset($freqs[$recurrent['info']]['until']) && $freqs[$recurrent['info']]['until'] != ""){
+                            $freqRule[] = "UNTIL={$freqs[$recurrent['info']]['until']}";
+                        }
+
+                        print_r($freqRule);
+
+                        $rule        = new \Recurr\Rule(implode(';', $freqRule), $startDate, $freqs[$recurrent['info']]['end'], $timezone);
+                        $transformer = new \Recurr\Transformer\ArrayTransformer();
+
+                        $transformerConfig = new \Recurr\Transformer\ArrayTransformerConfig();
+                        $transformerConfig->enableLastDayOfMonthFix();
+                        $transformer->setConfig($transformerConfig);
+
+                        print_r($transformer->transform($rule));
+                        die();
                     }
                     $this->data = array('success' => true);
                 }
