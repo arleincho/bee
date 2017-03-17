@@ -7,6 +7,15 @@
  * @package     Controllers 
  */
 
+
+use Recurr\DateExclusion;
+use Recurr\DateInclusion;
+use Recurr\Frequency;
+use Recurr\Rule;
+use Recurr\Exception\InvalidArgument;
+use Recurr\Exception\InvalidRRule;
+
+
 Load::models('calendario/calendario', 'calendario/reporte',  'calendario/evento');
 
 class IndexController extends BackendController {
@@ -23,6 +32,21 @@ class IndexController extends BackendController {
 
     	View::select(null, null);
         $this->data = array('success' => false);
+
+
+        
+        $timezone    = 'America/Los_Angeles';
+        $startDate   = new \DateTime(date('Y-m-d'), new \DateTimeZone($timezone));
+        $endtDate   = new \DateTime(date('Y') . '-12-31', new \DateTimeZone($timezone));
+        $rule        = new \Recurr\Rule('FREQ=YEARLY;COUNT=2', $startDate, $endtDate, $timezone);
+        $transformer = new \Recurr\Transformer\ArrayTransformer();
+
+        $transformerConfig = new \Recurr\Transformer\ArrayTransformerConfig();
+        $transformerConfig->enableLastDayOfMonthFix();
+        $transformer->setConfig($transformerConfig);
+
+        print_r($transformer->transform($rule));
+        die();
 
     	if(Input::hasPost('eventos')) {
     		$data = Input::post('eventos');

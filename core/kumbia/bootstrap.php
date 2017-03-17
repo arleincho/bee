@@ -106,6 +106,7 @@ function auto($class)
 		'Load'            => CORE_PATH . 'kumbia/load.php',
 		'KumbiaException' => CORE_PATH . 'kumbia/kumbia_exception.php',
 	);
+
 	if( array_key_exists ($class, $clases)){
         return include $clases[$class];
     }
@@ -127,6 +128,7 @@ function auto($class)
 
     //Autoload PSR0
     $psr0 = dirname(CORE_PATH).'/vendor/'.str_replace (array ('_', '\\'), DIRECTORY_SEPARATOR, $class) . '.php';
+
     if(is_file($psr0)){
     	return include $psr0;
     }
@@ -140,6 +142,11 @@ require APP_PATH . 'libs/app_controller.php';
 
 // @see KumbiaView
 require APP_PATH . 'libs/view.php';
+
+
+
+include dirname(CORE_PATH).'/vendor/autoload.php';
+    
 
 // Ejecuta el request
 try {
