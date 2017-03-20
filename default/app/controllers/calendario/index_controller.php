@@ -32,12 +32,11 @@ class IndexController extends BackendController {
 
         View::select(null, null);
         $this->data = array('success' => false);
-
-
-
+        $this->eventos = array();
 
         if(Input::hasPost('eventos')) {
             $data = Input::post('eventos');
+
             if (isset($data['start']) && $data['start'] != "" && isset($data['end']) && $data['end'] != ""){
 
                 $recurrent = Input::post('recurrent');
@@ -47,32 +46,34 @@ class IndexController extends BackendController {
                     $timezone = 'America/Los_Angeles';
                     $startDate = new \DateTime("{$data['start']}", new \DateTimeZone($timezone));
                     $endDate  = new \DateTime("{$data['end']}", new \DateTimeZone($timezone));
-                    $untilDate  = date('Y', strtotime("{$data['end']} {$data['hour2']}")) . '-12-31';
+                    $untilDateYear  = $endDate->format('Y') . '-12-31';
+                    $untilDateMonth  = $startDate->format('m');
 
                     $freqs = array(
                         'day' => array(
                             'freq' => 'DAILY',
                             'end' => $endDate,
                             'interval' => 1,
-                            'until' => $untilDate
+                            'until' => $untilDateYear,
+                            'bymonth' => $untilDateMonth
                         ),
                         'week' => array(
                             'freq' => 'WEEKLY',
                             'end' => $endDate,
                             'interval' => 1,
-                            'until' => $untilDate
+                            'until' => $untilDateYear
                         ),
                         '2week' => array(
                             'freq' => 'WEEKLY',
                             'end' => $endDate,
                             'interval' => 2,
-                            'until' => $untilDate
+                            'until' => $untilDateYear
                         ),
                         'month' => array(
                             'freq' => 'MONTHLY',
                             'end' => $endDate,
                             'interval' => 1,
-                            'until' => $untilDate
+                            'until' => $untilDateYear
                         ),
                         'year' => array(
                             'freq' => 'YEARLY',
@@ -96,7 +97,11 @@ class IndexController extends BackendController {
                         $freqRule[] = "UNTIL={$freqs[$recurrent['info']]['until']}";
                     }
 
-                    $rule        = new \Recurr\Rule(implode(';', $freqRule), $startDate, $freqs[$recurrent['info']]['end'], $timezone);
+                    if (isset($freqs[$recurrent['info']]['bymonth']) && $freqs[$recurrent['info']]['bymonth'] != ""){
+                        $freqRule[] = "BYMONTH={$freqs[$recurrent['info']]['bymonth']}";
+                    }
+
+                    $rule = new \Recurr\Rule(implode(';', $freqRule), $startDate, $freqs[$recurrent['info']]['end'], $timezone);
                     $transformer = new \Recurr\Transformer\ArrayTransformer();
 
                     $transformerConfig = new \Recurr\Transformer\ArrayTransformerConfig();
@@ -111,8 +116,8 @@ class IndexController extends BackendController {
                             $newEvent['start'] = $valueDate->getStart()->format('Y-m-d');
                             $newEvent['end'] = $valueDate->getEnd()->format('Y-m-d');
                             Evento::setEvento('create', $newEvent, Session::get('id'));
-
                         }
+                        $this->eventos = Evento::getListadoEventos($usuario_id = Session::get('id'));
                     }
                     if(APP_AJAX) {
                         Flash::valid('El Calendario se ha creado correctamente! <br/>Por favor recarga la página para verificar los cambios.');
@@ -128,7 +133,7 @@ class IndexController extends BackendController {
                         }
                     }
                 }
-                $this->data = array('success' => true);
+                $this->data = array('success' => true, 'eventos' => $this->eventos);
             }
         }
         View::json();

@@ -47,27 +47,4 @@ class IndexController extends BackendController {
         $this->beehive_report = $reporte->getListadoReportePorTipo($usuario_id, 'beehive_report');
         $this->read_only = false;
     }
-
-
-
-    // public function migrate() {
-
-    //     View::select(null, null);
-    //     $this->data = array();
-    //     $all = Calendario::all();
-    //     foreach ($all as $key => $value) {
-    //         $usuario_id = $value->usuario_id;
-    //         $data = json_decode($value->configuracion, true);
-    //         foreach ($data as $keyData => $valueData) {
-    //             $valueData['description'] = $valueData['constraint'];
-    //             $result = Evento::setEvento('create', $valueData, $usuario_id);
-    //             if ($result){
-    //                 $this->data[$result->id]['ori'] = $valueData;
-    //                 $this->data[$result->id]['end'] = $result;
-    //             }
-    //         }
-    //     }
-    //     View::json();
-    // }
-
 }

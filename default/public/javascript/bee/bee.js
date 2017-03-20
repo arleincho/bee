@@ -498,10 +498,18 @@ function crearCalendario(){
 					url: PUBLIC_PATH + 'calendario/index/' + accion,
 
 					success:function(data){
+
 						addImageNew = null;
 						editando = false;
-		                $(".message").html('sSved successful');
+		                $(".message").html('Saved successful');
 						$(".message").show();
+						
+						if (recurrent.recurrent === true){
+							$('#calendar').fullCalendar('removeEvents')
+							Eventos = data.eventos;
+							SetEventsCalendar();
+						}
+
 						setTimeout(function(){
 							$("#agregar").hide();
 						},600);
