@@ -359,7 +359,13 @@ function crearCalendario(){
 		$("#redes").removeClass('rojo');
 	});
 	
-	
+	$('input#checkRecurrent').on('change', function(){
+		if($('input#checkRecurrent').is(':checked')) {
+			$('#recurrent').removeAttr('disabled');
+		}else{
+			$('#recurrent').attr('disabled','disabled');
+		}
+	})
 	$("#save").click(function(){
 		dataSend = [];
 		var d1 = $('#datepairExample input')[0].value;
@@ -509,7 +515,8 @@ function crearCalendario(){
 							Eventos = data.eventos;
 							SetEventsCalendar();
 						}
-
+						$('#checkRecurrent').prop('checked', false);
+						$('#recurrent').attr('disabled','disabled');
 						setTimeout(function(){
 							$("#agregar").hide();
 						},600);
