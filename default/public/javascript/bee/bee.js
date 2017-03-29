@@ -178,10 +178,10 @@ function AgregarFuncionDias(){
 					minutos = dt.getMinutes();
 				}
 
-				$("#taskText textarea").val("add task");
-				$("#taskDescription textarea").val("add description");
-				$("#taskAuthor textarea").val("author name");
-				$("#taskNotes textarea").val("Notes/Changes");
+				// $("#taskText textarea").val("add task");
+				// $("#taskDescription textarea").val("add description");
+				// $("#taskAuthor textarea").val("author name");
+				// $("#taskNotes textarea").val("Notes/Changes");
 				$("#imaEvent").html('<img src="http://beesocialgroup.com/test/img/upload/indice.png">');
 				var fecAr = fechaSelect.split('-');
 				var fechaInicio = fecAr[1]+'-'+fecAr[2]+'-'+fecAr[0];
@@ -197,20 +197,20 @@ function AgregarFuncionDias(){
 				$("#taskCont").show();	
 				$(".message").hide();
 
-				$("#taskText textarea").click(function(){
-					$("#taskText textarea").val("");
-				})
-				$("#taskDescription textarea").click(function(){
-					if($("#taskDescription textarea").val() == 'add task'){
-						$("#taskDescription textarea").val("");
-					}				
-				})
-				$("#taskAuthor textarea").click(function(){
-					$("#taskAuthor textarea").val("");
-				});
-				$("#taskNotes textarea").click(function(){
-					$("#taskNotes textarea").val("");
-				});
+				// $("#taskText textarea").click(function(){
+				// 	$("#taskText textarea").val("");
+				// })
+				// $("#taskDescription textarea").click(function(){
+				// 	if($("#taskDescription textarea").val() == 'add task'){
+				// 		$("#taskDescription textarea").val("");
+				// 	}				
+				// })
+				// $("#taskAuthor textarea").click(function(){
+				// 	$("#taskAuthor textarea").val("");
+				// });
+				// $("#taskNotes textarea").click(function(){
+				// 	$("#taskNotes textarea").val("");
+				// });
 
 				$('#redes ul li #facebook').css('color', '#333');
 				$('#redes ul li #twitter').css('color', '#333');
@@ -509,6 +509,11 @@ function crearCalendario(){
 						editando = false;
 		                $(".message").html('Saved successful');
 						$(".message").show();
+
+						$("#taskText textarea").val("");
+						$("#taskDescription textarea").val("");
+						$("#taskAuthor textarea").val("");
+						$("#taskNotes textarea").val("");
 						
 						if (recurrent.recurrent === true){
 							$('#calendar').fullCalendar('removeEvents')

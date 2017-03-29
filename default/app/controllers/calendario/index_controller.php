@@ -8,13 +8,6 @@
  */
 
 
-use Recurr\DateExclusion;
-use Recurr\DateInclusion;
-use Recurr\Frequency;
-use Recurr\Rule;
-use Recurr\Exception\InvalidArgument;
-use Recurr\Exception\InvalidRRule;
-
 
 Load::models('calendario/calendario', 'calendario/reporte',  'calendario/evento');
 
@@ -42,88 +35,13 @@ class IndexController extends BackendController {
                 $recurrent = Input::post('recurrent');
 
                 if (isset($recurrent['recurrent']) && $recurrent['recurrent'] === "true"){
-
-                    $timezone = 'America/Los_Angeles';
-                    $startDate = new \DateTime("{$data['start']}", new \DateTimeZone($timezone));
-                    $endDate  = new \DateTime("{$data['end']}", new \DateTimeZone($timezone));
-                    $untilDateYear  = $endDate->format('Y') . '-12-31';
-                    $untilDateMonth  = $startDate->format('m');
-
-                    $freqs = array(
-                        'day' => array(
-                            'freq' => 'DAILY',
-                            'end' => $endDate,
-                            'interval' => 1,
-                            'until' => $untilDateYear,
-                            'bymonth' => $untilDateMonth
-                        ),
-                        'week' => array(
-                            'freq' => 'WEEKLY',
-                            'end' => $endDate,
-                            'interval' => 1,
-                            'until' => $untilDateYear
-                        ),
-                        '2week' => array(
-                            'freq' => 'WEEKLY',
-                            'end' => $endDate,
-                            'interval' => 2,
-                            'until' => $untilDateYear
-                        ),
-                        'month' => array(
-                            'freq' => 'MONTHLY',
-                            'end' => $endDate,
-                            'interval' => 1,
-                            'until' => $untilDateYear
-                        ),
-                        'year' => array(
-                            'freq' => 'YEARLY',
-                            'interval' => 1,
-                            'count' => 2
-                        ),
-                    );
-                
-                    $freqRule = array();
-                    $freqRule[] = "FREQ={$freqs[$recurrent['info']]['freq']}";
-
-                    if (isset($freqs[$recurrent['info']]['interval']) && $freqs[$recurrent['info']]['interval'] != ""){
-                        $freqRule[] = "INTERVAL={$freqs[$recurrent['info']]['interval']}";
-                    }
-
-                    if (isset($freqs[$recurrent['info']]['count']) && $freqs[$recurrent['info']]['count'] != ""){
-                        $freqRule[] = "COUNT={$freqs[$recurrent['info']]['count']}";
-                    }
-
-                    if (isset($freqs[$recurrent['info']]['until']) && $freqs[$recurrent['info']]['until'] != ""){
-                        $freqRule[] = "UNTIL={$freqs[$recurrent['info']]['until']}";
-                    }
-
-                    if (isset($freqs[$recurrent['info']]['bymonth']) && $freqs[$recurrent['info']]['bymonth'] != ""){
-                        $freqRule[] = "BYMONTH={$freqs[$recurrent['info']]['bymonth']}";
-                    }
-
-                    $rule = new \Recurr\Rule(implode(';', $freqRule), $startDate, $freqs[$recurrent['info']]['end'], $timezone);
-                    $transformer = new \Recurr\Transformer\ArrayTransformer();
-
-                    $transformerConfig = new \Recurr\Transformer\ArrayTransformerConfig();
-                    $transformerConfig->enableLastDayOfMonthFix();
-                    $transformer->setConfig($transformerConfig);
-
-                    $dates = $transformer->transform($rule);
-
-                    if ($dates){
-                        foreach ($dates as $keyDate => $valueDate) {
-                            $newEvent = $data;
-                            $newEvent['start'] = $valueDate->getStart()->format('Y-m-d');
-                            $newEvent['end'] = $valueDate->getEnd()->format('Y-m-d');
-                            Evento::setEvento('create', $newEvent, Session::get('id'));
-                        }
-                        $this->eventos = Evento::getListadoEventos($usuario_id = Session::get('id'));
-                    }
+                    $this->eventos = Calendario::setRecurrente($data, $recurrent, array());
                     if(APP_AJAX) {
                         Flash::valid('El Calendario se ha creado correctamente! <br/>Por favor recarga la página para verificar los cambios.');
                     } else {
                         Flash::valid('El Evento se ha creado correctamente!');
                     }
+
                 }else{
                     if(Evento::setEvento('create', $data, Session::get('id'))){
                         if(APP_AJAX) {
@@ -142,7 +60,7 @@ class IndexController extends BackendController {
     public function editar($id=null) {
 
         View::select(null, null);
-        $this->data = array('success' => false);
+        $this->data = array('success' => false, 'eventos' => array());
 
         if (isset($id) && is_numeric($id)){
 
@@ -158,6 +76,16 @@ class IndexController extends BackendController {
                         }
                         $this->data = array('success' => true);
                     }
+                }
+            }
+
+            $recurrent = Input::post('recurrent');
+            if (isset($recurrent['recurrent']) && $recurrent['recurrent'] === "true"){
+                $this->data['eventos'] = Calendario::setRecurrente($data, $recurrent, array(0));
+                if(APP_AJAX) {
+                    Flash::valid('El Calendario se ha creado correctamente! <br/>Por favor recarga la página para verificar los cambios.');
+                } else {
+                    Flash::valid('El Evento se ha creado correctamente!');
                 }
             }
         }
