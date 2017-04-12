@@ -27,7 +27,7 @@ class Calendario extends ActiveRecord {
         $this->belongs_to('usuario');        
     }
 
-    public function setRecurrente($data=array(), $recurrent=array(), $exclude=array()){
+    public function     setRecurrente($data=array(), $recurrent=array(), $exclude=array()){
 
         if (isset($data['id']) && $data['id'] != ""){
             unset($data['id']);
@@ -68,9 +68,15 @@ class Calendario extends ActiveRecord {
             'year' => array(
                 'freq' => 'YEARLY',
                 'interval' => 1,
-                'count' => 2
+                // 'count' => 2
             ),
         );
+
+        if (isset($recurrent['quantity']) && !is_numeric($recurrent['quantity'])){
+            $recurrent['quantity'] = 0;
+        }
+
+        $recurrent['quantity'] = intval($recurrent['quantity']);
     
         $freqRule = array();
         $freqRule[] = "FREQ={$freqs[$recurrent['info']]['freq']}";
@@ -79,17 +85,19 @@ class Calendario extends ActiveRecord {
             $freqRule[] = "INTERVAL={$freqs[$recurrent['info']]['interval']}";
         }
 
-        if (isset($freqs[$recurrent['info']]['count']) && $freqs[$recurrent['info']]['count'] != ""){
-            $freqRule[] = "COUNT={$freqs[$recurrent['info']]['count']}";
-        }
+        $freqRule[] = "COUNT={$recurrent['quantity']}";
 
-        if (isset($freqs[$recurrent['info']]['until']) && $freqs[$recurrent['info']]['until'] != ""){
-            $freqRule[] = "UNTIL={$freqs[$recurrent['info']]['until']}";
-        }
+        // if (isset($freqs[$recurrent['info']]['count']) && $freqs[$recurrent['info']]['count'] != ""){
+        //     $freqRule[] = "COUNT={$freqs[$recurrent['info']]['count']}";
+        // }
 
-        if (isset($freqs[$recurrent['info']]['bymonth']) && $freqs[$recurrent['info']]['bymonth'] != ""){
-            $freqRule[] = "BYMONTH={$freqs[$recurrent['info']]['bymonth']}";
-        }
+        // if (isset($freqs[$recurrent['info']]['until']) && $freqs[$recurrent['info']]['until'] != ""){
+        //     $freqRule[] = "UNTIL={$freqs[$recurrent['info']]['until']}";
+        // }
+
+        // if (isset($freqs[$recurrent['info']]['bymonth']) && $freqs[$recurrent['info']]['bymonth'] != ""){
+        //     $freqRule[] = "BYMONTH={$freqs[$recurrent['info']]['bymonth']}";
+        // }
 
         $rule = new \Recurr\Rule(implode(';', $freqRule), $startDate, $freqs[$recurrent['info']]['end'], $timezone);
         $transformer = new \Recurr\Transformer\ArrayTransformer();
@@ -101,6 +109,7 @@ class Calendario extends ActiveRecord {
         $dates = $transformer->transform($rule);
 
         if ($dates){
+            $recurrent_obj = Recurrent::setRecurrent();
             foreach ($dates as $keyDate => $valueDate) {
                 if (is_array($exclude) && count($exclude) > 0 && in_array($keyDate, $exclude)){
                     continue;
@@ -111,8 +120,10 @@ class Calendario extends ActiveRecord {
 
                 $newEvent['end'] = $valueDate->getEnd()->format('Y-m-d');
                 $newEvent['day2'] = $newEvent['end'];
+                $newEvent['recurrent'] = true;
                 
-                Evento::setEvento('create', $newEvent, Session::get('id'));
+                $event_obj = Evento::setEvento('create', $newEvent, Session::get('id'));
+                $ppp = RecurrentEvents::setRecurrentEvent($recurrent_obj->id, $event_obj->id);
             }
             return Evento::getListadoEventos($usuario_id = Session::get('id'));
         }

@@ -60,6 +60,8 @@ $(document).ready(function() {
     //al enviar el formulario
     $(':button').click(function(){
 
+    	$("#deleteallevents").hide();
+
         //información del formulario
         var formData = new FormData();
         formData.append('archivo', $('#imagen')[0].files[0])
@@ -364,9 +366,11 @@ function crearCalendario(){
 			$('#recurrent').removeAttr('disabled');
 		}else{
 			$('#recurrent').attr('disabled','disabled');
+			$("#quantity").val("1");
 		}
 	})
 	$("#save").click(function(){
+		$("#deleteallevents").hide();
 		dataSend = [];
 		var d1 = $('#datepairExample input')[0].value;
 		var hora1 = $('#datepairExample input')[1].value;
@@ -494,7 +498,8 @@ function crearCalendario(){
 				if($('input#checkRecurrent').is(':checked')) {
 					recurrent = {
 						recurrent: true,
-						info: $( "#recurrent" ).val()
+						info: $("#recurrent").val(),
+						quantity: parseInt($("#quantity").val())
 					}
 				}
 				$.ajax({
@@ -522,6 +527,7 @@ function crearCalendario(){
 						}
 						$('#checkRecurrent').prop('checked', false);
 						$('#recurrent').attr('disabled','disabled');
+						$("#quantity").val("1");
 						setTimeout(function(){
 							$("#agregar").hide();
 						},600);
@@ -655,6 +661,9 @@ function SetEventsCalendar(){
 }
 function editEvents(evento){
 	eventRefence = evento;
+
+	$("#deleteallevents").hide();
+
 	$("#taskText textarea").val(evento.title);
 	fechaSelect=evento.start._i;
 	$("#taskDescription textarea").val(unescape(evento.description));
@@ -694,6 +703,11 @@ function editEvents(evento){
 	editando = true;
 		$("#delete").show();
 		$("#agregar").show();
+
+	if ('recurrent_id' in evento && isNaN(evento.recurrent_id) === false && parseInt(evento.recurrent_id) > 0){
+		$("#deleteallevents").show();
+	}
+
 	if(readOnly['read_only'] == true){
 		$("#delete").hide();
 		$("#save").hide();
@@ -746,6 +760,58 @@ $("#delete").click(function(e){
 		//
 	}
 });
+
+
+
+$("#deleteallevents").click(function(e){
+	if($(e.target).is('#deleteallevents')){
+
+        _id = eventRefence._id;
+
+        if ('recurrent_id' in eventRefence && isNaN(eventRefence.recurrent_id) === false && parseInt(eventRefence.recurrent_id) > 0){
+			
+	        $("#taskCont").hide();	
+			$(".message").html('Deleting all events...');
+			$(".message").show();	
+			$.ajax({
+				type: "POST",
+				//data: {eventos: {id: eventRefence._id}},
+				dataType: "json",
+				url: PUBLIC_PATH + 'calendario/index/eliminareventos/' + eventRefence.recurrent_id,
+				success:function(data){
+
+	                
+					$('#calendar').fullCalendar('removeEvents')
+					Eventos = data.eventos;
+					SetEventsCalendar();
+
+					$(".message").html('Deleted successful');
+					$(".message").show();
+
+					$("#taskText textarea").val("");
+					$("#taskDescription textarea").val("");
+					$("#taskAuthor textarea").val("");
+					$("#taskNotes textarea").val("");
+					$('#checkRecurrent').prop('checked', false);
+					$('#recurrent').attr('disabled','disabled');
+					$("#quantity").val("1");
+
+
+					setTimeout(function(){
+						$("#agregar").hide();
+					},600);
+				},
+				error:function(data){
+					$(".message").html("Deleting Error, try later or logOut and them logIn");
+					$(".message").show();
+					setTimeout(function(){
+						$("#agregar").hide();
+					},600);
+				}
+			});
+		}
+	}
+})
 
 function lightNetworks(idButton){
 	switch(idButton){

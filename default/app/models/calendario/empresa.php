@@ -9,9 +9,6 @@
  */
 
 class Empresa extends ActiveRecord {
-    
-    //Se desabilita el logger para no llenar el archivo de "basura"
-    public $logger = FALSE;
 
     /**
      * Método que retorna los recursos asignados a un perfil de usuario

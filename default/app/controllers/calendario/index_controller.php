@@ -9,7 +9,7 @@
 
 
 
-Load::models('calendario/calendario', 'calendario/reporte',  'calendario/evento');
+Load::models('calendario/calendario', 'calendario/reporte',  'calendario/evento', 'calendario/recurrent', 'calendario/recurrent_events');
 
 class IndexController extends BackendController {
     
@@ -115,6 +115,42 @@ class IndexController extends BackendController {
                 }
             } catch(KumbiaException $e) {
                 Flash::error('Este evento no se puede eliminar porque se encuentra relacionado con otro registro.');
+            }
+        }
+        View::json();
+    }
+
+    /**
+     * Método para eliminar
+     */
+    public function eliminareventos($id) {
+
+        View::select(null, null);
+        $this->data = array('success' => false);
+
+        if (isset($id) && is_numeric($id)){
+            try {
+
+                $recurrent = new Recurrent();
+                $recurrent->find($id);
+
+                $recurrents = new RecurrentEvents();
+
+                $eventos = $recurrents->find("recurrent_id = {$id}");
+
+                foreach ($eventos as $key => $value) {
+                    $evento = new Evento();
+                    $evento->delete($value->evento_id);
+                }
+
+                $recurrents->delete("recurrent_id = {$id}");
+                $recurrent->delete($id);
+
+                $this->eventos = Evento::getListadoEventos(Session::get('id'));
+                $this->data = array('success' => true, 'eventos' => $this->eventos);
+                
+            } catch(KumbiaException $e) {
+                Flash::error('Estos eventos no se pueden eliminar');
             }
         }
         View::json();

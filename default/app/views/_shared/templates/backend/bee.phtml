@@ -121,7 +121,7 @@
 
 						<div class="recurrent">
 							<span> Make this event recurrent</span>
-							<input type="checkbox" alt="Make this event recurrent" id="checkRecurrent">
+							<input type="checkbox" placeholder="Make this event recurrent" id="checkRecurrent">
 							<select name="recurrent" id="recurrent" disabled="disabled">
 								<option value="day">Every Day</option>
 								<option value="week">Every Week</option>
@@ -130,12 +130,14 @@
 								<option value="year">Every Year</option>
 							</select>
 						</div>
+						<input type="number" placeholder="repeat every time this event" id="quantity" name="quantity" min="1" max="20" value="1">
 					</p>
 					<!--date-->
 					<div id="buttons">
 						<div class="taskButton" id="upload" style="float:left;"><i class="fa fa-file-image-o"></i>upload image</div>						
 						<div class="taskButton" id="save" style="float:right;">save</div>
 						<div class="taskButton" id="delete" style="float:right;">delete</div>
+						<div class="taskButton" id="deleteallevents" style="float:right;display:none">delete all event</div>
 					</div>
 					<div class="alert"><i class="fa fa-exclamation-triangle"></i><span>Oopzzz, it looks like you forgot some fields</span> </div>
 					<div id="uploadModule">
