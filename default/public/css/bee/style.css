@@ -900,3 +900,11 @@ article{
         padding-bottom: 35px;
     }
 }
+.repeatCount{
+    display: block;
+    position: relative;
+    width: 238px;
+    text-align: left;
+    padding: 5px 20px;
+    height: 20px;
+}
