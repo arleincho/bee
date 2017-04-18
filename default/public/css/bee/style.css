@@ -906,5 +906,8 @@ article{
     width: 238px;
     text-align: left;
     padding: 5px 20px;
-    height: 20px;
+    height: 30px;
+}
+.repeatCount input{
+    width: 35px;
 }
