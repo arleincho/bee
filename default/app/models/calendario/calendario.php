@@ -77,6 +77,10 @@ class Calendario extends ActiveRecord {
         }
 
         $recurrent['quantity'] = intval($recurrent['quantity']);
+
+        if ($recurrent['quantity'] > 0){
+            $recurrent['quantity']--;
+        }
     
         $freqRule = array();
         $freqRule[] = "FREQ={$freqs[$recurrent['info']]['freq']}";
