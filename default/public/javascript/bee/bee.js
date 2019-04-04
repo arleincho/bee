@@ -621,7 +621,7 @@ function crearCalendario(){
 		var email = $("#subject input").val();
             validacion_email = /^[a-zA-Z0-9_\.\-]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-\.]+$/;
             // mensaje = $("#message textarea").val();
-            mensaje = "Greetings,<br><br>Please view your upcoming social media planning week on Bee Social Group's calendar. Click on the <a href='http://www.beesocialgroup.com/test/'>link</a> to view details. (Please note, you must be logged in to view details)<br><br><strong>Additional Notes:</strong><br><br>" + $("#message textarea").val();
+            mensaje = "Greetings,<br><br>Please view your upcoming social media planning week on Bee Social Group's calendar. Click on the <a href='http://www.beesocialgroup.com/test/'>link</a> to view details. (Please note, you must be logged in to view details)<br><br><strong>Additional notes from the Beehive:</strong><br><br><span style='color:red;'>" + $("#message textarea").val() + "</span>";
  
         // if(email == "" || !validacion_email.test(email)){
         if(email == ""){

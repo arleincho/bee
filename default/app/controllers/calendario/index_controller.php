@@ -220,7 +220,7 @@ class IndexController extends BackendController {
         $to = Input::post('email');
         $message = Input::post('message');
         Load::model('calendario/mail');
-        Mail::send($to, $to, 'Bee Calendar Notification', $message);
+        Mail::send($to, $to, 'Bee Calendar Notification', $message . "</span>");
         
     }
 
