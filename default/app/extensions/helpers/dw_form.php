@@ -481,6 +481,7 @@ class DwForm extends Form {
             $model_asoc = Load::model($data[0]);//Cargo el modelo
             $pk = $model_asoc->primary_key[0];//Tomo la llave primaria
             // Verifica si existe el argumento
+<<<<<<< HEAD
             
             if(isset($data[2]) && isset($data[3])) {
                 $data = $model_asoc->{$data[1]}($data[2],$data[3]);
@@ -488,6 +489,14 @@ class DwForm extends Form {
                 $data = $model_asoc->{$data[1]}($data[2]);
             } else {
                 $data = $model_asoc->{$data[1]}();
+=======
+            if(isset($data[2]) && isset($data[3])) {
+                $data = $model_asoc->$data[1]($data[2],$data[3]);
+            } else if(isset($data[2])) {
+                $data = $model_asoc->$data[1]($data[2]);
+            } else {
+                $data = $model_asoc->$data[1]();
+>>>>>>> a2a568bb23303930616e12850580dd1b65bf365e
             }
         } else { //Si ha enviado una data determino la llave primaria
             $model_asoc = explode('.', $field, 2);
