@@ -101,11 +101,6 @@ class ModelAuth extends Auth2
         //$username = addslashes($username);
         $username = filter_var($username, FILTER_SANITIZE_MAGIC_QUOTES);
 
-<<<<<<< HEAD
-
-
-=======
->>>>>>> a2a568bb23303930616e12850580dd1b65bf365e
         $Model = Load::model($this->_model);
         if ($user = $Model->find_first("$this->_login = '$username' AND $this->_pass = '$password'")) {
             // Carga los atributos indicados en sesion
@@ -117,12 +112,6 @@ class ModelAuth extends Auth2
             return TRUE;
         }
 
-<<<<<<< HEAD
-        var_dump($user);
-        die();
-
-=======
->>>>>>> a2a568bb23303930616e12850580dd1b65bf365e
         $this->setError('Error Login!');
         Session::set($this->_key, FALSE);
         return FALSE;
