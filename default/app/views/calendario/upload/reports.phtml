@@ -1,0 +1,118 @@
+<?php View::flash(); ?>
+
+
+<div class="container shell-view">
+        
+    <?php View::process($page_module, $page_title, $set_title); ?>
+    
+    <ul class="nav nav-tabs hidden-xs">
+        <li class="active"><a href="#tab1" data-toggle="tab">Subir Reportes del Mes</a></li>
+        <li><?php echo DwHtml::link("calendario/upload/reports/$key/#tab2", 'Reportes Subidos anteriormente', array('after-load' => 'selectTab()', 'data-toggle' => "tab")); ?></li>
+    </ul>
+    <ul class="nav nav-pills nav-stacked visible-xs">        
+        <li class="active"><a href="#tab1" data-toggle="tab">Subir Reportes del Mes</a></li>
+        <li><?php echo DwHtml::link("calendario/upload/reports/$key/#tab2", 'Reportes Subidos anteriormente', array('after-load' => 'selectTab()', 'data-toggle' => "tab")); ?></li>
+    </ul>
+    <div class="tab-content">
+        
+            <div class="tab-pane active" id="tab1">
+            <?php echo DwForm::open(); ?>
+
+                <?php echo DwForm::hidden('reporte[key]', NULL, $key); ?>
+
+                <div class="row fileupload-buttonbar">
+                    <div class="col-md-6" style="margin-bottom: 20px;">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <?php echo DwForm::text('reporte[date_report]', array('class'=>'input-lower input-required form-control', 'id' => "date_report"), NULL, 'Fecha de los reportes'); ?>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <?php echo DwForm::upload('progress_report',
+                                    array('disabled' => 'true', 'data-to'=>PUBLIC_PATH.'calendario/upload/upload/progress_report',
+                                    'data-size'=>5000000, 'data-files'=>"/(\.|\/)(pdf)$/i"), 'Progress Report'); ?>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <?php echo DwForm::upload('demographics_report',
+                                    array('disabled' => 'true', 'data-to'=>PUBLIC_PATH.'calendario/upload/upload/demographics_report',
+                                    'data-size'=>5000000, 'data-files'=>"/(\.|\/)(pdf)$/i"), 'Demographics Report'); ?>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <?php echo DwForm::upload('beehive_report',
+                                    array('disabled' => 'true', 'data-to'=>PUBLIC_PATH.'calendario/upload/upload/beehive_report',
+                                    'data-size'=>5000000, 'data-files'=>"/(\.|\/)(pdf)$/i"), 'Beehive of Ideas'); ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <?php echo DwForm::close(); ?>
+            </div>      
+                
+
+            <div class="tab-pane" id="tab2">
+
+                <?php View::process('Información de reportes subidos al Usuario', NULL, FALSE); ?>
+
+                <table class="table table-bordered table-hover table-striped table-condensed table-responsive">
+                    <thead>
+                        <tr>
+                            <th>NUM</th>
+                            <th data-order="usuario">FECHA</th>
+                            <th data-order="nombre">REPORTE</th>
+                            <th data-order="nombre">CREADO</th>
+                            <th data-order="nombre">DESCARGA</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach($reportes->items as $reporte): ?>
+                            <?php $key_dwn = Security::setKey($reporte->id, 'descargar_reporte'); ?>
+                            <tr>
+                                <td><?php echo $reportes->counter; ?></td>
+                                <td><?php echo $reporte->fecha; ?></td>
+                                <td><?php echo $reporte->nombre; ?></td>
+                                <td><?php echo $reporte->creado_at; ?></td>
+                                <td class="btn-actions">
+                                    <?php echo DwHtml::buttonTable('Descargar Reporte', "calendario/upload/descargar/$key_dwn/", array('class'=>'no-ajax', 'target'=>'_self'), 'info', 'fa-download'); ?>
+                                </td>
+                            </tr>
+                            <?php $reportes->counter++; ?>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+
+                <?php View::partial('paginators/default', false, array('page'=>$reportes, 'url'=>"calendario/upload/reports/$key/$order/")); ?>
+            </div>
+        
+    </div>
+   
+</div>
+
+
+<script type="text/javascript">
+    $(function(){
+        $.ajax({ dataType: "script",cache: true, url: 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.min.js'}).done(function(){    
+            $("#reporte\\[date_report\\]").datepicker({
+                orientation: "bottom",
+                format: "yyyy-mm",
+                viewMode: "months", 
+                minViewMode: "months"
+            }).on('changeDate', function(e){
+                $('#progress_report').prop('disabled', false);
+                $('#demographics_report').prop('disabled', false);
+                $('#beehive_report').prop('disabled', false);
+            })
+        });
+    });
+
+    selectTab = function(){
+        a = $('.nav-tabs a:last');
+        href = a.attr('href').replace(/\/$/g, '');
+        a.attr('href', href);
+        a.tab('show')
+    }
+</script>

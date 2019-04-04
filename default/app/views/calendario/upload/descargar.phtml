@@ -1,0 +1,6 @@
+<?php
+$name = str_replace(' ', '_', APP_NAME).'-'.$reporte->nombre . '-' . $reporte->fecha . '.pdf';
+header( "Content-Disposition: attachment; filename=".$name."");
+header( "Content-type: application/pdf" );
+header( "Content-Length: ".filesize($file) ); //header que envia al navegador el tamaño del archivo.
+readfile($file);

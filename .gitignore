@@ -1,0 +1,6 @@
+/nbproject/
+/default/app/temp/
+backend.*
+.DS_Store
+/default/public/img/upload/
+/default/public/php/error_log

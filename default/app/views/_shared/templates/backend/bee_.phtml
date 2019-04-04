@@ -1,0 +1,178 @@
+<html>
+<head>
+	<title>Calendario</title>    
+    <?php Tag::css('bee/fullcalendar'); ?>
+    <?php Tag::css('bee/style'); ?>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    
+    <?php Tag::css('bee/font-awesome.min'); ?>
+    <?php Tag::css('bee/DateTimePicker.min'); ?>
+
+    <?php Tag::css('bee/jquery-ui'); ?>
+    <?php Tag::css('bee/jquery.ptTimeSelect'); ?>
+    <?php Tag::css('bee/pikaday'); ?>
+    <?php Tag::css('bee/bootstrap-datepicker.standalone'); ?>
+    <?php Tag::css('bee/jquery.timepicker'); ?>
+    <?php echo Html::includeCss(); ?>       
+</head>
+<body>
+	<header>
+		<div id="menu"></div>
+		<div id="logout"><?php echo DwHtml::link('sistema/login/salir', '[ Log Out ]'); ?></div>
+	</header>
+	<article id="panels">
+		<div id="usuario">[ <?php echo Session::get('nombre');?> ]</div>
+		<div id="logoCliente">
+			<?php echo DwHtml::img("upload/personas/" . Session::get('fotografia'), Session::get('nombre') . ' ' . Session::get('apellido')); ?>
+		</div>
+		<div id="paneles">
+			<div class="tab" id="progress">
+				<input id="radio1" type="checkbox" name="acordeon" value="progress"/>
+				<label for="radio1">Progress Report<i class="fa fa-angle-down"></i></label>
+				<div class="contenido">
+					<ul>
+						<?php foreach ($progress_report as $key => $value): ?>
+							<?php $key_dwn = Security::setKey($value->id, 'descargar_reporte'); ?>
+							<?php $dwn = DwHtml::buttonTable('Descargar Reporte', "calendario/upload/descargar/$key_dwn/", array('class'=>'no-ajax', 'target'=>'_self'), 'info', 'fa-download'); ?>
+							<li><span><?php echo $value->fecha?></span><span><?php echo $dwn?></span></li>
+						<?php endforeach; ?>
+					</ul>
+				</div>
+			</div>
+
+
+			<div class="tab" id="demographics">
+				<input id="radio2" type="checkbox" name="acordeon" value="demographics"/>
+				<label for="radio2">Demographics<i class="fa fa-angle-down"></i></label>
+				<div class="contenido">
+					<ul>
+						<?php foreach ($demographics_report as $key => $value): ?>
+							<?php $key_dwn = Security::setKey($value->id, 'descargar_reporte'); ?>
+							<?php $dwn = DwHtml::buttonTable('Descargar Reporte', "calendario/upload/descargar/$key_dwn/", array('class'=>'no-ajax', 'target'=>'_self'), 'info', 'fa-download'); ?>
+							<li><span><?php echo $value->fecha?></span><span><?php echo $dwn?></span></li>
+						<?php endforeach; ?>
+					</ul>
+				</div>
+			</div>
+			<div class="tab" id="ideas">
+				<input id="radio3" type="checkbox" name="acordeon" value="beehive"/>
+				<label for="radio3">Beehive of Ideas<i class="fa fa-angle-down"></i></label>
+				<div class="contenido">
+					<ul>
+						<?php foreach ($beehive_report as $key => $value): ?>
+							<?php $key_dwn = Security::setKey($value->id, 'descargar_reporte'); ?>
+							<?php $dwn = DwHtml::buttonTable('Descargar Reporte', "calendario/upload/descargar/$key_dwn/", array('class'=>'no-ajax', 'target'=>'_self'), 'info', 'fa-download'); ?>
+							<li><span><?php echo $value->fecha?></span><span><?php echo $dwn?></span></li>
+						<?php endforeach; ?>
+					</ul>
+				</div>
+			</div>
+			<div class="tab" id="account">
+				<input id="radio4" type="checkbox" name="acordeon" value="account"/>
+				<label for="radio4">Account Info<i class="fa fa-angle-down"></i></label>
+				<div class="contenido"><?php echo Session::get('info')?></div>
+			</div>
+			<div class="tab" id="winner">
+				<input id="radio5" type="checkbox" name="acordeon" value="contest"/>
+				<label  for="radio5">Contest Picker</label>
+				<div class="contenido winner" >
+					<span>separate names by line</span>
+					<textarea class="texto"></textarea>
+					<div id="winnerName"></div>
+					<button id="WinnerButton">Pick Winner</button>
+				</div>
+			</div>
+		</div>
+	</article>
+	<article id="calendario">
+		<div id="contenedor">
+			<div id="calendar"></div>
+			<div id="agregar">
+				<div class="capa"></div>
+				<div id="taskCont">
+					<div class="taskButton" id="discard" style="float:right;"><i class="fa fa-close"></i> </div>
+					<h2>NEW TASK</h2>
+					<div id="redes">
+						<ul>
+							<li><i class="fa fa-facebook" id="facebook"></i></li>
+							<li><i class="fa fa-twitter" id="twitter"></i></li>
+							<li><i class="fa fa-instagram" id="instagram"></i></li>
+							<li><i class="fa fa-linkedin" id="linkedin"></i></li>
+							<li><i class="fa fa-pinterest" id="pinterest"></i></li>
+							<li><i class="fa fa-youtube" id="youtube"></i></li>
+							<li><i class="fa fa-google-plus" id="plus"></i></li>
+						</ul>
+					</div>					
+
+					<div id="taskDescription"><textarea type="text" value="add task"></textarea></div>
+					<div id="taskAuthor"><textarea type="text" value="add task"></textarea></div>
+
+			        <div id="imaEvent">
+			        	<i class="fa fa-download"></i>
+			        	<img src="http://beesocialgroup.com/test/img/upload/indice.png">
+			        </div>
+			        <p id="datepairExample">
+					    <input type="text" class="date start" />
+					    <input type="text" class="time start" /> 
+					    <span>to</span>
+					    <input type="text" class="date end" />
+					    <input style="display:none;" type="text" class="time end" />
+					</p>
+					<!--date-->
+					<div id="buttons">
+						<div class="taskButton" id="upload" style="float:left;"><i class="fa fa-file-image-o"></i>upload image</div>						
+						<div class="taskButton" id="save" style="float:right;">save</div>
+						<div class="taskButton" id="delete" style="float:right;">delete</div>
+					</div>
+					<div class="alert"><i class="fa fa-exclamation-triangle"></i><span>Oopzzz, it looks like you forgot some fields</span> </div>
+					<div id="uploadModule">
+						<form enctype="multipart/form-data" class="formulario">
+					        <input name="archivo" type="file" id="imagen" /><br /><br />
+					        <input style="border:1px solid; background-color: #ff9900; cursor: pointer;" type="button" value="Click to Upload" /><br />
+					    </form>
+					    <!--div para visualizar mensajes-->
+					    <div class="messages"></div>
+					</div>
+				</div>
+			</div>
+
+			<div id="mail">
+				<div class="capa"></div>
+				<div id="data-mail">
+					<div class="taskButton" id="discard2" style="float:right;"><i class="fa fa-close"></i> </div>
+					<h2>Send Notification</h2>					
+					<span>To:</span>					
+					<div id="subject">						
+					<input  type="email" name="email" value="Type Mail" autocomplete="on">						
+					</div>
+					<span>Message:</span>
+					<div id="message">
+					<textarea type="text" value="Type Message"></textarea>
+					</div>
+					<div id="sendMessage">SEND</div>
+				</div>
+			</div>
+		</div>
+	</article>
+	<script type="text/javascript">
+		PUBLIC_PATH = '<?php echo PUBLIC_PATH; ?>';
+		var Eventos = <?php echo json_encode($eventos)?>;
+		var readOnly = <?php echo json_encode(array('read_only' => $read_only))?>;
+	</script>
+
+    <?php echo Tag::js('bee/jquery.min'); ?>
+    <?php echo Tag::js('bee/moment.min'); ?>
+    <?php echo Tag::js('bee/fullcalendar'); ?>
+    <?php echo Tag::js('bee/datepair'); ?>
+    <?php echo Tag::js('bee/jquery.datepair'); ?>
+    <?php echo Tag::js('bee/jquery.timepicker'); ?>
+    <?php echo Tag::js('bee/bootstrap-datepicker'); ?>
+    <?php echo Tag::js('html5shiv'); ?>    
+	<?php echo Tag::js('backend'); ?>
+    <?php echo Tag::js('bee/bee'); ?>
+    <?php echo Tag::js('bee/jspdf.min'); ?>
+    <?php echo Tag::js('bee/jquery.tabletojson'); ?>
+    <?php echo Tag::js('bee/jspdf.plugin.cell'); ?>
+</body>
+</html>
+
