@@ -92,7 +92,13 @@ $(document).ready(function() {
             //una vez finalizado correctamente
             success: function(data){
                 $('.messages').html('Done!');
-                $("#imaEvent").html("<img src='"+ PUBLIC_PATH + data.urlFile+"' />");
+
+                if (data.urlFile.indexOf(".mp4") > -1){
+                	$("#imaEvent").html("<video width='100%' controls src='"+ PUBLIC_PATH + data.urlFile+"' />");
+                }else{
+                	$("#imaEvent").html("<img src='"+ PUBLIC_PATH + data.urlFile+"' />");
+                }
+
                 //$(".showImage").html("<img src='files/"+fileName+"' />");
                 $('#imagen').val("");
                 urlFile = data.urlFile;
@@ -673,7 +679,15 @@ function editEvents(evento){
 	currentId = evento.idPosicion;
 	hora = evento.hour;
 	$("#timepicker1").val(hora);
-	$("#imaEvent").html('<a href="'+PUBLIC_PATH+evento.urlFile+'" ><i class="fa fa-download"></i></a><img src="'+PUBLIC_PATH+evento.urlFile+'" />');
+
+
+	if (evento.urlFile.indexOf(".mp4") > -1){
+    	imaEvent_path = "<video width='100%' controls src='"+ PUBLIC_PATH + evento.urlFile+"' />";
+    }else{
+    	imaEvent_path = "<img src='"+ PUBLIC_PATH + evento.urlFile+"' />";
+    }
+
+	$("#imaEvent").html('<a href="'+PUBLIC_PATH+evento.urlFile+'" ><i class="fa fa-download"></i></a>' + imaEvent_path);
 
 	var dia1Array = evento.day1.split('-');
 	var dia2Array = evento.day2.split('-');

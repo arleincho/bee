@@ -94,7 +94,7 @@ class DwUpload {
      *
      * @var string
      */
-    public $maxSize = "2MB";
+    public $maxSize = "20MB";
     
     /**
      * Variable con los mensajes de error
@@ -191,7 +191,7 @@ class DwUpload {
     public function isWritable($path='') {
         $path = empty($path) ? $this->path : $path;
         if(!file_exists($path)) {
-            $this->setError('No fué posible ubicar el directorio de carga del archivo.');
+            $this->setError('No fué posible ubicar el directorio de carga del archivo. ' . $path);
             return FALSE;
         }
         if(!is_writable($path)) {            
