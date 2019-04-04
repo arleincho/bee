@@ -24,7 +24,16 @@ class Usuario extends ActiveRecord {
      * @return string
      */
     public static function getInnerEstado() {
-        return "INNER JOIN (SELECT usuario_id, estado_usuario, descripcion, estado_usuario_at FROM (SELECT * FROM estado_usuario ORDER BY estado_usuario.id DESC ) AS estado_usuario GROUP BY estado_usuario.usuario_id ) AS estado_usuario ON estado_usuario.usuario_id = usuario.id "; 
+        // return "INNER JOIN (SELECT usuario_id, estado_usuario, descripcion, estado_usuario_at FROM (SELECT * FROM estado_usuario ORDER BY estado_usuario.id DESC ) AS estado_usuario GROUP BY estado_usuario.usuario_id ) AS estado_usuario ON estado_usuario.usuario_id = usuario.id "; 
+
+        return "INNER JOIN (
+                SELECT `usuario_id`, MAX(id) id
+                FROM `estado_usuario`
+                GROUP BY usuario_id
+            ) AS estado_usuario_2 ON estado_usuario_2.usuario_id = usuario.id 
+
+            LEFT JOIN estado_usuario ON estado_usuario.id = estado_usuario_2.id
+                AND estado_usuario.usuario_id = estado_usuario_2.usuario_id "; 
     }
     
     /**
@@ -212,7 +221,7 @@ class Usuario extends ActiveRecord {
                 'DESC'=>'estado_usuario.estado_usuario DESC, usuario.apellido DESC, usuario.nombre DESC'
             )
         ));
-        
+
         if($estado == 'activos') {
             $conditions.= " AND estado_usuario.estado_usuario = '".EstadoUsuario::ACTIVO."'";
         } else if($estado == 'bloqueados') {
