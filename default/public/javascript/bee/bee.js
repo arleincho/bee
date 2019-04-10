@@ -44,17 +44,42 @@ $(document).ready(function() {
     $(':file').change(function()
     {
         //obtenemos un array con los datos del archivo
-        file = $("#imagen")[0].files[0];
-        //obtenemos el nombre del archivo
-        fileName = file.name;
-        //obtenemos la extensión del archivo
-        fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
-        //obtenemos el tamaño del archivo
-        fileSize = file.size;
-        //obtenemos el tipo de archivo image/png ejemplo
-        fileType = file.type;
-        //mensaje con la información del archivo
-        showMessage("<span class='info'>File to load: "+fileName+", size: "+fileSize+" bytes.</span>");
+
+        infoShow = [];
+
+        if ($("#imagen").length > 0 && $("#imagen")[0].files != undefined){
+
+	        
+	        file = $("#imagen")[0].files[0];
+
+	        if(file !== undefined){
+		        //obtenemos el nombre del archivo
+		        fileName = file.name;
+		        //obtenemos la extensión del archivo
+		        fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
+		        //obtenemos el tamaño del archivo
+		        fileSize = file.size;
+		        //obtenemos el tipo de archivo image/png ejemplo
+		        fileType = file.type;
+		        //mensaje con la información del archivo
+		        infoShow.push("<span class='info'>File to load: "+fileName+", size: "+fileSize+" bytes.</span>");
+
+	     	}
+	    }
+
+        var ins = document.getElementById('multiFiles').files.length;
+        for (var x = 0; x < ins; x++) {
+            file = document.getElementById('multiFiles').files[x];
+            fileName = file.name;
+			fileType = file.type;
+			fileSize = file.size;
+			infoShow.push("<span class='info'>File to load: "+fileName+", size: "+fileSize+" bytes.</span>");
+        }
+
+        if (infoShow.length > 0){
+        	showMessage(infoShow.join("</br>"));
+        }
+
     });
  
     //al enviar el formulario
@@ -64,7 +89,13 @@ $(document).ready(function() {
 
         //información del formulario
         var formData = new FormData();
-        formData.append('archivo', $('#imagen')[0].files[0])
+        // formData.append('archivo', $('#imagen')[0].files[0])
+
+        var ins = document.getElementById('multiFiles').files.length;
+        for (var x = 0; x < ins; x++) {
+            formData.append("files[]", document.getElementById('multiFiles').files[x]);
+        }
+
         formData.append('fechaSelect', fechaSelect)
         formData.append('hora', $("#timepicker1").val())
         formData.append('id', (eventRefence != null)?eventRefence.id : null)
@@ -93,13 +124,38 @@ $(document).ready(function() {
             success: function(data){
                 $('.messages').html('Done!');
 
-                if (data.urlFile.indexOf(".mp4") > -1){
-                	$("#imaEvent").html("<video width='100%' controls src='"+ PUBLIC_PATH + data.urlFile+"' />");
-                }else{
-                	$("#imaEvent").html("<img src='"+ PUBLIC_PATH + data.urlFile+"' />");
-                }
+                // if (data.urlFile.indexOf(".mp4") > -1){
+                // 	$("#imaEvent").html("<video width='100%' controls src='"+ PUBLIC_PATH + data.urlFile+"' />");
+                // }else{
+                // 	$("#imaEvent").html("<img src='"+ PUBLIC_PATH + data.urlFile+"' />");
+                // }
+
+                imaEvent_path = [];
+
+				if ($.isArray(data.urlFiles) && data.urlFiles.length > 0){
+					$.each(data.urlFiles, function(keyUrlFiles, valueUrlFiles){
+						downloadHref = "<a href='"+PUBLIC_PATH + valueUrlFiles + "'><i class='fa fa-download'></i></a>";
+						if (valueUrlFiles.indexOf(".mp4") > -1){
+					    	imaEvent_path.push("<div>" + downloadHref + "<video width='100%' controls src='"+ PUBLIC_PATH + valueUrlFiles +"' /></div>");
+					    }else{
+					    	imaEvent_path.push("<div>" + downloadHref + "<img src='"+ PUBLIC_PATH + valueUrlFiles+"' /></div>");
+					    }
+					})
+				}
+
+				if ("urlFile" in data && data.urlFile != ""){
+					downloadHref = "<a href='"+PUBLIC_PATH + data.urlFile + "'><i class='fa fa-download'></i></a>";
+					if (data.urlFile.indexOf(".mp4") > -1){
+				    	imaEvent_path.push("<div>" + downloadHref + "<video width='100%' controls src='"+ PUBLIC_PATH + data.urlFile +"' /></div>");
+				    }else{
+				    	imaEvent_path.push("<div>" + downloadHref + "<img src='"+ PUBLIC_PATH + data.urlFile+"' /></div>");
+				    }
+				}
+				// $("#imaEvent").html('<a href="'+PUBLIC_PATH+evento.urlFile+'" ><i class="fa fa-download"></i></a>' + imaEvent_path);
+				$("#imaEvent").html(imaEvent_path.join(""));
 
                 //$(".showImage").html("<img src='files/"+fileName+"' />");
+                $('#multiFiles').val("");
                 $('#imagen').val("");
                 urlFile = data.urlFile;
                 if (eventRefence == null){
@@ -152,6 +208,7 @@ function AgregarFuncionDias(){
 				youtube = "false";
 				plus = "false";
 				urlFile="";
+				urlFiles = [];
 				id=0;
 				currentId = 0;
 				editando = false;
@@ -415,6 +472,7 @@ function crearCalendario(){
 					eventRefence.author = $("#taskAuthor textarea").val();
 					eventRefence.notes = unescape(notesText);
 					eventRefence.urlFile = urlFile;
+					// eventRefence.urlFiles = urlFile;
 					eventRefence.idPosicion = id;
 					eventRefence.hour1 = hora1;
 					eventRefence.day1 = dia1;
@@ -621,8 +679,7 @@ function crearCalendario(){
 		var email = $("#subject input").val();
             validacion_email = /^[a-zA-Z0-9_\.\-]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-\.]+$/;
             // mensaje = $("#message textarea").val();
-            mensaje = "Greetings,<br><br>Please view your upcoming social media planning week on Bee Social Group's calendar. Click on the <a href='http://www.beesocialgroup.com/test/'>link</a> to view details. (Please note, you must be logged in to view details)<br><br><strong>Additional notes from the Beehive:</strong><br><br><span style='color:red;'>" + $("#message textarea").val() + "</span>";
- 
+            mensaje = "Hello Hola Bzzzzz!<br><br>YOUR posts for today are ready for review. Click on this <a href='http://www.beesocialgroup.com/test/'>link</a> to view them and approve or request changes to them.</br><b> do not reply to this email, all comments, approvals and requests must go directly on the bee calendar.</b><br>(Please note, you must be logged in to view details)<br><br><strong>Additional notes from the Beehive:</strong><br><br><span style='color:red;'>" + $("#message textarea").val() + "</span>";
         // if(email == "" || !validacion_email.test(email)){
         if(email == ""){
             $("#subject input").focus();    
@@ -680,14 +737,30 @@ function editEvents(evento){
 	hora = evento.hour;
 	$("#timepicker1").val(hora);
 
+	imaEvent_path = [];
 
-	if (evento.urlFile.indexOf(".mp4") > -1){
-    	imaEvent_path = "<video width='100%' controls src='"+ PUBLIC_PATH + evento.urlFile+"' />";
-    }else{
-    	imaEvent_path = "<img src='"+ PUBLIC_PATH + evento.urlFile+"' />";
-    }
+	if ($.isArray(evento.urlFiles) && evento.urlFiles.length > 0){
+		$.each(evento.urlFiles, function(keyUrlFiles, valueUrlFiles){
+			downloadHref = "<a href='"+PUBLIC_PATH + valueUrlFiles + "'><i class='fa fa-download'></i></a>";
+			if (valueUrlFiles.indexOf(".mp4") > -1){
+		    	imaEvent_path.push("<div>" + downloadHref + "<video width='100%' controls src='"+ PUBLIC_PATH + valueUrlFiles +"' /></div>");
+		    }else{
+		    	imaEvent_path.push("<div>" + downloadHref + "<img src='"+ PUBLIC_PATH + valueUrlFiles+"' /></div>");
+		    }
+		})
+	}
 
-	$("#imaEvent").html('<a href="'+PUBLIC_PATH+evento.urlFile+'" ><i class="fa fa-download"></i></a>' + imaEvent_path);
+	if ("urlFile" in evento && evento.urlFile != ""){
+		downloadHref = "<a href='"+PUBLIC_PATH + evento.urlFile + "'><i class='fa fa-download'></i></a>";
+		if (evento.urlFile.indexOf(".mp4") > -1){
+	    	imaEvent_path.push("<div>" + downloadHref + "<video width='100%' controls src='"+ PUBLIC_PATH + evento.urlFile +"' /></div>");
+	    }else{
+	    	imaEvent_path.push("<div>" + downloadHref + "<img src='"+ PUBLIC_PATH + evento.urlFile+"' /></div>");
+	    }
+	}
+	// $("#imaEvent").html('<a href="'+PUBLIC_PATH+evento.urlFile+'" ><i class="fa fa-download"></i></a>' + imaEvent_path);
+	$("#imaEvent").html(imaEvent_path.join(""));
+
 
 	var dia1Array = evento.day1.split('-');
 	var dia2Array = evento.day2.split('-');

@@ -51,11 +51,12 @@ class Evento extends ActiveRecord {
 
         $obj = new Evento();
         $conditions = "evento.usuario_id = {$usuario_id}";
-        $columns = "evento.id, evento.start, evento.end, evento.color, evento.author, evento.notes, evento.urlFile, evento.idPosicion, evento.hour1, evento.day1, evento.hour2, evento.day2, evento.fileUrl, evento.networks, evento.description, recurrent_events.recurrent_id recurrent_id";
+        $columns = "evento.id, evento.start, evento.end, evento.color, evento.author, evento.notes, evento.urlFile, evento.idPosicion, evento.hour1, evento.day1, evento.hour2, evento.day2, evento.fileUrl, evento.networks, evento.urlFiles, evento.description, recurrent_events.recurrent_id recurrent_id";
         $join = "LEFT JOIN recurrent_events ON evento.id = recurrent_events.evento_id ";
         $list = $obj->find("columns: $columns", "conditions: $conditions", "join: $join");
         foreach ($list as $key => $value) {
             $list[$key]->networks = (isset($value->networks) && $value->networks != "")?json_decode($value->networks):array();
+            $list[$key]->urlFiles = (isset($value->urlFiles) && $value->urlFiles != "")?json_decode($value->urlFiles):array();
         }
         return $list;
     }

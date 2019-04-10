@@ -77,7 +77,7 @@ class UsuariosController extends BackendController {
      * Método para editar
      */
     public function editar($key) {        
-        if(!$id = Security::getKey($key, 'edit_menu', 'int')) {
+        if(!$id = Security::getKey($key, 'upd_usuario', 'int')) {
             return Redirect::toAction('listar');
         }
         

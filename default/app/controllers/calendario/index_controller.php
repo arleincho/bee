@@ -166,31 +166,71 @@ class IndexController extends BackendController {
 
         if(Input::hasPost('fechaSelect')) {
 
+            $tmpFiles = $_FILES;
+            $tmpUploads = array();
+            if (is_array($tmpFiles) && isset($tmpFiles['files'])){
+                foreach ($tmpFiles['files'] as $key => $value) {
+                    if ($key == 'tmp_name' && count($value) > 0){
+                        foreach ($value as $keyTN => $valueTN) {
+                            $_FILES = array(
+                                'archivo' => array(
+                                    'name' => $tmpFiles['files']['name'][$keyTN],
+                                    'type' => $tmpFiles['files']['type'][$keyTN],
+                                    'tmp_name' => $tmpFiles['files']['tmp_name'][$keyTN],
+                                    'error' => $tmpFiles['files']['error'][$keyTN],
+                                    'size' => $tmpFiles['files']['size'][$keyTN],
+                                )
+                            );
+                            $upload = new DwUpload('archivo', 'img/upload/eventos/');
+                            //$upload->setAllowedTypes('png|jpg|gif|jpeg|png');
+                            $upload->setEncryptName(TRUE);
+                            // $this->data = $upload->save();
+                            $tmpUploads[] = $upload->save();
+                        }
+                    }
+                }
+            }
 
-            $upload = new DwUpload('archivo', 'img/upload/eventos/');
+            // die();
+
+
+            // $upload = new DwUpload('archivo', 'img/upload/eventos/');
             //$upload->setAllowedTypes('png|jpg|gif|jpeg|png');
-            $upload->setEncryptName(TRUE);
+            // $upload->setEncryptName(TRUE);
 
-            $this->data = $upload->save();
-            if(!$this->data) { //retorna un array('path'=>'ruta', 'name'=>'nombre.ext');
-                $data = array('error'=>TRUE, 'message'=>$upload->getError());
-            }else{
+            // $this->data = $upload->save();
+            // if(!$this->data) { //retorna un array('path'=>'ruta', 'name'=>'nombre.ext');
+            //     $data = array('error'=>TRUE, 'message'=>$upload->getError());
+            // }else{
                 $fecha = Input::post('fechaSelect');
                 $hora = Input::post('hora');
                 $id = Input::post('id');
 
+                $urlFiles = array();
+                
+                if (is_array($tmpUploads) && count($tmpUploads) > 0){
+                    foreach ($tmpUploads as $keyTU => $valueTU) {
+                        $urlFiles[] = "img/upload/eventos/{$valueTU['name']}";
+                    }
+                }
 
                 $evento = new Evento();
                 if(is_numeric($id) && $evento->find_first($id)) {
-                    $evento->urlFile = "img/upload/eventos/{$this->data['name']}";
+                    if (is_array($tmpUploads) && count($tmpUploads) > 0){
+                        $evento->urlFiles = json_encode($urlFiles);
+                        $evento->urlFile = '';
+                    }
                     $evento->update();
                     $data = array('success' => true);
                     $data = $evento;
-                    $data->networks = json_decode($data->networks);
+                    $data->networks = json_decode($data->networks); 
+                    $data->urlFiles = $urlFiles;
                 }else{
+
                     $return = array(
                         "start" => $fecha,
-                        "urlFile" => "img/upload/eventos/{$this->data['name']}",
+                        "urlFiles" => json_encode($urlFiles),
+                        "urlFile" => '',
                         "constraint" => "",
                         "author" => "",
                         "hour" => $hora,
@@ -206,8 +246,9 @@ class IndexController extends BackendController {
                     );
                     $data = Evento::setEvento('create', $return, Session::get('id'));
                     $data->networks = json_decode($data->networks);
+                    $data->urlFiles = $urlFiles;
                 }
-            }
+            // }
         }
         $this->data = $data;
         

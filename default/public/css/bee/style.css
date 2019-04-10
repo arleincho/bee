@@ -200,13 +200,23 @@ article{
     width: 100%;
     z-index: 8; 
 }
-.capa{
+/*.capa{
     background: #fff none repeat scroll 0 0;
     height: 100%;
     opacity: 0.8;
     position: absolute;
     width: 100%;
 }
+*/
+.capa {
+    background: #fff none repeat scroll 0 0;
+    height: 100%;
+    opacity: 0.8;
+    position: absolute;
+    width: 100%;
+}
+
+
 .tab .contenido{
 	overflow: hidden;
 	height: 0px;
@@ -249,7 +259,7 @@ article{
     margin-top: 5px;
 }
 
-#taskCont{
+/*#taskCont{
     background-color: #fff;
     border: 1px solid;
     color: #333;
@@ -259,7 +269,20 @@ article{
     opacity: 1 !important;
     position: fixed;
     width: 350px;
+}*/
+
+#taskCont {
+    background-color: #fff;
+    border: 1px solid;
+    color: #333;
+    display: block;
+    height: auto;
+    margin: 5% auto auto 25%;
+    opacity: 1 !important;
+    position: absolute;
+    width: 350px;
 }
+
 #taskCont h2{
     font-size: 30px;
 }
@@ -697,9 +720,18 @@ article{
 .edit:hover{
     color: #fff;
 }
+/*
 .recurrent{
     margin-top: 190px;
 }
+*/
+.recurrent {
+    padding: 0px 15px 6px;
+    width: 41%;
+    display: block;
+}
+
+
 .recurrent span{
     display: block;
     position: relative;
@@ -778,7 +810,7 @@ article{
 .redesEvento i {
     width: 15px;
 }
-#imaEvent{
+/*#imaEvent{
     display: block;
     float: left;
     height: 101px;
@@ -789,8 +821,19 @@ article{
     overflow: hidden;
     position: relative;
     width: 24%;
+}*/
+
+#imaEvent {
+    display: block;
+    height: auto;
+    margin-left: 16px;
+    overflow: auto;
+    position: relative;
+    max-height: 178px;
+    width: calc(100% - 33px);
 }
-#imaEvent i{
+
+/*#imaEvent i{
     bottom: 13px;
     color: orange;
     font-size: 20px;
@@ -798,11 +841,31 @@ article{
     right: 0;
     text-shadow: 1px 1px 1px #000;
     cursor: pointer;
+}*/
+
+#imaEvent i {
+    bottom: 1px;
+    color: orange;
+    font-size: 20px;
+    position: absolute;
+    right: 0;
+    text-shadow: 1px 1px 1px #000;
+    cursor: pointer;
+    z-index: 20;
 }
-#datepairExample{
+
+
+/*#datepairExample{
     height: 18px;
     padding-left: 16px;
+}*/
+
+#datepairExample {
+    height: 18px;
+    padding-left: 16px;
+    display: inline-block;
 }
+
 #datepairExample .date{
     float: left;
     margin-left: 5px;
@@ -824,7 +887,7 @@ article{
     width: 7px;
 }
 #imaEvent img{
-    max-height: 92px;
+    /*max-height: 92px;*/
     width: 100%;
 }
 .faceColor{
@@ -900,7 +963,7 @@ article{
         padding-bottom: 35px;
     }
 }
-.repeatCount{
+/*.repeatCount{
     display: block;
     position: relative;
     width: 238px;
@@ -908,6 +971,22 @@ article{
     padding: 5px 20px;
     height: 30px;
 }
+*/
+
+.repeatCount {
+    display: block;
+    position: relative;
+    width: 42%;
+    text-align: left;
+    float: left;
+    height: 30px;
+    margin-top: -32px;
+    padding: 0px 10px;
+    margin-left: 20px;
+}
+
 .repeatCount input{
     width: 35px;
 }
+
+
